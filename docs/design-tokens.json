@@ -1,0 +1,22 @@
+{
+  "canonicalSource": "src/index.css",
+  "colour": {
+    "canvas": "#fafbf8",
+    "ink": "#212522",
+    "accent": "#e8fa7b",
+    "secondary": "#eff1e9",
+    "mutedText": "#62675e",
+    "border": "#dce0d5",
+    "focus": "#586929",
+    "white": "#ffffff"
+  },
+  "font": { "family": "Inter Variable", "bodyPx": 16, "supportingPx": 14, "metadataPx": 12 },
+  "layout": {
+    "maxWidthPx": 1280,
+    "desktopGutterPx": 48,
+    "mobileGutterPx": 20,
+    "catalogueDesktopColumns": 4,
+    "catalogueMobileColumns": 2
+  },
+  "radiusPx": { "small": 4, "medium": 6, "large": 8, "extraLarge": 12 }
+}

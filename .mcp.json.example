@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "codex-review": {
+      "type": "stdio",
+      "command": "codex",
+      "args": ["mcp-server"]
+    }
+  }
+}

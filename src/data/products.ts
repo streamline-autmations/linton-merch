@@ -1,0 +1,208 @@
+export const categories = [
+  'Corporate clothing',
+  'Uniforms & workwear',
+  'Promotional clothing',
+  'Marketing material & gifts',
+] as const
+export type Category = (typeof categories)[number]
+export type Artwork =
+  'polo' | 'tee' | 'jacket' | 'cap' | 'vest' | 'bottle' | 'tote' | 'notebook' | 'mug' | 'gift'
+export interface Product {
+  id: string
+  name: string
+  category: Category
+  description: string
+  art: Artwork
+  colour: string
+  colourName: string
+  sizes: string
+  branding: string
+  featured?: boolean
+}
+
+// All entries are invented examples. They are not verified supplier stock or specifications.
+// Category names follow the structure of the current Linton Enterprises website.
+export const products: Product[] = [
+  {
+    id: 'LM-001',
+    name: 'Corporate shirt',
+    category: 'Corporate clothing',
+    description: 'A smart, easy-care shirt direction for front-of-house and office teams.',
+    art: 'polo',
+    colour: '#d9dedc',
+    colourName: 'White',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+    featured: true,
+  },
+  {
+    id: 'LM-002',
+    name: 'Ladies blouse',
+    category: 'Corporate clothing',
+    description: 'A tailored blouse example for coordinated reception and sales teams.',
+    art: 'tee',
+    colour: '#8aa0b4',
+    colourName: 'Sky',
+    sizes: 'XS–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+  },
+  {
+    id: 'LM-003',
+    name: 'Executive jacket',
+    category: 'Corporate clothing',
+    description: 'A structured outer layer for management and client-facing staff.',
+    art: 'jacket',
+    colour: '#2f3b46',
+    colourName: 'Charcoal',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+  },
+  {
+    id: 'LM-004',
+    name: 'Corporate golf shirt',
+    category: 'Corporate clothing',
+    description: 'A classic golf shirt example, the product Linton Enterprises began with.',
+    art: 'polo',
+    colour: '#26425f',
+    colourName: 'Navy',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery or print, subject to confirmation',
+  },
+  {
+    id: 'LM-005',
+    name: 'Utility work jacket',
+    category: 'Uniforms & workwear',
+    description: 'An example of practical outerwear for on-site teams.',
+    art: 'jacket',
+    colour: '#394850',
+    colourName: 'Navy',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+    featured: true,
+  },
+  {
+    id: 'LM-006',
+    name: 'Visibility vest',
+    category: 'Uniforms & workwear',
+    description: 'An illustrative workwear option. No safety certification is claimed.',
+    art: 'vest',
+    colour: '#d6e957',
+    colourName: 'Lime',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Print, subject to confirmation',
+  },
+  {
+    id: 'LM-007',
+    name: 'Workshop tee',
+    category: 'Uniforms & workwear',
+    description: 'A simple clothing direction for workshop and service teams.',
+    art: 'tee',
+    colour: '#8c8c82',
+    colourName: 'Grey',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Print, subject to confirmation',
+  },
+  {
+    id: 'LM-008',
+    name: 'Field team polo',
+    category: 'Uniforms & workwear',
+    description: 'An approachable uniform concept for active working days.',
+    art: 'polo',
+    colour: '#967c5b',
+    colourName: 'Khaki',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+  },
+  {
+    id: 'LM-009',
+    name: 'Branded cap',
+    category: 'Promotional clothing',
+    description: 'A familiar finishing touch for events, teams and campaigns.',
+    art: 'cap',
+    colour: '#b1ac99',
+    colourName: 'Sand',
+    sizes: 'Adjustable (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+    featured: true,
+  },
+  {
+    id: 'LM-010',
+    name: 'Event t-shirt',
+    category: 'Promotional clothing',
+    description: 'A relaxed starting point for events, launches and campaigns.',
+    art: 'tee',
+    colour: '#505e4d',
+    colourName: 'Olive',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Print, subject to confirmation',
+  },
+  {
+    id: 'LM-011',
+    name: 'Team golf shirt',
+    category: 'Promotional clothing',
+    description: 'A golf-day staple with room for sponsor and team branding.',
+    art: 'polo',
+    colour: '#e5dfcd',
+    colourName: 'Stone',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery or print, subject to confirmation',
+  },
+  {
+    id: 'LM-012',
+    name: 'Lightweight jacket',
+    category: 'Promotional clothing',
+    description: 'A packable layer idea for outdoor events and giveaways.',
+    art: 'jacket',
+    colour: '#3b4248',
+    colourName: 'Graphite',
+    sizes: 'S–3XL (illustrative)',
+    branding: 'Embroidery, subject to confirmation',
+  },
+  {
+    id: 'LM-013',
+    name: 'Canvas tote bag',
+    category: 'Marketing material & gifts',
+    description: 'A useful canvas for your next expo, event or brand campaign.',
+    art: 'tote',
+    colour: '#d6cfb9',
+    colourName: 'Natural',
+    sizes: 'One size (illustrative)',
+    branding: 'Print, subject to confirmation',
+  },
+  {
+    id: 'LM-014',
+    name: 'Branded mug',
+    category: 'Marketing material & gifts',
+    description: 'A classic desk essential with room for your brand.',
+    art: 'mug',
+    colour: '#eeeae0',
+    colourName: 'Chalk',
+    sizes: 'One size (illustrative)',
+    branding: 'Print, subject to confirmation',
+  },
+  {
+    id: 'LM-015',
+    name: 'Journal',
+    category: 'Marketing material & gifts',
+    description: 'A stationery idea for meetings, launches and client gifting.',
+    art: 'notebook',
+    colour: '#414841',
+    colourName: 'Graphite',
+    sizes: 'One size (illustrative)',
+    branding: 'Debossing or print, subject to confirmation',
+  },
+  {
+    id: 'LM-016',
+    name: 'Insulated bottle',
+    category: 'Marketing material & gifts',
+    description: 'A refined everyday gifting idea to take beyond the desk.',
+    art: 'bottle',
+    colour: '#343b37',
+    colourName: 'Black',
+    sizes: 'One size (illustrative)',
+    branding: 'Engraving, subject to confirmation',
+    featured: true,
+  },
+]
+
+export const productById = new Map(products.map((product) => [product.id, product]))
