@@ -67,7 +67,8 @@ export const products: Product[] = [
     id: 'LM-002',
     name: 'Ladies long-sleeve blouse',
     category: 'Corporate clothing',
-    description: 'A tailored long-sleeve blouse with chest pockets, made to match the corporate shirt.',
+    description:
+      'A tailored long-sleeve blouse with chest pockets, made to match the corporate shirt.',
     image: p('bas-7759-lb'),
     colourName: 'Light blue',
     colours: 'White, black, grey, light blue, navy',
@@ -262,7 +263,8 @@ export const products: Product[] = [
     id: 'LM-013',
     name: 'Multi-pocket utility vest',
     category: 'Uniforms & workwear',
-    description: 'A sleeveless utility vest with plenty of pockets for photographers, guides and field staff.',
+    description:
+      'A sleeveless utility vest with plenty of pockets for photographers, guides and field staff.',
     image: p('bd-ut-26-a-n'),
     colourName: 'Navy',
     sizes: 'S – 3XL',

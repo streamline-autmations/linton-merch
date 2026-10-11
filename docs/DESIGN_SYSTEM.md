@@ -34,3 +34,22 @@ Focus: 2px ink outline on paper; signal outline inside `.on-ink` regions.
 ## Assets and brand
 
 The `linton merch` text mark and favicon are temporary design treatments. `public/merch-concept.png` is AI-generated generic concept photography. Catalogue vectors are original illustrative placeholders. Do not treat these as genuine stock or company branding. Replace them with approved assets when supplied.
+
+
+## Motion layer (v4, 11 Oct 2026)
+
+Libraries: GSAP 3.15 (ScrollTrigger, SplitText, `@gsap/react` `useGSAP`) and Lenis 1.3. Shared setup in `src/lib/motion.ts`; global behaviour in `src/components/SmoothScroll.tsx`.
+
+| Element | Behaviour | Where |
+| --- | --- | --- |
+| Smooth scroll | Lenis on GSAP's ticker, synced to ScrollTrigger. Paused while Radix locks scroll (dialogs, drawer); native inside dialogs and rails; touch stays native | `SmoothScroll.tsx` |
+| Scroll thread | 3px dashed teal line along the top edge, scaleX scrubbed to page progress | `.scroll-thread` |
+| Stitched seams | `.stitch` dashed rules sew in left-to-right once on entering view (eyebrow dashes and section seams) | `.stitch`, `SmoothScroll.tsx` |
+| Header | Sticky; hides on scroll down past 240px, returns on scroll up; exposes `--header-offset` for sticky catalogue filters | `Layout.tsx` |
+| Hero intro | Headline lines rise from a mask, photos unroll top-to-bottom (clip-path) while settling from 1.25 scale, copy fades in. Once per load | `useHeroMotion` in `Home.tsx` |
+| Hero parallax | Photos drift ±9% (desktop) / ±5% (mobile), scrubbed | `useHeroMotion` |
+| Reading reveal | Words brighten 14% → 100% as they are read: manifesto and lead testimonial | `ScrubWords.tsx` |
+| Signature | "Put your name on it" stitches the placeholder when it scrolls into view, and on every edit | `BrandPreview.tsx` |
+| Page change | Content eases in (opacity + 10px) on navigation only, never on first load | `.page-enter` |
+
+Rules: no fade-up-on-everything; product cards and grids hold still. Reduced motion disables Lenis, the thread, intro, parallax, word splitting and seam drawing (content renders final state).

@@ -14,6 +14,8 @@ import { BasketItems } from '@/components/BasketItems'
 import { ContactButton } from '@/components/ContactButton'
 import { useBasket } from '@/context/BasketContext'
 import { business } from '@/data/business'
+import { SmoothScroll } from '@/components/SmoothScroll'
+import { scrollToTop } from '@/lib/motion'
 
 const navItems = [
   { to: '/', label: 'Home', end: true },
@@ -41,11 +43,15 @@ export function Layout() {
   const location = useLocation()
   const mainRef = useRef<HTMLElement>(null)
   const initialRoute = useRef(true)
+  // Set once the visitor has navigated away from the landing route (render-time, stable).
+  const landingPath = useRef(location.pathname)
+  const navigated = useRef(false)
+  if (location.pathname !== landingPath.current) navigated.current = true
   const initialCount = useRef(true)
   const leavingDrawer = useRef(false)
   useEffect(() => {
     setMenuOpen(false)
-    window.scrollTo(0, 0)
+    scrollToTop()
     const names: Record<string, string> = {
       '/': 'Corporate clothing, gifts & uniforms',
       '/catalogue': 'Catalogue',
@@ -63,6 +69,29 @@ export function Layout() {
     }
     setAnnouncement(`${items.length} ${items.length === 1 ? 'product' : 'products'} in your quote.`)
   }, [items.length])
+  // The header tucks away while scrolling down and returns on any scroll up.
+  const [headerHidden, setHeaderHidden] = useState(false)
+  const headerRef = useRef<HTMLElement>(null)
+  useEffect(() => {
+    let last = window.scrollY
+    const onScroll = () => {
+      const y = window.scrollY
+      if (Math.abs(y - last) < 6) return
+      setHeaderHidden(y > last && y > 240)
+      last = y
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+  const hideHeader = headerHidden && !menuOpen && !drawerOpen
+  useEffect(() => {
+    // Sticky elements below the header (catalogue filters) sit under it when it is showing.
+    const height = headerRef.current?.offsetHeight ?? 0
+    document.documentElement.style.setProperty(
+      '--header-offset',
+      hideHeader ? '0px' : `${height}px`,
+    )
+  }, [hideHeader, menuOpen])
   const showBar = items.length > 0 && location.pathname !== '/quote'
   return (
     <>
@@ -73,7 +102,12 @@ export function Layout() {
         Concept demo <span className="mx-2 opacity-50">/</span> Product range to be confirmed. No
         enquiries are sent.
       </div>
-      <header className="on-ink relative z-20 bg-ink text-white">
+      <SmoothScroll />
+      <header
+        ref={headerRef}
+        data-hidden={hideHeader || undefined}
+        className="site-header on-ink sticky top-0 z-40 bg-ink text-white"
+      >
         <div className="container-wide flex min-h-20 flex-wrap items-center justify-between gap-4 py-4">
           <Link to="/" aria-label="Linton Merch home" className="block">
             <Logo className="h-11 w-auto sm:h-12" />
@@ -194,7 +228,10 @@ export function Layout() {
         </p>
       )}
       <main id="main-content" ref={mainRef} tabIndex={-1} className="outline-none">
-        <Outlet />
+        {/* Pages ease in on navigation; the first load belongs to the hero intro. */}
+        <div key={location.pathname} className={navigated.current ? 'page-enter' : undefined}>
+          <Outlet />
+        </div>
       </main>
       <footer className={`on-ink bg-ink text-white ${showBar ? 'pb-16 lg:pb-0' : ''}`}>
         <div className="container-wide grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">

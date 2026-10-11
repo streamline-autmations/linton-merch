@@ -48,7 +48,9 @@ export function Catalogue() {
         </p>
       </div>
       <div className="mb-8 border-l-4 border-signal bg-secondary px-4 py-3 text-xs leading-5 text-muted-foreground">
-        <span className="font-semibold text-foreground">{products.length} products to start from.</span>{' '}
+        <span className="font-semibold text-foreground">
+          {products.length} products to start from.
+        </span>{' '}
         A curated selection from the ranges Linton sources. Ask for anything you do not see:
         colours, sizes, stock and pricing are confirmed on your quote.
       </div>
@@ -89,7 +91,7 @@ export function Catalogue() {
         </div>
       </div>
       <div
-        className="sticky top-0 z-10 -mx-[20px] mb-7 flex gap-2 overflow-x-auto bg-background px-[20px] py-3 sm:static sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:py-0"
+        className="sticky top-[var(--header-offset,0px)] z-10 -mx-[20px] [scrollbar-width:none] transition-[top] duration-300 mb-7 flex gap-2 overflow-x-auto bg-background px-[20px] py-3 sm:static sm:mx-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:py-0"
         role="group"
         aria-label="Product categories"
       >

@@ -124,8 +124,8 @@ export function Quote() {
           <ShoppingBag size={30} className="mb-6 text-muted-foreground" />
           <h2 className="text-2xl font-medium tracking-tight">Your selection is empty.</h2>
           <p className="mb-7 mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-            Browse the catalogue and add the products you have in mind. You can set
-            quantities, branding and delivery details here.
+            Browse the catalogue and add the products you have in mind. You can set quantities,
+            branding and delivery details here.
           </p>
           <Button asChild>
             <Link to="/catalogue">Explore catalogue</Link>
@@ -401,8 +401,8 @@ export function Quote() {
                     className="mt-1.5 h-4 w-4 shrink-0 accent-primary"
                   />
                   <span>
-                    I understand this is a demo. No enquiry will be sent, and these products are
-                    not confirmed stock.
+                    I understand this is a demo. No enquiry will be sent, and these products are not
+                    confirmed stock.
                   </span>
                 </label>
               </div>

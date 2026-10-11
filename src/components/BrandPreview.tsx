@@ -1,4 +1,4 @@
-import { useId, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Check, Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { useBasket } from '@/context/BasketContext'
@@ -94,26 +94,48 @@ export function BrandPreview() {
   const [thread, setThread] = useState(threads[0])
   const { items, add } = useBasket()
   const inputId = useId()
+  // The first stitch happens when the preview scrolls into view, not on page load off-screen.
+  const figureRef = useRef<HTMLElement>(null)
+  const [seen, setSeen] = useState(false)
+  useEffect(() => {
+    const el = figureRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setSeen(true)
+          io.disconnect()
+        }
+      },
+      { rootMargin: '0px 0px -30% 0px' },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
   const text = (name.trim() || 'Your brand').toUpperCase().slice(0, 28)
   const size = fitSize(text, active)
   const product = productById.get(active.productId)!
   const inQuote = items.some((item) => item.productId === active.productId)
   const fill =
-    active.method === 'embroidery' ? thread.value : active.method === 'engraving' ? '#c9ccce' : '#0e161d'
+    active.method === 'embroidery'
+      ? thread.value
+      : active.method === 'engraving'
+        ? '#c9ccce'
+        : '#0e161d'
 
   return (
     <section className="border-y bg-white" aria-labelledby="brand-preview-title">
       <div className="container-wide grid gap-8 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0 lg:py-24">
         <div className="lg:self-end">
           <p className="eyebrow mb-5 flex items-center gap-3 text-muted-foreground">
-            <span className="h-px w-8 bg-signal" /> Try it
+            <span className="stitch w-8 text-signal" /> Try it
           </p>
           <h2 id="brand-preview-title" className="section-title max-w-md">
             Put your name on it.
           </h2>
           <p className="mt-5 max-w-md text-base leading-7 text-muted-foreground">
-            Type your company name and see how it could look stitched, engraved or printed. When
-            you are ready, Linton works from your real logo files.
+            Type your company name and see how it could look stitched, engraved or printed. When you
+            are ready, Linton works from your real logo files.
           </p>
         </div>
         <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
@@ -182,7 +204,10 @@ export function BrandPreview() {
           </div>
         </div>
 
-        <figure className="relative order-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
+        <figure
+          ref={figureRef}
+          className="relative order-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
+        >
           <div className="relative aspect-square overflow-hidden rounded-md bg-[#f6f7f6]">
             <img
               key={active.image}
@@ -200,33 +225,45 @@ export function BrandPreview() {
                   <feDropShadow dx="0" dy="1.2" stdDeviation="0.8" floodOpacity="0.55" />
                 </filter>
                 <filter id="engrave" x="-10%" y="-30%" width="120%" height="160%">
-                  <feDropShadow dx="0" dy="-0.8" stdDeviation="0.3" floodColor="#000" floodOpacity="0.9" />
+                  <feDropShadow
+                    dx="0"
+                    dy="-0.8"
+                    stdDeviation="0.3"
+                    floodColor="#000"
+                    floodOpacity="0.9"
+                  />
                 </filter>
               </defs>
-              <text
-                key={`${active.id}-${text}-${thread.value}`}
-                x={active.x}
-                y={active.y}
-                transform={active.rotate ? `rotate(${active.rotate} ${active.x} ${active.y})` : undefined}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize={size}
-                // Hard cap: never let a long name run past the branding area.
-                textLength={text.length * size * 0.7 > active.maxWidth ? active.maxWidth : undefined}
-                lengthAdjust="spacingAndGlyphs"
-                className={cn('brand-mark', `brand-${active.method}`)}
-                fill={fill}
-                stroke={active.method === 'embroidery' ? fill : 'none'}
-                filter={
-                  active.method === 'embroidery'
-                    ? 'url(#thread-shadow)'
-                    : active.method === 'engraving'
-                      ? 'url(#engrave)'
-                      : undefined
-                }
-              >
-                {text}
-              </text>
+              {seen && (
+                <text
+                  key={`${active.id}-${text}-${thread.value}`}
+                  x={active.x}
+                  y={active.y}
+                  transform={
+                    active.rotate ? `rotate(${active.rotate} ${active.x} ${active.y})` : undefined
+                  }
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize={size}
+                  // Hard cap: never let a long name run past the branding area.
+                  textLength={
+                    text.length * size * 0.7 > active.maxWidth ? active.maxWidth : undefined
+                  }
+                  lengthAdjust="spacingAndGlyphs"
+                  className={cn('brand-mark', `brand-${active.method}`)}
+                  fill={fill}
+                  stroke={active.method === 'embroidery' ? fill : 'none'}
+                  filter={
+                    active.method === 'embroidery'
+                      ? 'url(#thread-shadow)'
+                      : active.method === 'engraving'
+                        ? 'url(#engrave)'
+                        : undefined
+                  }
+                >
+                  {text}
+                </text>
+              )}
             </svg>
             <span className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-1 text-[11px] font-medium tracking-wider text-white">
               {active.methodLabel.toUpperCase()}

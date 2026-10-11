@@ -263,11 +263,21 @@ export function About() {
           </dl>
           <p className="mt-8 pl-[30px] text-sm text-muted-foreground">
             Follow along on{' '}
-            <a href={business.social.facebook} target="_blank" rel="noreferrer" className="text-foreground underline underline-offset-4">
+            <a
+              href={business.social.facebook}
+              target="_blank"
+              rel="noreferrer"
+              className="text-foreground underline underline-offset-4"
+            >
               Facebook
             </a>{' '}
             and{' '}
-            <a href={business.social.instagram} target="_blank" rel="noreferrer" className="text-foreground underline underline-offset-4">
+            <a
+              href={business.social.instagram}
+              target="_blank"
+              rel="noreferrer"
+              className="text-foreground underline underline-offset-4"
+            >
               Instagram
             </a>
             .

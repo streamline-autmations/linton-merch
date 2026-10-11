@@ -73,7 +73,9 @@ export function BasketItems({ preferences = false }: { preferences?: boolean }) 
               </div>
               <div className="min-w-0 flex-1 break-words">
                 <h3 className="text-sm font-medium">{product.name}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{product.id} · {product.category}</p>
+                <p className="mt-1 text-xs text-muted-foreground">
+                  {product.id} · {product.category}
+                </p>
               </div>
               <Button
                 type="button"

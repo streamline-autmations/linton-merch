@@ -46,7 +46,7 @@
 - [x] About: founders photo, mission, Google Maps link, Facebook/Instagram.
 - [x] Accent moved from lime to Linton logo teal.
 - [x] Vite polling watch under WSL so hot reload works on /mnt/c.
-- [ ] Phase 2: smooth scroll animations / premium motion (owner request, next session).
+- [x] Phase 2: motion layer — Lenis smooth scroll, stitched scroll thread and seams, hide-on-scroll header, hero intro + parallax, reading reveal, gift-rail arrows, page transitions (see DESIGN_SYSTEM.md).
 - [ ] Carry the "Put your name on it" company name into the quote brief.
 - [ ] Logo-derived favicon; vector logo.
 

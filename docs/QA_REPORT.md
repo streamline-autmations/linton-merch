@@ -68,3 +68,10 @@ The last two scripts expect the preview at `http://127.0.0.1:5173`. For an exist
 - Every image path referenced in `products.ts`, `business.ts`, `Home.tsx`, `BrandPreview.tsx` and `About.tsx` checked to exist in `public/`.
 - Visual inspection with Playwright at 1440, 390 and 320px: home, catalogue (incl. `?occasion=`), product dialog, About, all four "Put your name on it" canvases.
 - Codex read-only review (`codex exec -s read-only`) found two issues, both fixed and re-verified at 320px: BrandPreview button overflow at 320px (medium) and long names spilling past the chest area (low; now capped with SVG `textLength`).
+
+## Motion layer — 11 October 2026 (Claude)
+
+- `pnpm typecheck`, `pnpm test` (4/4), `pnpm test:e2e` (6/6 desktop + mobile), `pnpm build`: pass. JS bundle 189 kB gzip (GSAP + Lenis added).
+- Browser checks (Playwright, 1440 and 390px): Lenis drives scroll; header hides on scroll down and returns on scroll up; progress thread fills; manifesto words brighten while scrolling; catalogue filter chips dock under the visible header; product dialog pauses Lenis and scrolling resumes after closing; hero photos cover their frames throughout parallax; no console errors.
+- Reduced motion: on load, no Lenis, word split, clip or thread. Switching it on live reverts every GSAP animation and destroys Lenis.
+- Codex read-only review found 6 issues, all fixed and re-verified: Lenis `autoToggle` could leave scroll locked after dialogs (high; removed, Radix observer drives stop/start); stale stitch observers across routes; wheel inertia fighting keyboard/focus scrolling (now cancelled); parallax exposing frame edges (1.2× overscan on a wrapper); motion not reverting on live reduced-motion change (now `gsap.matchMedia`); gift-rail arrows smooth under reduced motion.

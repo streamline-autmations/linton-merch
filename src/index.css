@@ -93,7 +93,7 @@ h3 {
 }
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.25rem), 1fr));
 }
 @media (min-width: 1024px) {
   .product-grid {
@@ -306,7 +306,52 @@ main#main-content:focus-visible {
 .rail > * {
   scroll-snap-align: start;
 }
+/* ---- Motion layer (v4) ---------------------------------------------------------------- */
+/* Scroll progress: a teal thread stitched along the top edge. */
+.scroll-thread {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 60;
+  height: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  background: repeating-linear-gradient(90deg, var(--signal) 0 10px, transparent 10px 15px);
+  pointer-events: none;
+}
+.site-header {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.site-header[data-hidden] {
+  transform: translateY(-100%);
+}
+/* Stitched rule: a dashed line that sews itself in from the left when it enters view. */
+.stitch {
+  display: block;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, currentColor 0 7px, transparent 7px 12px);
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 1.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.stitch[data-stitched] {
+  clip-path: inset(0 0 0 0);
+}
+.page-enter {
+  animation: page-enter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
 @media (prefers-reduced-motion: reduce) {
+  .stitch {
+    clip-path: none;
+  }
+  .scroll-thread {
+    display: none;
+  }
+
   *,
   *::before,
   *::after {
