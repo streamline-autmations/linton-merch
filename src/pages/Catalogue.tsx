@@ -4,12 +4,13 @@ import { Search, SlidersHorizontal, X } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/ProductCard'
-import { categories, products } from '@/data/products'
+import { categories, occasions, products } from '@/data/products'
 
 export function Catalogue() {
   const [params, setParams] = useSearchParams()
   const category = categories.find((value) => value === params.get('category')) ?? 'All products'
   const query = params.get('q') ?? ''
+  const occasion = occasions.find((value) => value.id === params.get('occasion'))
   const [sort, setSort] = useState('curated')
   function filter(key: string, value: string) {
     const next = new URLSearchParams(params)
@@ -22,14 +23,15 @@ export function Catalogue() {
     const found = products.filter(
       (product) =>
         (category === 'All products' || product.category === category) &&
+        (!occasion || product.occasions.includes(occasion.id)) &&
         words.every((word) =>
-          `${product.name} ${product.category} ${product.description} ${product.id} ${product.colourName}`
+          `${product.name} ${product.category} ${product.description} ${product.id} ${product.colourName} ${product.colours ?? ''} ${product.branding}`
             .toLowerCase()
             .includes(word),
         ),
     )
     return sort === 'az' ? [...found].sort((a, b) => a.name.localeCompare(b.name)) : found
-  }, [category, query, sort])
+  }, [category, occasion, query, sort])
   return (
     <div className="container-wide pb-20 pt-12 lg:pt-16">
       <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
@@ -46,16 +48,16 @@ export function Catalogue() {
         </p>
       </div>
       <div className="mb-8 border-l-4 border-signal bg-secondary px-4 py-3 text-xs leading-5 text-muted-foreground">
-        <span className="font-semibold text-foreground">{products.length} sample products.</span>{' '}
-        Names, artwork, colours, sizes and branding options are illustrative. Availability and
-        pricing are not confirmed.
+        <span className="font-semibold text-foreground">{products.length} products to start from.</span>{' '}
+        A curated selection from the ranges Linton sources. Ask for anything you do not see:
+        colours, sizes, stock and pricing are confirmed on your quote.
       </div>
       <div className="mb-7 flex flex-col gap-4 sm:flex-row">
         <div className="relative flex-1">
           <Search size={18} className="absolute left-3.5 top-3.5 text-muted-foreground" />
           <Input
             aria-label="Search products"
-            placeholder="Search products, categories or colours…"
+            placeholder="Search golf shirts, navy, embroidery…"
             className="h-12 bg-white pl-11"
             value={query}
             onChange={(e) => filter('q', e.target.value)}
@@ -107,7 +109,17 @@ export function Catalogue() {
           {results.length} {results.length === 1 ? 'product' : 'products'}
           {category !== 'All products' ? ` · ${category}` : ''}
         </p>
-        {(query || category !== 'All products') && (
+        {occasion && (
+          <button
+            type="button"
+            onClick={() => filter('occasion', '')}
+            className="ml-auto mr-3 inline-flex items-center gap-1.5 rounded-sm border border-ink px-2.5 py-1 text-xs"
+            aria-label={`Remove occasion filter: ${occasion.label}`}
+          >
+            {occasion.label} <X size={13} />
+          </button>
+        )}
+        {(query || occasion || category !== 'All products') && (
           <Button variant="ghost" className="h-7 text-xs" onClick={() => setParams({})}>
             Reset filters
           </Button>

@@ -13,6 +13,8 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--foreground);
   --color-signal: var(--signal);
+  --color-brand-blue: var(--brand-blue);
+  --color-brand-teal: var(--brand-teal);
   --color-ink: var(--ink);
   --color-ink-soft: var(--ink-soft);
   --color-destructive: #a32828;
@@ -39,7 +41,9 @@
   --muted: #e2e7e6;
   --muted-foreground: #4f5d65;
   --accent: #e2e7e6;
-  --signal: #c8f03c;
+  --signal: #2ec4b6;
+  --brand-blue: #004298;
+  --brand-teal: #029b97;
   --ink: #0e161d;
   --ink-soft: #1b2833;
   --border: #cbd3d4;
@@ -207,6 +211,100 @@ main#main-content:focus-visible {
   .container-wide {
     width: calc(100% - 40px);
   }
+}
+/* Signature motion: a mark stitches itself in, like thread going through fabric. */
+.brand-mark {
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+.brand-embroidery {
+  stroke-width: 0.9;
+  stroke-dasharray: 2.4 1.6;
+  paint-order: stroke;
+  animation: stitch 0.9s cubic-bezier(0.6, 0, 0.3, 1) both;
+}
+.brand-engraving {
+  letter-spacing: 0.22em;
+  font-weight: 500;
+  opacity: 0.88;
+  animation: burn 0.7s ease-out both;
+}
+.brand-print {
+  mix-blend-mode: multiply;
+  letter-spacing: -0.01em;
+  animation: press 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@keyframes stitch {
+  from {
+    stroke-dashoffset: 60;
+    fill-opacity: 0;
+  }
+  60% {
+    fill-opacity: 0.25;
+  }
+  to {
+    stroke-dashoffset: 0;
+    fill-opacity: 1;
+  }
+}
+@keyframes burn {
+  from {
+    opacity: 0;
+    filter: blur(2px);
+  }
+}
+@keyframes press {
+  from {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.brand-fade {
+  animation: fade-in 0.35s ease-out both;
+}
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+/* Horizontal rails: scroll-snap rows that bleed to the viewport edge. */
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: min(78vw, 320px);
+  gap: 1.25rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: max(20px, calc((100vw - 1280px) / 2));
+  padding-inline: max(48px, calc((100vw - 1280px) / 2));
+  scroll-padding-inline: max(48px, calc((100vw - 1280px) / 2));
+  padding-bottom: 1rem;
+  scrollbar-width: thin;
+}
+@media (max-width: 768px) {
+  .rail {
+    padding-inline: 20px;
+    scroll-padding-inline: 20px;
+  }
+}
+/* "What we supply": a photo peeks out from the row on hover (desktop pointer only). */
+.supply-peek {
+  opacity: 0;
+  transform: translateY(-50%) rotate(-3deg) scale(0.92);
+  transition:
+    opacity 0.25s ease,
+    transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.supply-row:hover .supply-peek,
+.supply-row:focus-visible .supply-peek {
+  opacity: 1;
+  transform: translateY(-50%) rotate(2deg) scale(1);
+}
+.rail > * {
+  scroll-snap-align: start;
 }
 @media (prefers-reduced-motion: reduce) {
   *,

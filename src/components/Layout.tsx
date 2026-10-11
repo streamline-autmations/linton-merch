@@ -70,8 +70,8 @@ export function Layout() {
         Skip to content
       </a>
       <div className="on-ink bg-ink-soft px-5 py-2 text-center text-xs tracking-wide text-white/75">
-        Concept demo <span className="mx-2 opacity-50">/</span> Sample products. No enquiries are
-        sent.
+        Concept demo <span className="mx-2 opacity-50">/</span> Product range to be confirmed. No
+        enquiries are sent.
       </div>
       <header className="on-ink relative z-20 bg-ink text-white">
         <div className="container-wide flex min-h-20 flex-wrap items-center justify-between gap-4 py-4">
@@ -114,7 +114,7 @@ export function Layout() {
                   <SheetTitle className="text-2xl font-bold tracking-tight">Your quote</SheetTitle>
                   <SheetDescription>
                     {items.length
-                      ? `${items.length} sample product${items.length === 1 ? '' : 's'}. Adjust quantities below.`
+                      ? `${items.length} product${items.length === 1 ? '' : 's'}. Adjust quantities below.`
                       : 'Add products and send one request.'}
                   </SheetDescription>
                 </SheetHeader>
@@ -242,7 +242,7 @@ export function Layout() {
         </div>
         <div className="container-wide flex flex-col justify-between gap-2 border-t border-white/15 py-6 text-xs text-white/50 sm:flex-row">
           <span>Linton Enterprises · Concept demo, not the live website</span>
-          <span>Sample products and imagery. No enquiries are sent.</span>
+          <span>Product range and imagery to be confirmed. No enquiries are sent.</span>
         </div>
       </footer>
       {showBar && (

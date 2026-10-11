@@ -4,14 +4,14 @@ test('catalogue, persistent multi-product basket and complete demo RFQ', async (
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/catalogue')
-  await expect(page.getByRole('status').filter({ hasText: '16 products' })).toBeVisible()
+  await expect(page.getByRole('status').filter({ hasText: '75 products' })).toBeVisible()
   await page.getByRole('button', { name: 'Marketing material & gifts', exact: true }).click()
-  await expect(page.getByRole('status').filter({ hasText: '4 products' })).toBeVisible()
+  await expect(page.getByRole('status').filter({ hasText: '22 products' })).toBeVisible()
   await page.getByLabel('Search products').fill('no matching product')
   await expect(page.getByText('Nothing here just yet.')).toBeVisible()
   await page.getByRole('button', { name: 'Show all products' }).click()
   await page.getByRole('button', { name: 'View Corporate shirt details' }).click()
-  await expect(page.getByRole('dialog')).toContainText('invented catalogue example')
+  await expect(page.getByRole('dialog')).toContainText('Linton confirms availability')
   await page.keyboard.press('Escape')
   await page.getByRole('button', { name: 'Add Corporate shirt to quote', exact: true }).click()
   // The first add opens the quote drawer once per visit (the signature drawer motion).

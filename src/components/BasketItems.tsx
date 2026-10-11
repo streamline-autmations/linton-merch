@@ -68,12 +68,12 @@ export function BasketItems({ preferences = false }: { preferences?: boolean }) 
         return (
           <article key={item.productId} className="py-5">
             <div className="flex gap-3">
-              <div className="h-[64px] w-[64px] shrink-0 rounded-md bg-[#c3cdcc]">
-                <ProductArtwork product={product} />
+              <div className="h-[64px] w-[64px] shrink-0 overflow-hidden rounded-md bg-white">
+                <ProductArtwork product={product} sizes="64px" />
               </div>
               <div className="min-w-0 flex-1 break-words">
                 <h3 className="text-sm font-medium">{product.name}</h3>
-                <p className="mt-1 text-xs text-muted-foreground">{product.id} · Sample product</p>
+                <p className="mt-1 text-xs text-muted-foreground">{product.id} · {product.category}</p>
               </div>
               <Button
                 type="button"

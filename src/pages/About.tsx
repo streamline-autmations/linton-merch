@@ -145,14 +145,38 @@ export function About() {
       </section>
 
       <section className="container-wide grid gap-12 py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
+        <figure className="lg:sticky lg:top-8 lg:self-start">
+          <div className="overflow-hidden rounded-md bg-secondary">
+            <img
+              src="/story/linda-and-tony.webp"
+              alt="Linda and Tony, the founders of Linton Enterprises, smiling together"
+              width={900}
+              height={654}
+              className="aspect-[4/3.4] w-full object-cover object-[40%_center]"
+            />
+          </div>
+          <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-sm">
+            <span>
+              <span className="font-medium">Linda &amp; Tony</span>
+              <span className="text-muted-foreground"> · the LIN and TON in Linton</span>
+            </span>
+            <span className="text-xs text-muted-foreground">Founders</span>
+          </figcaption>
+        </figure>
         <div>
           <h2 className="section-title">Linton Enterprises</h2>
-          <p className="mt-4 text-sm text-muted-foreground">Trading as Linton Merch</p>
-        </div>
-        <div className="space-y-6 text-base leading-7">
-          {business.story.map((paragraph) => (
-            <p key={paragraph}>{paragraph}</p>
-          ))}
+          <p className="mt-3 text-sm text-muted-foreground">Trading as Linton Merch</p>
+          <div className="mt-10 space-y-6 text-base leading-7">
+            {business.story.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+          <blockquote className="mt-12 border-l-4 border-signal pl-5">
+            <p className="eyebrow mb-3 text-muted-foreground">Our mission</p>
+            <p className="text-2xl font-bold leading-snug tracking-tight [font-family:var(--font-display)]">
+              {business.mission}
+            </p>
+          </blockquote>
         </div>
       </section>
 
@@ -191,6 +215,14 @@ export function About() {
                     {line}
                   </span>
                 ))}
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.addressLines.join(', '))}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 inline-block text-sm underline underline-offset-4"
+                >
+                  Open in Google Maps
+                </a>
               </dd>
             </div>
             <div>
@@ -229,6 +261,17 @@ export function About() {
               </dd>
             </div>
           </dl>
+          <p className="mt-8 pl-[30px] text-sm text-muted-foreground">
+            Follow along on{' '}
+            <a href={business.social.facebook} target="_blank" rel="noreferrer" className="text-foreground underline underline-offset-4">
+              Facebook
+            </a>{' '}
+            and{' '}
+            <a href={business.social.instagram} target="_blank" rel="noreferrer" className="text-foreground underline underline-offset-4">
+              Instagram
+            </a>
+            .
+          </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <ContactButton variant="default" label={`WhatsApp ${business.whatsappDisplay}`} />
             <Button asChild variant="outline">

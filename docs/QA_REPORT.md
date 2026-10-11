@@ -61,3 +61,10 @@ pnpm screenshots
 ```
 
 The last two scripts expect the preview at `http://127.0.0.1:5173`. For an existing browser, set `E2E_BROWSER_PATH` to its Chrome/Edge executable instead of downloading Chromium. Screenshots are under `docs/preview/`.
+
+## Real content pass — 11 October 2026 (Claude)
+
+- `pnpm typecheck`, `pnpm test` (4/4), `pnpm test:e2e` (6/6, desktop + 390px mobile incl. 320px narrow checks), `pnpm build`: all pass.
+- Every image path referenced in `products.ts`, `business.ts`, `Home.tsx`, `BrandPreview.tsx` and `About.tsx` checked to exist in `public/`.
+- Visual inspection with Playwright at 1440, 390 and 320px: home, catalogue (incl. `?occasion=`), product dialog, About, all four "Put your name on it" canvases.
+- Codex read-only review (`codex exec -s read-only`) found two issues, both fixed and re-verified at 320px: BrandPreview button overflow at 320px (medium) and long names spilling past the chest area (low; now capped with SVG `textLength`).

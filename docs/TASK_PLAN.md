@@ -37,6 +37,19 @@
 - [ ] Replace placeholder favicon with a logo-derived one.
 - [ ] Codex review (read-only) of the redesign.
 
+## Real content pass (11 Oct 2026)
+
+- [x] 56 real products with supplier photography (clothing, workwear, promo, marketing items) and 25 gift sets.
+- [x] Fifth category: Gift sets. Shop-by-occasion filter (`?occasion=`), searchable colours and branding methods.
+- [x] Product details: photo gallery, colour range, sizes, usual branding method.
+- [x] Home rebuilt: real-photo hero triptych, milestones strip, category rows with photo peek, "Put your name on it" live branding preview, occasions grid, gift-set rail, ways to brand, verbatim testimonials from lintonent.co.za.
+- [x] About: founders photo, mission, Google Maps link, Facebook/Instagram.
+- [x] Accent moved from lime to Linton logo teal.
+- [x] Vite polling watch under WSL so hot reload works on /mnt/c.
+- [ ] Phase 2: smooth scroll animations / premium motion (owner request, next session).
+- [ ] Carry the "Put your name on it" company name into the quote brief.
+- [ ] Logo-derived favicon; vector logo.
+
 ## Client refinement — intentionally deferred
 
 - [ ] Replace text wordmark with approved logo, if supplied.
