@@ -15,7 +15,9 @@ import {
   toZoneFrame,
 } from './mockup'
 
-const [shirt, , bottle] = mockupProducts
+const byLabel = (label: string) => mockupProducts.find((p) => p.label === label)!
+const shirt = byLabel('Golf shirt')
+const bottle = byLabel('Bottle')
 const chest = shirt.zones[0] // left chest, 160 × 115 mm
 const bottleSide = bottle.zones[0] // along the bottle, rotated -90°
 

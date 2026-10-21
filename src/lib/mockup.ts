@@ -106,18 +106,6 @@ export const mockupProducts: MockupProduct[] = [
     photo: (colour, view) => `/mockups/golf-shirt/${colour}-${view}.webp`,
   },
   {
-    id: 'LM-019',
-    label: 'Cap',
-    width: 1000,
-    height: 1000,
-    mmPerUnit: null,
-    sizeNote: '',
-    views: [{ id: 'front', label: 'Front' }],
-    colours: [{ id: 'navy', name: 'Navy', swatch: '#1d2a4d', dark: true }],
-    zones: [{ id: 'front', label: 'Front panel', view: 'front', cx: 440, cy: 360, w: 190, h: 120, rotate: -4, methods: ['embroidery'] }],
-    photo: () => '/products/cap-1008-n.webp',
-  },
-  {
     id: 'LM-016',
     label: 'Bottle',
     width: 1000,
