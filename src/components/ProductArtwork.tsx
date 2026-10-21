@@ -1,3 +1,4 @@
+import { ResponsiveImage } from '@/components/ResponsiveImage'
 import type { Product } from '@/data/products'
 import { cn } from '@/lib/utils'
 
@@ -6,7 +7,7 @@ import { cn } from '@/lib/utils'
 export function ProductArtwork({
   product,
   swap = false,
-  sizes = '(min-width: 1024px) 25vw, 50vw',
+  sizes = '(min-width: 1376px) 300px, (min-width: 1024px) 23vw, (min-width: 640px) 30vw, (max-width: 359px) 88vw, 44vw',
   eager = false,
 }: {
   product: Product
@@ -16,8 +17,8 @@ export function ProductArtwork({
 }) {
   const cover = product.image.startsWith('/gifts/')
   return (
-    <span className="relative block h-full w-full">
-      <img
+    <span className="product-artwork relative block h-full w-full">
+      <ResponsiveImage
         src={product.image}
         alt=""
         sizes={sizes}
@@ -25,16 +26,17 @@ export function ProductArtwork({
         decoding="async"
         className={cn(
           'h-full w-full',
-          cover ? 'object-cover' : 'object-contain p-[9%] mix-blend-multiply',
+          cover ? 'object-contain' : 'object-contain p-[9%] mix-blend-multiply',
         )}
       />
       {swap && product.alt && (
-        <img
+        <ResponsiveImage
           src={product.alt}
           alt=""
           loading="lazy"
           decoding="async"
-          className="absolute inset-0 h-full w-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100"
+          sizes={sizes}
+          className="product-alternate absolute inset-0 h-full w-full object-contain bg-white opacity-0"
         />
       )}
     </span>

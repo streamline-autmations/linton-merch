@@ -7,7 +7,8 @@ interface BasketContextValue {
   storageUnavailable: boolean
   drawerOpen: boolean
   setDrawerOpen: (open: boolean) => void
-  add: (id: string) => void
+  /** Adds a product (default 25 units); if it is already in the quote, sets the quantity given. */
+  add: (id: string, quantity?: number) => void
   update: (id: string, changes: Partial<Pick<QuoteItem, 'quantity' | 'specification'>>) => void
   remove: (id: string) => void
   clear: () => void
@@ -32,7 +33,7 @@ export function BasketProvider({ children }: { children: ReactNode }) {
       setStorageUnavailable(true)
     }
   }, [items])
-  function add(id: string) {
+  function add(id: string, quantity?: number) {
     if (!productById.has(id)) return
     // Teach the drawer once: the first product added in a visit opens it.
     try {
@@ -45,8 +46,12 @@ export function BasketProvider({ children }: { children: ReactNode }) {
     }
     setItems((previous) =>
       previous.some((item) => item.productId === id)
-        ? previous
-        : [...previous, { productId: id, quantity: 25, specification: '' }],
+        ? quantity === undefined
+          ? previous
+          : previous.map((item) =>
+              item.productId === id ? { ...item, quantity: clampQuantity(quantity) } : item,
+            )
+        : [...previous, { productId: id, quantity: clampQuantity(quantity ?? 25), specification: '' }],
     )
   }
   function update(id: string, changes: Partial<Pick<QuoteItem, 'quantity' | 'specification'>>) {

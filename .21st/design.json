@@ -1,0 +1,250 @@
+{
+  "version": 1,
+  "project": {
+    "name": "linton-merch-demo",
+    "productType": null,
+    "stack": [
+      "react",
+      "shadcn",
+      "tailwind-v4",
+      "vite"
+    ]
+  },
+  "sources": {
+    "tokens": [
+      "src/index.css"
+    ],
+    "components": [
+      "src/components/ui"
+    ],
+    "assets": [
+      "public/brand"
+    ],
+    "instructions": [
+      "AGENTS.md",
+      "CLAUDE.md"
+    ]
+  },
+  "design": {
+    "colorMode": "light",
+    "colors": {
+      "--color-background": {
+        "value": "var(--background)",
+        "source": "src/index.css"
+      },
+      "--color-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/index.css"
+      },
+      "--color-primary": {
+        "value": "var(--primary)",
+        "source": "src/index.css"
+      },
+      "--color-primary-foreground": {
+        "value": "var(--primary-foreground)",
+        "source": "src/index.css"
+      },
+      "--color-secondary": {
+        "value": "var(--secondary)",
+        "source": "src/index.css"
+      },
+      "--color-secondary-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/index.css"
+      },
+      "--color-muted": {
+        "value": "var(--muted)",
+        "source": "src/index.css"
+      },
+      "--color-muted-foreground": {
+        "value": "var(--muted-foreground)",
+        "source": "src/index.css"
+      },
+      "--color-accent": {
+        "value": "var(--accent)",
+        "source": "src/index.css"
+      },
+      "--color-accent-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/index.css"
+      },
+      "--color-signal": {
+        "value": "var(--signal)",
+        "source": "src/index.css"
+      },
+      "--color-brand-blue": {
+        "value": "var(--brand-blue)",
+        "source": "src/index.css"
+      },
+      "--color-brand-teal": {
+        "value": "var(--brand-teal)",
+        "source": "src/index.css"
+      },
+      "--color-ink": {
+        "value": "var(--ink)",
+        "source": "src/index.css"
+      },
+      "--color-ink-soft": {
+        "value": "var(--ink-soft)",
+        "source": "src/index.css"
+      },
+      "--color-destructive": {
+        "value": "#a32828",
+        "source": "src/index.css"
+      },
+      "--color-border": {
+        "value": "var(--border)",
+        "source": "src/index.css"
+      },
+      "--color-input": {
+        "value": "var(--border)",
+        "source": "src/index.css"
+      },
+      "--color-ring": {
+        "value": "#0e161d",
+        "source": "src/index.css"
+      },
+      "--color-card": {
+        "value": "#ffffff",
+        "source": "src/index.css"
+      },
+      "--color-card-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/index.css"
+      },
+      "--color-popover": {
+        "value": "#ffffff",
+        "source": "src/index.css"
+      },
+      "--color-popover-foreground": {
+        "value": "var(--foreground)",
+        "source": "src/index.css"
+      },
+      "--background": {
+        "value": "#f1f3f2",
+        "source": "src/index.css"
+      },
+      "--foreground": {
+        "value": "#0e161d",
+        "source": "src/index.css"
+      },
+      "--primary": {
+        "value": "#0e161d",
+        "source": "src/index.css"
+      },
+      "--primary-foreground": {
+        "value": "#ffffff",
+        "source": "src/index.css"
+      },
+      "--secondary": {
+        "value": "#e2e7e6",
+        "source": "src/index.css"
+      },
+      "--muted": {
+        "value": "#e2e7e6",
+        "source": "src/index.css"
+      },
+      "--muted-foreground": {
+        "value": "#4f5d65",
+        "source": "src/index.css"
+      },
+      "--accent": {
+        "value": "#e2e7e6",
+        "source": "src/index.css"
+      },
+      "--border": {
+        "value": "#cbd3d4",
+        "source": "src/index.css"
+      }
+    },
+    "typography": {
+      "--font-display": {
+        "value": "'Host Grotesk Variable', 'Satoshi', Arial, sans-serif",
+        "source": "src/index.css"
+      }
+    },
+    "spacing": {},
+    "radius": {
+      "--radius-sm": {
+        "value": "2px",
+        "source": "src/index.css"
+      },
+      "--radius-md": {
+        "value": "4px",
+        "source": "src/index.css"
+      },
+      "--radius-lg": {
+        "value": "6px",
+        "source": "src/index.css"
+      },
+      "--radius-xl": {
+        "value": "8px",
+        "source": "src/index.css"
+      },
+      "--radius": {
+        "value": "4px",
+        "source": "src/index.css"
+      }
+    },
+    "shadows": {},
+    "motion": {},
+    "density": "unknown"
+  },
+  "components": {
+    "installed": [
+      "button",
+      "dialog",
+      "input",
+      "sheet",
+      "textarea"
+    ],
+    "preferredPrimitives": [
+      "radix-ui"
+    ],
+    "patterns": []
+  },
+  "constraints": {
+    "must": [],
+    "avoid": []
+  },
+  "decisions": [],
+  "evidence": [
+    {
+      "fact": "components.installed",
+      "source": "src/components/ui"
+    },
+    {
+      "fact": "design.colorMode:light",
+      "source": "src/index.css"
+    },
+    {
+      "fact": "design.tokens",
+      "source": "src/index.css"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "AGENTS.md"
+    },
+    {
+      "fact": "project.instructions",
+      "source": "CLAUDE.md"
+    },
+    {
+      "fact": "project.stack:react",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:shadcn",
+      "source": "components.json"
+    },
+    {
+      "fact": "project.stack:tailwind-v4",
+      "source": "package.json"
+    },
+    {
+      "fact": "project.stack:vite",
+      "source": "package.json"
+    }
+  ],
+  "generatedAt": "2026-10-21T07:41:51.733Z"
+}

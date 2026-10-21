@@ -7,7 +7,7 @@ try {
   for (const width of [320, 390, 768, 1440]) {
     const context = await browser.newContext({ viewport: { width, height: 1000 } })
     const page = await context.newPage()
-    for (const route of ['/', '/catalogue', '/quote', '/about']) {
+    for (const route of ['/', '/catalogue', '/quote', '/about', '/product/corporate-shirt']) {
       await page.goto(`http://127.0.0.1:5173${route}`)
       if (route === '/quote') {
         await page.evaluate(() =>
@@ -23,6 +23,8 @@ try {
       }
       await page.locator('h1').waitFor()
       await page.evaluate(() => document.fonts.ready)
+      // Let the one-off hero intro finish so contrast is measured on the settled page.
+      await page.waitForTimeout(1500)
       const dimensions = await page.evaluate(() => ({
         scroll: document.documentElement.scrollWidth,
         viewport: window.innerWidth,

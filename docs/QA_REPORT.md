@@ -75,3 +75,43 @@ The last two scripts expect the preview at `http://127.0.0.1:5173`. For an exist
 - Browser checks (Playwright, 1440 and 390px): Lenis drives scroll; header hides on scroll down and returns on scroll up; progress thread fills; manifesto words brighten while scrolling; catalogue filter chips dock under the visible header; product dialog pauses Lenis and scrolling resumes after closing; hero photos cover their frames throughout parallax; no console errors.
 - Reduced motion: on load, no Lenis, word split, clip or thread. Switching it on live reverts every GSAP animation and destroys Lenis.
 - Codex read-only review found 6 issues, all fixed and re-verified: Lenis `autoToggle` could leave scroll locked after dialogs (high; removed, Radix observer drives stop/start); stale stitch observers across routes; wheel inertia fighting keyboard/focus scrolling (now cancelled); parallax exposing frame edges (1.2× overscan on a wrapper); motion not reverting on live reduced-motion change (now `gsap.matchMedia`); gift-rail arrows smooth under reduced motion.
+
+## Put your logo on it — 21 October 2026 (Claude)
+
+- `pnpm typecheck`, `pnpm test` (9/9, incl. new `mockup.test.ts`), `pnpm test:e2e` (6/6 desktop + mobile), `pnpm build`: pass. The PNG export (and `react-dom/server`, ~200 kB) is a separate lazy chunk loaded on click.
+- Browser checks (Playwright, Chromium, 1440 and 390px): uploaded a WebP and a JPG-on-white logo (background cut-out works); typed a name; moved and resized the artwork with the mouse, including the bottle's -90° area (direction and clamping correct); downloaded PNGs for the shirt and bottle and inspected them (artwork, texture, caption strip and fonts match the screen); no horizontal overflow and the pinned picture works at 390px; no console errors.
+- Not verified: Safari/iOS and Firefox (SVG filters inside the PNG export, file picker, touch dragging); real touch dragging on a phone; screen-reader pass.
+- Codex read-only review could not run (the Codex usage limit was reached until 2:14 PM). Self-review fixed the mobile keyboard overlap (picture now shrinks while typing).
+
+## Golf shirt builder like African Nomad's — 21 October 2026 (Claude)
+
+- `pnpm typecheck`, `pnpm test` (15/15), `pnpm build`, `pnpm test:e2e` (8/8 desktop + mobile; a first run failed while another session was editing `tests/demo.spec.ts`, the rerun passed).
+- Browser checks (Playwright, Chromium, 1440 and 390px): six positions with + areas, view tabs with branding dots, three shirt colours, JPG logo with background cut-out on every position, full back in white ink on black, mm size label, zoom, downloaded PNG with front and back side by side; no horizontal overflow at 390px (fixed a 20px overflow from the pinned picture); no console errors.
+- Not verified: Safari/iOS and Firefox, real touch dragging and swiping, screen reader.
+
+
+## Simplify pass — 21 October 2026 (Claude)
+
+Owner brief: premium, short, compact, easy to use; logos instead of a brand sentence; a page per product; app-like mobile.
+
+**Copy and length (main content, 390px, measured in the browser):** Home 1,095 → 744 words and 13,433 → 9,937 px tall; Catalogue 1,016 → 729 words, 15,306 → 13,633 px; About 267 → 199 words; Quote 160 → 111 words. Examples: hero paragraph "…sourced from South African suppliers and branded in-house. Pick what you need and send one clear request." → "Golf shirts to gift boxes, branded in-house."; catalogue intro + notice box (52 words) → "A starting selection. Ask for anything you don't see."; drawer note "25 is a starting quantity, not a minimum order. This demo does not show prices or place orders." → "25 is a starting point, not a minimum." Testimonials and company facts unchanged.
+
+**Structure:** occasions are a 2-column tile grid on phones; gift sets, popular picks and the four secondary testimonials are swipe rails on phones (popular picks settle into a grid on desktop); ways-to-brand is method + "best for" only; the About story shows its first paragraph with "Read the full story". Quote: 3 steps → 2 (Details → Review); optional date/notes/artwork sit in one closed disclosure that reopens if it holds anything.
+
+**Product pages:** `/product/:slug` (slug derived from the product name, unit-tested for uniqueness and round-trip). Swipe gallery with dots on phones, thumbnails on wider screens, tap-to-enlarge dialog with focus return; name, one line, fact rows, quantity + Add to quote (sticky bar on phones), "More like this" rail. Per-page title, description, canonical and OG tags; noindex unchanged. Unknown slug → "We can't find that one." with a catalogue link. Back restores the exact catalogue filters and scroll position (Lenis is resized before the restore so it isn't clamped to the previous page's height). Cards link to the page and keep quick-add; the product dialog is gone.
+
+**Logo wall:** 7 of 10 real logos (sources in IMAGE_PROVENANCE.md); Barron, Pro-Active and Rolando are plain wordmarks pending files. Ink by default, colour on hover, swipe row on phones, 48 s marquee on wider screens that pauses on hover/focus, one still centred row under reduced motion.
+
+**Mobile:** Button, input and quantity controls raised to ≥44 px; sheet close button 44 px; footer and standalone links 44 px tall; basket drawer is a bottom sheet under 640 px; safe-area padding on the bottom bars; header and demo notice fit one line at 320 px; search uses `type="search"` and `enterkeyhint`; delivery city uses `autocomplete="address-level2"`.
+
+**Checks actually run:** `pnpm typecheck` pass; `pnpm test` 15/15 (3 files, incl. new slug tests); `pnpm build` pass; `pnpm test:e2e` 8/8 (desktop + 390 mobile, incl. new product-route test: direct load, title/canonical/noindex, quantity 40 persisted, related product navigation, Back restores `?category=Gift+sets` and scroll). Overflow audit at 320×640, 360×740, 390×844, 768×1024 and 844×390 landscape on Home, Catalogue, two product pages, Quote and About: no horizontal overflow. `pnpm check:presentation` (now includes `/product/corporate-shirt`, and waits 1.5 s for the hero intro): no overflow at 320/390/768/1440 or at 200 % text; axe clean on Catalogue, Quote, About and Product. Home still reports colour-contrast on (a) the manifesto's scroll-reveal words, which start at 14 % opacity until scrolled (existing motion design; the scan does not scroll), and (b) teal "+ Add" labels in the new "Put your logo on it" branding-positions list. Fixed one real failure: hero category numbers at 40 % white raised to 60 %. Visual inspection with screenshots at 1440, 1024, 390 and 320. No console errors on my routes.
+
+**Not run:** the read-only Codex review was attempted (`codex exec -s read-only`) and refused: Codex usage limit reached until 14:14. Claude did a manual review of scroll restoration, back fallback, basket quantity updates, focus return and quote validation instead. No Safari/iOS run.
+
+**Concurrent work:** while this pass ran, another tool was rewriting the "Put your logo on it" feature (`BrandPreview.tsx`, `MockupStage.tsx`, `MockupArtwork.tsx`, `lib/mockup*.ts`). Its intermediate state briefly broke Home and typecheck; both were green again before the final checks. Its section is now much longer on phones and has sub-44 px targets (view tabs 40 px, position hotspots ~24×14 px, swatches 40 px); left for that work's owner.
+
+## Simpler builder and multi-line names — 21 October 2026 (Claude)
+
+- `pnpm typecheck`, `pnpm test` (16/16, incl. line-break handling), `pnpm build`, `pnpm test:e2e` (8/8): pass.
+- Browser (Chromium, 1440 and 390px): two-line name on chest and full back, centred and sized to its area; PNG keeps the line breaks; position chips add, select and remove; the pinned picture sits under the header on phones; no horizontal overflow; no console errors.
+

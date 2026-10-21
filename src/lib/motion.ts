@@ -27,3 +27,11 @@ export function scrollToTop() {
   if (lenis) lenis.scrollTo(0, { immediate: true, force: true })
   else window.scrollTo(0, 0)
 }
+export function scrollToY(y: number) {
+  // Lenis caches the page height; a page that just got taller would otherwise clamp the jump.
+  if (lenis) {
+    lenis.resize()
+    lenis.scrollTo(y, { immediate: true, force: true })
+  }
+  else window.scrollTo(0, y)
+}

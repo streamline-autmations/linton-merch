@@ -28,8 +28,8 @@ export function SmoothScroll() {
     const instance = new Lenis({
       lerp: 0.11,
       anchors: true,
-      // Dialogs, sheets and horizontal rails scroll natively.
-      prevent: (node) => Boolean(node.closest('[role="dialog"], .rail')),
+      // Dialogs, sheets, horizontal rails, the gallery and the logo row scroll natively.
+      prevent: (node) => Boolean(node.closest('[role="dialog"], .rail, .gallery-track, .brand-marquee')),
     })
     setLenis(instance)
     instance.on('scroll', ScrollTrigger.update)

@@ -28,6 +28,23 @@ export const emptyBrief: Brief = {
   notes: '',
   artworkName: '',
 }
+// The "Put your name on it" preview hands the visitor's company name to the quote brief.
+const companyKey = 'linton-demo-company'
+export function rememberCompany(name: string) {
+  try {
+    if (name.trim()) sessionStorage.setItem(companyKey, name.trim())
+    else sessionStorage.removeItem(companyKey)
+  } catch {
+    /* storage blocked: the quote form simply starts empty */
+  }
+}
+export function recalledCompany() {
+  try {
+    return sessionStorage.getItem(companyKey) ?? ''
+  } catch {
+    return ''
+  }
+}
 export const clampQuantity = (value: number) =>
   Math.min(10000, Math.max(1, Math.round(Number.isFinite(value) ? value : 1)))
 

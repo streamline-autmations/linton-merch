@@ -1,6 +1,6 @@
 # Linton Merch — concept demo
 
-A modern website pitch: **Home → Catalogue → Request a quote**, plus **About & contact**. Built with React, Vite, TypeScript, Tailwind CSS v4 and shadcn/ui. Static and ready for a separate Netlify demo.
+A modern website pitch: **Home → Catalogue → Request a quote**, plus **About & contact**. Built with React, Vite, TypeScript, Tailwind CSS v4 and shadcn/ui. Static; the demo is live at https://linton-merch.vercel.app (Vercel, auto-deploys from `main`; `vercel.json` holds the SPA rewrite and noindex headers). `netlify.toml` and `docs/NETLIFY_DEPLOY.md` remain as an alternative host.
 
 All 16 catalogue items, sizes, colours and branding options are illustrative. The hero is labelled AI concept photography. The logo, contact details and company story come from the public Linton Enterprises website (to be confirmed by the client). There are no prices, stock promises, payments, backend, real uploads or automatic enquiry submissions.
 
@@ -57,6 +57,6 @@ With `pnpm dev` running at port 5173, `pnpm check:presentation` checks responsiv
 | Client assets inbox    | `assets-inbox/` (not deployed)   |
 | Logo/navigation/footer | `src/components/Layout.tsx`      |
 | Quote rules / summary  | `src/lib/quote.ts`               |
-| WhatsApp recipient     | `.env` or Netlify build variable |
+| WhatsApp recipient     | `.env` or the host's build variable (Vercel/Netlify) |
 
 [Client assets and unanswered facts](docs/CONTENT_AND_ASSETS.md) explain what to supply. [Netlify instructions](docs/NETLIFY_DEPLOY.md) cover manual and Git-based deployment. [Task plan](docs/TASK_PLAN.md) records the next Claude slices. The live company website was not modified.

@@ -7,7 +7,7 @@ import { ProductArtwork } from '@/components/ProductArtwork'
 import { productById } from '@/data/products'
 import { clampQuantity } from '@/lib/quote'
 
-function Quantity({
+export function Quantity({
   value,
   name,
   onChange,
@@ -24,12 +24,12 @@ function Quantity({
     onChange(next)
   }
   return (
-    <div className="flex h-10 items-center rounded-md border bg-white">
+    <div className="flex h-12 items-center rounded-md border bg-white">
       <button
         type="button"
         aria-label={`Decrease ${name} quantity`}
         disabled={value <= 1}
-        className="flex h-full w-8 items-center justify-center disabled:opacity-30"
+        className="flex h-full w-11 items-center justify-center disabled:opacity-30"
         onClick={() => onChange(value - 1)}
       >
         <Minus size={14} />
@@ -50,7 +50,7 @@ function Quantity({
         type="button"
         aria-label={`Increase ${name} quantity`}
         disabled={value >= 10000}
-        className="flex h-full w-8 items-center justify-center disabled:opacity-30"
+        className="flex h-full w-11 items-center justify-center disabled:opacity-30"
         onClick={() => onChange(value + 1)}
       >
         <Plus size={14} />
@@ -81,7 +81,7 @@ export function BasketItems({ preferences = false }: { preferences?: boolean }) 
                 type="button"
                 variant="ghost"
                 size="icon"
-                className="h-[32px] w-[32px] shrink-0"
+                className="h-11 w-11 shrink-0"
                 aria-label={`Remove ${product.name}`}
                 onClick={() => remove(item.productId)}
               >

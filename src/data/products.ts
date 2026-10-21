@@ -313,7 +313,6 @@ export const products: Product[] = [
     category: 'Uniforms & workwear',
     description: 'A breathable chef’s cap to complete the kitchen uniform.',
     image: p('alt-avl-bl'),
-    alt: p('alt-avl-bl-lifestyle01'),
     colourName: 'Black',
     colours: 'Black, white',
     sizes: 'One size',
@@ -441,7 +440,8 @@ export const products: Product[] = [
     name: 'Reversible bucket hat',
     category: 'Promotional clothing',
     description: 'A two-tone reversible bucket hat for festivals, outings and summer campaigns.',
-    image: p('hs-ub-70-c-02-no-logo'),
+    image: p('hs-ub-70-c-no-logo'),
+    alt: p('hs-ub-70-c-02-no-logo'),
     colourName: 'Black / navy',
     sizes: 'One size',
     branding: 'Embroidery on the front',
@@ -489,7 +489,8 @@ export const products: Product[] = [
     name: 'Laptop backpack',
     category: 'Marketing material & gifts',
     description: 'A padded laptop backpack with a USB port and organised front pocket.',
-    image: p('bg-al-550-b-no-logo'),
+    image: p('bg-al-550-b-01-no-logo'),
+    gallery: [p('bg-al-550-b-no-logo')],
     colourName: 'Grey',
     sizes: 'Fits up to 15.6"',
     branding: 'Embroidery or screen print',
@@ -672,7 +673,7 @@ export const products: Product[] = [
     name: 'Sports bag',
     category: 'Marketing material & gifts',
     description: 'A roomy sports bag with a separate shoe compartment.',
-    image: p('slaz-2205-no-logo-no-logo'),
+    image: p('slaz-2205-n-no-logo'),
     alt: p('slaz-2205-lifestyle-01-no-logo'),
     colourName: 'Grey with navy, red or black',
     sizes: 'One size',
@@ -948,3 +949,45 @@ export const products: Product[] = [
 ]
 
 export const productById = new Map(products.map((product) => [product.id, product]))
+
+/** URL-safe slug from a product name: "Bottle, notebook & pen gift box" -> "bottle-notebook-and-pen-gift-box". */
+export function slugify(name: string) {
+  return name
+    .normalize('NFKD')
+    .replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' and ')
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+}
+
+// Slugs are derived, not stored, so product data stays single-sourced. A repeated name would get
+// its ID appended, keeping every slug unique and stable.
+const slugCounts = new Map<string, number>()
+for (const product of products) {
+  const slug = slugify(product.name)
+  slugCounts.set(slug, (slugCounts.get(slug) ?? 0) + 1)
+}
+export const slugById = new Map(
+  products.map((product) => {
+    const slug = slugify(product.name)
+    return [product.id, slugCounts.get(slug)! > 1 ? `${slug}-${product.id.toLowerCase()}` : slug]
+  }),
+)
+export const productBySlug = new Map(products.map((product) => [slugById.get(product.id)!, product]))
+export const productPath = (product: Pick<Product, 'id'>) => `/product/${slugById.get(product.id)}`
+
+/** Same category first, then shared occasions; never the product itself. */
+export function relatedProducts(product: Product, limit = 8) {
+  const score = (other: Product) =>
+    (other.category === product.category ? 2 : 0) +
+    other.occasions.filter((o) => product.occasions.includes(o)).length
+  return products
+    .filter((other) => other.id !== product.id)
+    .map((other) => ({ other, s: score(other) }))
+    .filter(({ s }) => s > 0)
+    .sort((a, b) => b.s - a.s)
+    .slice(0, limit)
+    .map(({ other }) => other)
+}

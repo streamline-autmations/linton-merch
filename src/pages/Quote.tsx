@@ -1,24 +1,45 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, CheckCircle2, Copy, Download, FileText, ShoppingBag } from 'lucide-react'
+import { Check, CheckCircle2, ChevronDown, Copy, Download, FileText } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { BasketItems } from '@/components/BasketItems'
 import { ContactButton } from '@/components/ContactButton'
 import { useBasket } from '@/context/BasketContext'
-import { downloadSummary, emptyBrief, quoteSummary, type Brief } from '@/lib/quote'
+import { downloadSummary, emptyBrief, quoteSummary, recalledCompany, type Brief } from '@/lib/quote'
 
-const stepNames = ['Your brief', 'Contact details', 'Review request']
+const stepNames = ['Details', 'Review']
 function localToday() {
   const now = new Date()
   return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`
 }
 
+/** Optional extras, folded away. Opens by itself when it already holds something. */
+function Extras({ open, children }: { open: boolean; children: React.ReactNode }) {
+  const [initiallyOpen] = useState(open)
+  return (
+    <details className="group rounded-md border bg-white" open={initiallyOpen || undefined}>
+      <summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 px-4 text-sm font-medium [&::-webkit-details-marker]:hidden">
+        Add a date, notes or artwork
+        <span className="flex items-center gap-2 text-xs font-normal text-muted-foreground">
+          Optional
+          <ChevronDown
+            size={16}
+            className="transition-transform group-open:rotate-180"
+            aria-hidden="true"
+          />
+        </span>
+      </summary>
+      <div className="space-y-5 border-t p-4">{children}</div>
+    </details>
+  )
+}
+
 export function Quote() {
   const { items } = useBasket()
   const [step, setStep] = useState(0)
-  const [brief, setBrief] = useState<Brief>({ ...emptyBrief })
+  const [brief, setBrief] = useState<Brief>(() => ({ ...emptyBrief, company: recalledCompany() }))
   const [completedSummary, setCompletedSummary] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
@@ -35,7 +56,7 @@ export function Quote() {
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
     if (!items.length) return
-    if (step < 2) setStep(step + 1)
+    if (step < 1) setStep(step + 1)
     else {
       setCompletedSummary(quoteSummary(items, brief))
       setCopied(false)
@@ -59,16 +80,13 @@ export function Quote() {
         </span>
         <p className="eyebrow mb-4 text-muted-foreground">Demo complete</p>
         <h1 ref={headingRef} tabIndex={-1} className="page-title outline-none">
-          Your brief.
-          <br />
-          All together.
+          Your brief is ready.
         </h1>
-        <p className="mb-8 mt-6 max-w-xl text-base leading-7 text-muted-foreground">
-          Your demo request is ready to copy or download.{' '}
-          <strong className="font-medium text-foreground">
-            Nothing has been sent to Linton Merch.
-          </strong>{' '}
-          In a live version, this is where the team would receive your enquiry.
+        <p className="mb-8 mt-5 max-w-xl text-base leading-7">
+          <strong className="font-medium">Nothing has been sent to Linton Merch.</strong>{' '}
+          <span className="text-muted-foreground">
+            This is a demo: copy, download or WhatsApp it.
+          </span>
         </p>
         <div className="flex flex-wrap gap-3">
           <Button onClick={() => downloadSummary(completedSummary)}>
@@ -84,7 +102,7 @@ export function Quote() {
         <p className="mt-4 text-sm text-muted-foreground" role="status">
           {copyFailed
             ? 'Copy is unavailable. You can select the text below or download the summary.'
-            : 'Contact details are not saved in browser storage. The download, copy and WhatsApp options include the details you entered.'}
+            : 'Your contact details are not saved in this browser.'}
         </p>
         <label htmlFor="completed-summary" className="field-label mt-9">
           Request summary
@@ -116,22 +134,16 @@ export function Quote() {
     return (
       <section className="container-wide py-16 lg:py-22">
         <p className="eyebrow mb-4 text-muted-foreground">Request a quote</p>
-        <h1 className="page-title">
-          Start with
-          <br />a few good ideas.
-        </h1>
-        <div className="my-10 max-w-2xl rounded-lg border bg-white p-8 sm:p-12">
-          <ShoppingBag size={30} className="mb-6 text-muted-foreground" />
-          <h2 className="text-2xl font-medium tracking-tight">Your selection is empty.</h2>
-          <p className="mb-7 mt-3 max-w-md text-sm leading-6 text-muted-foreground">
-            Browse the catalogue and add the products you have in mind. You can set quantities,
-            branding and delivery details here.
-          </p>
-          <Button asChild>
+        <h1 className="page-title">Your quote is empty.</h1>
+        <p className="mt-4 text-base text-muted-foreground">
+          Your selection is empty. Add products first.
+        </p>
+        <div className="mt-8 flex flex-wrap gap-3">
+          <Button asChild className="h-12 px-6">
             <Link to="/catalogue">Explore catalogue</Link>
           </Button>
+          <ContactButton variant="outline" className="h-12 px-6" label="Or WhatsApp us" />
         </div>
-        <ContactButton label="Prefer a conversation?" />
       </section>
     )
 
@@ -139,17 +151,21 @@ export function Quote() {
     <div className="container-wide pb-20 pt-12 lg:pt-16">
       <p className="eyebrow mb-4 text-muted-foreground">Request a quote</p>
       <h1 className="page-title">Tell us what you need.</h1>
-      <p className="mb-10 mt-4 max-w-2xl text-sm leading-6 text-muted-foreground">
-        A few details, one clear brief. This demo creates a local summary; no enquiry is sent.
-      </p>
+      <a
+        href="#selection"
+        className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 lg:hidden"
+      >
+        {items.length} {items.length === 1 ? 'product' : 'products'} · {units} units
+      </a>
+      <div className="mb-8 lg:mb-10" />
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_390px] lg:gap-14">
         <div>
-          <ol aria-label="Quote steps" className="mb-9 grid grid-cols-3 border-b pb-6">
+          <ol aria-label="Quote steps" className="mb-8 flex gap-8 border-b pb-5">
             {stepNames.map((name, index) => (
               <li
                 key={name}
                 aria-current={index === step ? 'step' : undefined}
-                className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3"
+                className="flex items-center gap-3"
               >
                 <span
                   className={`flex h-7 w-7 items-center justify-center rounded-full text-xs ${index <= step ? 'bg-primary text-white' : 'border text-muted-foreground'}`}
@@ -157,7 +173,7 @@ export function Quote() {
                   {index < step ? <Check size={14} /> : `0${index + 1}`}
                 </span>
                 <span
-                  className={`text-xs sm:text-sm ${index === step ? 'font-medium' : 'text-muted-foreground'}`}
+                  className={`text-sm ${index === step ? 'font-medium' : 'text-muted-foreground'}`}
                 >
                   {name}
                 </span>
@@ -170,102 +186,13 @@ export function Quote() {
               tabIndex={-1}
               className="mb-7 text-2xl font-medium tracking-tight outline-none"
             >
-              {step === 0
-                ? 'Tell us about your project.'
-                : step === 1
-                  ? 'Who is this for?'
-                  : 'A final look at the details.'}
+              {step === 0 ? 'Your details' : 'Check and create'}
             </h2>
             {step === 0 && (
-              <div className="space-y-6">
-                <div>
-                  <label className="field-label" htmlFor="branding">
-                    Preferred branding
-                  </label>
-                  <select
-                    id="branding"
-                    className="field"
-                    value={brief.branding}
-                    onChange={(e) => change('branding', e.target.value)}
-                  >
-                    {[
-                      'Please advise',
-                      'Embroidery',
-                      'Screen printing',
-                      'Digital printing',
-                      'Engraving',
-                      'Debossing',
-                      'Unbranded',
-                      'A mix of methods',
-                    ].map((method) => (
-                      <option key={method}>{method}</option>
-                    ))}
-                  </select>
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    Methods are examples. Suitability will need confirmation for each product.
-                  </p>
-                </div>
-                <div>
-                  <label className="field-label" htmlFor="deadline">
-                    Target delivery date{' '}
-                    <span className="font-normal text-muted-foreground">(optional)</span>
-                  </label>
-                  <Input
-                    id="deadline"
-                    type="date"
-                    min={localToday()}
-                    value={brief.deadline}
-                    onChange={(e) => change('deadline', e.target.value)}
-                    className="bg-white"
-                  />
-                  <p className="mt-2 text-xs text-muted-foreground">
-                    A target date, not a delivery promise.
-                  </p>
-                </div>
-                <div>
-                  <label className="field-label" htmlFor="notes">
-                    Anything else we should know?{' '}
-                    <span className="font-normal text-muted-foreground">(optional)</span>
-                  </label>
-                  <Textarea
-                    id="notes"
-                    className="min-h-32 bg-white"
-                    maxLength={2000}
-                    placeholder="Tell us about your event, budget range, logo placement or the look you’re after."
-                    value={brief.notes}
-                    onChange={(e) => change('notes', e.target.value)}
-                  />
-                </div>
-                <div className="rounded-md border border-dashed bg-white p-5">
-                  <label htmlFor="artwork" className="field-label flex items-center gap-2">
-                    <FileText size={16} />
-                    Logo or artwork{' '}
-                    <span className="font-normal text-muted-foreground">(optional)</span>
-                  </label>
-                  <Input
-                    id="artwork"
-                    type="file"
-                    accept=".pdf,.svg,.png,.jpg,.jpeg"
-                    className="h-auto min-h-11 py-3 text-sm"
-                    onChange={(e) => change('artworkName', e.target.files?.[0]?.name ?? '')}
-                  />
-                  <p className="mt-3 text-xs leading-5 text-muted-foreground">
-                    Filename preview only. The file is not read, stored, uploaded or attached to the
-                    request. Please use sample artwork for this demo.
-                  </p>
-                  {brief.artworkName && (
-                    <p className="mt-2 break-all text-xs">Selected filename: {brief.artworkName}</p>
-                  )}
-                </div>
-              </div>
-            )}
-            {step === 1 && (
-              <div className="space-y-6">
-                <div className="rounded-md bg-secondary p-4 text-sm leading-6">
-                  Use invented details to test the demo. These fields stay in memory while you
-                  complete this page and are only included in a summary you choose to copy or
-                  download.
-                </div>
+              <div className="space-y-5">
+                <p className="text-sm text-muted-foreground">
+                  Demo: use made-up details. Nothing is sent.
+                </p>
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
                     <label className="field-label" htmlFor="name">
@@ -335,16 +262,89 @@ export function Quote() {
                     id="location"
                     required
                     maxLength={150}
+                    autoComplete="address-level2"
                     className="bg-white"
                     placeholder="e.g. Johannesburg, Gauteng"
                     value={brief.location}
                     onChange={(e) => change('location', e.target.value)}
                   />
                 </div>
-                <p className="text-xs text-muted-foreground">* Required to build the demo brief.</p>
+                <div>
+                  <label className="field-label" htmlFor="branding">
+                    Preferred branding
+                  </label>
+                  <select
+                    id="branding"
+                    className="field"
+                    value={brief.branding}
+                    onChange={(e) => change('branding', e.target.value)}
+                  >
+                    {[
+                      'Please advise',
+                      'Embroidery',
+                      'Screen printing',
+                      'Digital printing',
+                      'Engraving',
+                      'Debossing',
+                      'Unbranded',
+                      'A mix of methods',
+                    ].map((method) => (
+                      <option key={method}>{method}</option>
+                    ))}
+                  </select>
+                </div>
+                <Extras open={Boolean(brief.deadline || brief.notes || brief.artworkName)}>
+                  <div>
+                    <label className="field-label" htmlFor="deadline">
+                      Target date
+                    </label>
+                    <Input
+                      id="deadline"
+                      type="date"
+                      min={localToday()}
+                      value={brief.deadline}
+                      onChange={(e) => change('deadline', e.target.value)}
+                      className="bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="field-label" htmlFor="notes">
+                      Notes
+                    </label>
+                    <Textarea
+                      id="notes"
+                      className="min-h-28 bg-white"
+                      maxLength={2000}
+                      placeholder="Event, logo placement, the look you’re after…"
+                      value={brief.notes}
+                      onChange={(e) => change('notes', e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="artwork" className="field-label flex items-center gap-2">
+                      <FileText size={16} />
+                      Logo or artwork
+                    </label>
+                    <Input
+                      id="artwork"
+                      type="file"
+                      accept=".pdf,.svg,.png,.jpg,.jpeg"
+                      className="h-auto min-h-11 py-3 text-sm"
+                      onChange={(e) => change('artworkName', e.target.files?.[0]?.name ?? '')}
+                    />
+                    <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                      Demo: only the filename is kept. Nothing is uploaded.
+                    </p>
+                    {brief.artworkName && (
+                      <p className="mt-2 break-all text-xs">
+                        Selected filename: {brief.artworkName}
+                      </p>
+                    )}
+                  </div>
+                </Extras>
               </div>
             )}
-            {step === 2 && (
+            {step === 1 && (
               <div className="space-y-6">
                 <div className="rounded-md border bg-white p-6">
                   <div className="mb-5 flex items-center justify-between">
@@ -354,7 +354,7 @@ export function Quote() {
                       className="text-xs underline underline-offset-4"
                       onClick={() => setStep(0)}
                     >
-                      Edit brief
+                      Edit
                     </button>
                   </div>
                   <dl className="grid grid-cols-[100px_1fr] gap-x-5 gap-y-4 text-sm">
@@ -379,9 +379,9 @@ export function Quote() {
                     <button
                       type="button"
                       className="text-xs underline underline-offset-4"
-                      onClick={() => setStep(1)}
+                      onClick={() => setStep(0)}
                     >
-                      Edit contact
+                      Edit
                     </button>
                   </div>
                   <p className="break-words text-sm leading-7">
@@ -400,10 +400,7 @@ export function Quote() {
                     required
                     className="mt-1.5 h-4 w-4 shrink-0 accent-primary"
                   />
-                  <span>
-                    I understand this is a demo. No enquiry will be sent, and these products are not
-                    confirmed stock.
-                  </span>
+                  <span>I understand this is a demo and nothing is sent.</span>
                 </label>
               </div>
             )}
@@ -415,24 +412,25 @@ export function Quote() {
               ) : (
                 <Link
                   to="/catalogue"
-                  className="text-sm text-muted-foreground underline underline-offset-4"
+                  className="inline-flex min-h-11 items-center text-sm text-muted-foreground underline underline-offset-4"
                 >
                   Keep browsing
                 </Link>
               )}
-              <Button type="submit" className="h-11">
-                {step === 2 ? 'Create demo request' : 'Continue'}
+              <Button type="submit" className="h-12 px-6">
+                {step === 1 ? 'Create demo request' : 'Continue'}
               </Button>
             </div>
           </form>
         </div>
         <aside
-          className="rounded-lg border bg-white p-5 sm:p-6 lg:sticky lg:top-6"
+          id="selection"
+          className="scroll-mt-24 rounded-lg border bg-white p-5 sm:p-6 lg:sticky lg:top-6"
           aria-label="Quote selection"
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium tracking-tight">Your selection</h2>
-            <span className="rounded-full bg-secondary px-2 py-1 text-xs">
+            <span className="rounded-sm bg-secondary px-2 py-1 text-xs">
               {items.length} products
             </span>
           </div>
@@ -442,11 +440,13 @@ export function Quote() {
               <span className="text-muted-foreground">Total units</span>
               <span>{units}</span>
             </div>
-            <p className="mt-4 text-xs leading-5 text-muted-foreground">
-              Quantities can be 1–10,000 in this demo. Minimum orders, prices and availability need
-              confirmation.
+            <p className="mt-3 text-xs leading-5 text-muted-foreground">
+              Minimums and availability confirmed by Linton.
             </p>
-            <Link to="/catalogue" className="mt-4 inline-block border-b text-sm">
+            <Link
+              to="/catalogue"
+              className="mt-3 inline-flex min-h-11 items-center border-b text-sm"
+            >
               Add more products
             </Link>
           </div>

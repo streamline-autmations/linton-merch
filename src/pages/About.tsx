@@ -1,6 +1,7 @@
+import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, Copy, MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { Check, ChevronDown, Copy, MapPin, Phone, Mail, Clock } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -49,9 +50,8 @@ function MessageForm() {
           Demo message ready.
         </h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          <strong className="font-medium text-foreground">Nothing has been sent.</strong> In a live
-          version this would reach the Linton Merch team. For now you can copy it or use the contact
-          details beside this form.
+          <strong className="font-medium text-foreground">Nothing has been sent.</strong> Copy it,
+          or use the contact details.
         </p>
         <label htmlFor="message-summary" className="field-label mt-5">
           Message text
@@ -122,10 +122,7 @@ function MessageForm() {
       <Button type="submit" className="h-11 px-6">
         Create demo message
       </Button>
-      <p className="text-xs leading-5 text-muted-foreground">
-        Demo only: this creates text you can copy. Nothing is sent or stored. Please use invented
-        details.
-      </p>
+      <p className="text-xs leading-5 text-muted-foreground">Demo: nothing is sent or stored.</p>
     </form>
   )
 }
@@ -144,15 +141,17 @@ export function About() {
         </div>
       </section>
 
-      <section className="container-wide grid gap-12 py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
+      <section className="container-wide grid gap-10 py-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
         <figure className="lg:sticky lg:top-8 lg:self-start">
           <div className="overflow-hidden rounded-md bg-secondary">
-            <img
+            <ResponsiveImage
               src="/story/linda-and-tony.webp"
               alt="Linda and Tony, the founders of Linton Enterprises, smiling together"
-              width={900}
-              height={654}
-              className="aspect-[4/3.4] w-full object-cover object-[40%_center]"
+              sizes="(min-width: 1024px) 42vw, calc(100vw - 40px)"
+              loading="eager"
+              width={1188}
+              height={863}
+              className="aspect-[1188/863] w-full object-cover object-[40%_center]"
             />
           </div>
           <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-sm">
@@ -166,12 +165,23 @@ export function About() {
         <div>
           <h2 className="section-title">Linton Enterprises</h2>
           <p className="mt-3 text-sm text-muted-foreground">Trading as Linton Merch</p>
-          <div className="mt-10 space-y-6 text-base leading-7">
-            {business.story.map((paragraph) => (
-              <p key={paragraph}>{paragraph}</p>
-            ))}
-          </div>
-          <blockquote className="mt-12 border-l-4 border-signal pl-5">
+          <p className="mt-8 text-base leading-7">{business.story[0]}</p>
+          <details className="group mt-4">
+            <summary className="inline-flex min-h-11 cursor-pointer list-none items-center gap-2 text-sm font-medium underline underline-offset-4 [&::-webkit-details-marker]:hidden">
+              Read the full story
+              <ChevronDown
+                size={16}
+                className="transition-transform group-open:rotate-180"
+                aria-hidden="true"
+              />
+            </summary>
+            <div className="mt-3 space-y-5 text-base leading-7">
+              {business.story.slice(1).map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
+          </details>
+          <blockquote className="mt-10 border-l-4 border-signal pl-5">
             <p className="eyebrow mb-3 text-muted-foreground">Our mission</p>
             <p className="text-2xl font-bold leading-snug tracking-tight [font-family:var(--font-display)]">
               {business.mission}
@@ -181,28 +191,30 @@ export function About() {
       </section>
 
       <section className="bg-secondary">
-        <div className="container-wide py-16 lg:py-24">
-          <h2 className="section-title mb-12">How it began</h2>
-          <ol className="grid gap-10 sm:grid-cols-3">
+        <div className="container-wide py-14 lg:py-24">
+          <h2 className="section-title mb-8 lg:mb-12">How it began</h2>
+          <ol className="grid sm:grid-cols-3 sm:gap-10">
             {business.milestones.map((m) => (
-              <li key={m.year} className="border-t border-foreground pt-5">
-                <span className="text-5xl font-bold tracking-tight [font-family:var(--font-display)]">
+              <li
+                key={m.year}
+                className="grid grid-cols-[4.5rem_1fr] items-baseline gap-3 border-t border-foreground py-4 sm:block sm:pt-5"
+              >
+                <span className="text-3xl font-bold tracking-tight [font-family:var(--font-display)] sm:text-5xl">
                   {m.year}
                 </span>
-                <p className="mt-6 text-sm leading-6 text-muted-foreground">{m.text}</p>
+                <p className="text-sm leading-6 text-muted-foreground sm:mt-6">{m.text}</p>
               </li>
             ))}
           </ol>
-          <p className="mt-10 text-xs text-muted-foreground">
-            Story adapted from the current Linton Enterprises website. To be confirmed with the
-            client.
+          <p className="mt-8 text-xs text-muted-foreground">
+            Adapted from lintonent.co.za. To be confirmed.
           </p>
         </div>
       </section>
 
-      <section className="container-wide grid gap-14 py-16 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
+      <section className="container-wide grid gap-12 py-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
         <div>
-          <h2 className="section-title mb-10">Get in touch</h2>
+          <h2 className="section-title mb-8 lg:mb-10">Get in touch</h2>
           <dl className="space-y-7 text-base">
             <div>
               <dt className="eyebrow mb-2 flex items-center gap-3 text-muted-foreground">
@@ -219,7 +231,7 @@ export function About() {
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(business.addressLines.join(', '))}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="mt-1 inline-block text-sm underline underline-offset-4"
+                  className="inline-flex min-h-11 items-center text-sm underline underline-offset-4"
                 >
                   Open in Google Maps
                 </a>

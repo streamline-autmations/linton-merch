@@ -212,31 +212,22 @@ main#main-content:focus-visible {
     width: calc(100% - 40px);
   }
 }
-/* Signature motion: a mark stitches itself in, like thread going through fabric. */
-.brand-mark {
-  font-family: var(--font-display);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-}
+/* Signature motion: a mark stitches itself in, like thread going through fabric. The artwork's
+   own colours and size are set in the SVG, so these only play the entrance. */
 .brand-embroidery {
-  stroke-width: 0.9;
-  stroke-dasharray: 2.4 1.6;
-  paint-order: stroke;
-  animation: stitch 0.9s cubic-bezier(0.6, 0, 0.3, 1) both;
+  animation: stitch 0.9s cubic-bezier(0.6, 0, 0.3, 1) backwards;
 }
 .brand-engraving {
-  letter-spacing: 0.22em;
-  font-weight: 500;
-  opacity: 0.88;
-  animation: burn 0.7s ease-out both;
+  animation: burn 0.7s ease-out backwards;
 }
-.brand-print {
-  mix-blend-mode: multiply;
-  letter-spacing: -0.01em;
-  animation: press 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+.brand-screen-printing,
+.brand-image {
+  animation: press 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
 }
 @keyframes stitch {
   from {
+    stroke-width: 0.9;
+    stroke-dasharray: 2.4 1.6;
     stroke-dashoffset: 60;
     fill-opacity: 0;
   }
@@ -244,6 +235,8 @@ main#main-content:focus-visible {
     fill-opacity: 0.25;
   }
   to {
+    stroke-width: 0.9;
+    stroke-dasharray: 2.4 1.6;
     stroke-dashoffset: 0;
     fill-opacity: 1;
   }
@@ -359,4 +352,358 @@ main#main-content:focus-visible {
     transition: none !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* ---- "Put your logo on it" ------------------------------------------------------------- */
+/* On phones the picture stays pinned while the controls scroll under it. */
+.preview-pin {
+  position: sticky;
+  /* Below the header when it slides back in, so the view tabs stay visible. */
+  top: var(--header-offset, 0px);
+  transition: top 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 20;
+  margin-inline: -20px;
+  padding: 8px 20px 10px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+@media (min-width: 1024px) {
+  .preview-pin {
+    top: calc(var(--header-offset, 0px) + 24px);
+    z-index: auto;
+    margin-inline: 0;
+    padding: 0;
+    border-bottom: 0;
+  }
+}
+/* Desktop: as wide as the column, but never taller than the screen below the header. */
+@media (min-width: 1024px) {
+  .mockup-pin-size {
+    width: min(100%, calc((100svh - 190px) * var(--ratio, 1))) !important;
+  }
+}
+/* The photo's frame: clips the stage, which grows inside it to zoom. */
+.mockup-viewport {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+  background: var(--background);
+  touch-action: pan-y;
+  user-select: none;
+}
+.mockup-viewport[data-over] {
+  outline: 2px dashed var(--brand-teal);
+  outline-offset: -6px;
+}
+.mockup-stage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  transition:
+    left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+    height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* An empty branding position: a dashed area with a + to add artwork. */
+.mockup-empty {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgb(14 22 29 / 0.45);
+  color: rgb(14 22 29 / 0.6);
+  font-size: 1.1rem;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s;
+}
+.mockup-empty:hover {
+  border-color: var(--ink);
+  background: rgb(255 255 255 / 0.35);
+}
+[data-dark] .mockup-empty {
+  border-color: rgb(255 255 255 / 0.55);
+  color: rgb(255 255 255 / 0.8);
+}
+[data-dark] .mockup-empty:hover {
+  border-color: #fff;
+  background: rgb(255 255 255 / 0.08);
+}
+/* The selected position's limit, behind its artwork. */
+.mockup-limit {
+  position: absolute;
+  inset: 0;
+  border: 1px dashed rgb(14 22 29 / 0.35);
+}
+[data-dark] .mockup-limit {
+  border-color: rgb(255 255 255 / 0.4);
+}
+.mockup-size {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  border-radius: 2px;
+  background: var(--ink);
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  pointer-events: none;
+}
+.mockup-zoom {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  gap: 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: #fff;
+  padding: 0 12px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+.mockup-zoom:hover {
+  border-color: var(--ink);
+}
+/* Views of the product: plain tabs above the photo. */
+.mockup-views {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+.mockup-view {
+  position: relative;
+  min-height: 40px;
+  padding: 0 14px;
+  font-size: 0.875rem;
+  color: var(--muted-foreground);
+  border-bottom: 2px solid transparent;
+}
+.mockup-view:hover {
+  color: var(--ink);
+}
+.mockup-view[aria-pressed='true'] {
+  color: var(--ink);
+  font-weight: 500;
+  border-bottom-color: var(--ink);
+}
+.mockup-view-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-left: 6px;
+  vertical-align: middle;
+  border-radius: 50%;
+  background: var(--brand-teal);
+}
+.logo-thumb {
+  display: inline-block;
+  background-color: #fff;
+  background-image: conic-gradient(#e2e7e6 25%, transparent 0 50%, #e2e7e6 0 75%, transparent 0);
+  background-size: 10px 10px;
+  border: 1px solid var(--border);
+}
+/* The artwork's frame: a stitched outline you can drag, with a corner to resize. On a mouse it
+   shows on hover, focus and while dragging so it never hides small artwork; on touch it always
+   shows, since there is no hover. */
+.mockup-frame {
+  cursor: grab;
+  background: transparent;
+  outline: 1.5px dashed transparent;
+  min-width: 14px;
+  min-height: 14px;
+}
+.mockup-frame:active {
+  cursor: grabbing;
+}
+.mockup-frame:hover,
+.mockup-frame[data-selected],
+.mockup-frame[data-active] {
+  outline-color: #fff;
+  box-shadow: 0 0 0 1.5px rgb(14 22 29 / 0.55);
+}
+.mockup-frame:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1.5px rgb(14 22 29 / 0.55);
+}
+@media (hover: none) {
+  .mockup-frame {
+    outline-color: #fff;
+    box-shadow: 0 0 0 1.5px rgb(14 22 29 / 0.55);
+  }
+}
+.mockup-handle {
+  position: absolute;
+  right: -7px;
+  bottom: -7px;
+  width: 14px;
+  height: 14px;
+  background: #fff;
+  border: 1.5px solid var(--ink);
+  border-radius: 2px;
+  cursor: nwse-resize;
+  touch-action: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.mockup-frame:hover .mockup-handle,
+.mockup-frame:focus-visible .mockup-handle,
+.mockup-frame[data-selected] .mockup-handle,
+.mockup-frame[data-active] .mockup-handle {
+  opacity: 1;
+}
+@media (hover: none) {
+  .mockup-handle {
+    opacity: 1;
+  }
+}
+.mockup-handle::after {
+  content: '';
+  position: absolute;
+  inset: -15px;
+}
+.mockup-range {
+  width: 100%;
+  height: 44px;
+  background: transparent;
+  accent-color: var(--ink);
+}
+
+/* ---- Brands we supply ------------------------------------------------------------------- */
+/* Phones: a swipe row. Wider screens: a slow marquee that pauses under the pointer. Logos sit in
+   ink until hovered; colour is decoration, never information. */
+.brand-marquee {
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none;
+  padding-inline: 20px;
+  scroll-padding-inline: 20px;
+}
+.brand-marquee::-webkit-scrollbar {
+  display: none;
+}
+.brand-track {
+  display: flex;
+  width: max-content;
+}
+.brand-row {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.brand-row[aria-hidden] {
+  display: none;
+}
+.brand-cell {
+  display: flex;
+  height: 64px;
+  min-width: 112px;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 22px;
+  scroll-snap-align: start;
+}
+.brand-logo {
+  filter: grayscale(1) brightness(0);
+  opacity: 0.72;
+  transition:
+    filter 0.3s ease,
+    opacity 0.3s ease;
+}
+.brand-wordmark {
+  color: var(--ink);
+  opacity: 0.72;
+}
+.brand-cell:hover .brand-logo {
+  filter: none;
+  opacity: 1;
+}
+@media (min-width: 768px) {
+  .brand-marquee {
+    overflow: hidden;
+    padding-inline: 0;
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .brand-row[aria-hidden] {
+    display: flex;
+  }
+  .brand-cell {
+    padding-inline: 36px;
+  }
+  .brand-track {
+    animation: brand-marquee 48s linear infinite;
+  }
+  .brand-marquee:hover .brand-track,
+  .brand-marquee:focus-within .brand-track {
+    animation-play-state: paused;
+  }
+}
+@keyframes brand-marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (min-width: 768px) and (prefers-reduced-motion: reduce) {
+  /* Still: one centred, wrapping row. */
+  .brand-marquee {
+    mask-image: none;
+  }
+  .brand-track {
+    width: auto;
+    justify-content: center;
+  }
+  .brand-row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .brand-cell {
+    min-width: 0;
+    padding-inline: 20px;
+  }
+  .brand-row[aria-hidden] {
+    display: none;
+  }
+}
+
+/* A rail on phones and tablets that settles into a four-up grid on desktop. */
+@media (min-width: 1024px) {
+  .rail.rail-grid {
+    width: min(1280px, calc(100% - 96px));
+    margin-inline: auto;
+    padding-inline: 0;
+    overflow: visible;
+    grid-auto-flow: row;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-columns: auto;
+    column-gap: 1.75rem;
+    row-gap: 2.5rem;
+  }
+}
+.rail-narrow {
+  grid-auto-columns: min(62vw, 260px);
+}
+
+/* Product cards: the second photo crossfades in under a mouse. */
+.product-alternate {
+  transition: opacity 0.35s ease;
+}
+@media (hover: hover) {
+  .group:hover .product-alternate {
+    opacity: 1;
+  }
+}
+input[type='search']::-webkit-search-cancel-button {
+  appearance: none;
 }

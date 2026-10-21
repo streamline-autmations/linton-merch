@@ -34,7 +34,7 @@
 - [x] Drawer signature motion; mobile review bar; sticky scrolling category chips.
 - [ ] Optimise hero image (WebP/AVIF) or move imagery to Cloudinary (owner plans this).
 - [ ] Quote page polish: styled artwork picker, sticky mobile summary.
-- [ ] Replace placeholder favicon with a logo-derived one.
+- [x] Replace placeholder favicon with a logo-derived one.
 - [ ] Codex review (read-only) of the redesign.
 
 ## Real content pass (11 Oct 2026)
@@ -47,8 +47,24 @@
 - [x] Accent moved from lime to Linton logo teal.
 - [x] Vite polling watch under WSL so hot reload works on /mnt/c.
 - [x] Phase 2: motion layer — Lenis smooth scroll, stitched scroll thread and seams, hide-on-scroll header, hero intro + parallax, reading reveal, gift-rail arrows, page transitions (see DESIGN_SYSTEM.md).
-- [ ] Carry the "Put your name on it" company name into the quote brief.
-- [ ] Logo-derived favicon; vector logo.
+- [x] Carry the "Put your name on it" company name into the quote brief (sessionStorage, prefills Company).
+- [x] Logo-derived favicon (32/48 px), apple-touch icon and 512 px icon from the UE monogram.
+- [x] "Put your logo on it" (21 Oct 2026): logo upload with background cut-out, drag/resize, thread/ink colours, positions, and PNG download for golf shirt, cap, bottle and tote.
+- [x] Golf shirt brought up to the African Nomad builder: 3 colours × 3 views, 6 positions at once, mm sizes, branding method per position, positions carried into the quote line.
+- [ ] Same treatment for cap, bottle and tote (needs per-colour/per-view photos).
+- [ ] Vector logo (needs a source file from the client).
+- [x] Deployed to Vercel: https://linton-merch.vercel.app (auto-deploy from main).
+
+## Simplify pass (21 Oct 2026)
+
+- [x] Copy cut on every page, mobile first (see QA report for before/after).
+- [x] "Brands we supply" logo wall: 7 real logos, 3 wordmarks pending files.
+- [x] Product page per product: `/product/:slug`, gallery, facts, quantity + add, related rail, meta, back restores catalogue view; e2e coverage.
+- [x] Quote flow 3 → 2 steps; optional extras folded away.
+- [x] Mobile: 44 px targets, bottom-sheet drawer, sticky add bar, safe areas, 320 px header.
+- [ ] Codex read-only review of this pass (blocked by Codex usage limit on 21 Oct; rerun).
+- [ ] Logo files for Barron, Pro-Active, Rolando; sharper Altitude and Elevate.
+- [ ] "Put your logo on it" mobile length and tap targets (owned by the mockup work in progress).
 
 ## Client refinement — intentionally deferred
 
@@ -61,7 +77,7 @@
 ## Suggested Claude slices
 
 1. Run and review the existing demo; resolve any recorded defects.
-2. Integrate approved logo/contact/category facts without adding pages.
+2. Integrate approved logo/contact/category facts. Product pages are now in scope; avoid other new pages.
 3. Review catalogue/basket and RFQ with Codex MCP; make bounded fixes.
 4. Refresh the Netlify build and walk the client through the selection-to-brief story.
 

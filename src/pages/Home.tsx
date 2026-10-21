@@ -1,31 +1,21 @@
+import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { ProductCard } from '@/components/ProductCard'
+import { ProductRail } from '@/components/ProductRail'
+import { BrandWall } from '@/components/BrandWall'
 import { ContactButton } from '@/components/ContactButton'
 import { BrandPreview } from '@/components/BrandPreview'
 import { occasions, products } from '@/data/products'
 import { business } from '@/data/business'
 import { ScrubWords } from '@/components/ScrubWords'
-import { gsap, MOTION_OK, prefersReducedMotion, useGSAP } from '@/lib/motion'
+import { gsap, MOTION_OK, useGSAP } from '@/lib/motion'
 
 const steps = [
-  {
-    n: '01',
-    title: 'Choose',
-    text: 'Browse the catalogue and add everything you are interested in, from ten golf shirts to five hundred gift sets.',
-  },
-  {
-    n: '02',
-    title: 'Describe',
-    text: 'Set quantities, colours and sizes, and tell us how you would like it branded. Not sure? Ask us to advise.',
-  },
-  {
-    n: '03',
-    title: 'Review',
-    text: 'Check one clear request before you send it. In this demo, nothing is sent.',
-  },
+  { n: '01', title: 'Choose', text: 'Add products to your quote.' },
+  { n: '02', title: 'Describe', text: 'Quantities, sizes, branding.' },
+  { n: '03', title: 'Review', text: 'One clear request. Done.' },
 ]
 
 // The methods Linton names on lintonent.co.za and its Facebook flyers. Branding is done in-house.
@@ -33,32 +23,26 @@ const methods = [
   {
     name: 'Embroidery',
     best: 'Golf shirts, corporate shirts, jackets, caps',
-    note: 'Stitched straight into the fabric. Hard-wearing and the classic corporate finish.',
   },
   {
     name: 'Screen printing',
     best: 'T-shirts, workwear backs, bags, umbrellas',
-    note: 'Bold, flat colour for larger areas and bigger runs.',
   },
   {
     name: 'Pad printing',
     best: 'Pens, mugs, flash drives, small gifts',
-    note: 'Precise small logos on curved or uneven surfaces.',
   },
   {
     name: 'Engraving',
     best: 'Steel bottles, knives, card holders, bamboo',
-    note: 'Cut into the surface itself, so it never peels or fades.',
   },
   {
     name: 'Embossing',
     best: 'Journals, folders, leather-look goods',
-    note: 'Pressed into the material for a quiet, premium mark.',
   },
   {
     name: 'Sublimation & digital',
     best: 'Mugs, event tees, banners, full-colour art',
-    note: 'Photographic, full-colour artwork with no colour limits.',
   },
 ]
 
@@ -98,12 +82,17 @@ function HeroPhoto({
     <Link to={photo.to} className={`hero-photo group block ${className}`}>
       <span className="hero-frame block h-[calc(100%-2rem)] overflow-hidden rounded-md bg-ink-soft">
         <span className="hero-shift block h-full w-full">
-          <img
+          <ResponsiveImage
             src={photo.src}
+            sizes={
+              eager
+                ? '(min-width: 1376px) 520px, (min-width: 1024px) 42vw, calc(100vw - 40px)'
+                : '(min-width: 1376px) 320px, (min-width: 1024px) 25vw, 44vw'
+            }
             alt={photo.alt}
             loading={eager ? 'eager' : 'lazy'}
             fetchPriority={eager ? 'high' : undefined}
-            className="hero-img h-full w-full object-cover transition-[scale] duration-700 ease-out group-hover:scale-[1.03]"
+            className="hero-img h-full w-full object-cover object-top"
           />
         </span>
       </span>
@@ -128,11 +117,12 @@ function useHeroMotion() {
           mobile: `(max-width: 1023px) and ${MOTION_OK}`,
         },
         (ctx) => {
-          const range = ctx.conditions?.desktop ? 9 : 5
+          if (!ctx.conditions?.desktop) return
+          const range = 2
           // Parallax lives on a wrapper, the intro zoom on the image, so each reverts cleanly.
           gsap.utils.toArray<HTMLElement>('.hero-shift').forEach((shift, i) => {
             const drift = range * (i === 0 ? 1 : 0.6)
-            gsap.set(shift, { scale: 1.2 })
+            gsap.set(shift, { scale: 1.06 })
             gsap.fromTo(
               shift,
               { yPercent: -drift },
@@ -155,56 +145,16 @@ function useHeroMotion() {
       mm.add(MOTION_OK, () => {
         gsap
           .timeline({ defaults: { ease: 'expo.out' } })
-          .from('.hero-line > span', { yPercent: 110, duration: 1.1, stagger: 0.12 })
-          .from(
-            '.hero-frame',
-            { clipPath: 'inset(0 0 100% 0)', duration: 1.3, stagger: 0.14, ease: 'power4.inOut' },
-            0.25,
-          )
-          .from('.hero-img', { scale: 1.2, duration: 1.8, stagger: 0.14 }, 0.25)
-          .from('.hero-fade', { opacity: 0, y: 14, duration: 0.9, stagger: 0.08 }, 0.6)
+          .from('.hero-line > span', { yPercent: 104, duration: 0.65, stagger: 0.08 })
+          .from('.hero-frame', { y: 14, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0.25)
+          .from('.hero-img', { scale: 1.04, duration: 0.8, stagger: 0.08 }, 0.15)
+          .from('.hero-fade', { opacity: 0, y: 8, duration: 0.5, stagger: 0.04 }, 0.2)
       })
+      return () => mm.revert()
     },
     { scope: hero },
   )
   return hero
-}
-
-function GiftRail({ items }: { items: typeof products }) {
-  const rail = useRef<HTMLDivElement>(null)
-  const move = (dir: 1 | -1) => {
-    const el = rail.current
-    if (!el) return
-    const card = el.querySelector<HTMLElement>('[role="listitem"]')
-    el.scrollBy({
-      left: dir * ((card?.offsetWidth ?? 300) + 20) * 2,
-      behavior: prefersReducedMotion() ? 'auto' : 'smooth',
-    })
-  }
-  return (
-    <>
-      <div className="container-wide -mt-4 mb-6 hidden justify-end gap-2 sm:flex">
-        {([-1, 1] as const).map((dir) => (
-          <button
-            key={dir}
-            type="button"
-            onClick={() => move(dir)}
-            aria-label={dir === 1 ? 'Show more gift sets' : 'Show previous gift sets'}
-            className="flex h-11 w-11 items-center justify-center rounded-sm border border-ink/20 bg-white transition-colors hover:border-ink hover:bg-ink hover:text-white"
-          >
-            {dir === 1 ? <ArrowRight size={18} /> : <ArrowLeft size={18} />}
-          </button>
-        ))}
-      </div>
-      <div ref={rail} className="rail" role="list" aria-label="Gift sets">
-        {items.map((product) => (
-          <div role="listitem" key={product.id}>
-            <ProductCard product={product} />
-          </div>
-        ))}
-      </div>
-    </>
-  )
 }
 
 export function Home() {
@@ -229,12 +179,11 @@ export function Home() {
             </span>
           </h1>
           <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)_minmax(0,0.75fr)] lg:gap-6">
-            <div className="hero-fade order-2 flex flex-col justify-between gap-10 lg:order-1 lg:pr-6">
+            <div className="hero-fade order-2 flex flex-col justify-between gap-8 lg:order-1 lg:pr-6">
               <div>
                 <p className="max-w-80 text-base leading-7 text-white/75">
                   <span className="text-white">{business.slogan}</span> Golf shirts to gift boxes,
-                  sourced from South African suppliers and branded in-house. Pick what you need and
-                  send one clear request.
+                  branded in-house.
                 </p>
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Button
@@ -261,7 +210,7 @@ export function Home() {
                       to={`/catalogue?category=${encodeURIComponent(group.category)}`}
                       className="flex items-baseline gap-4 py-2.5 text-white/80 hover:text-white"
                     >
-                      <span className="text-xs text-white/40">0{i + 1}</span>
+                      <span className="text-xs text-white/60">0{i + 1}</span>
                       {group.title}
                     </Link>
                   </li>
@@ -271,11 +220,11 @@ export function Home() {
             <HeroPhoto
               photo={heroPhotos.main}
               eager
-              className="order-1 aspect-[4/4.6] lg:order-2 lg:aspect-auto lg:h-[600px]"
+              className="order-1 aspect-[4/4.5] lg:order-2 lg:aspect-auto lg:h-[560px]"
             />
             <div className="order-3 grid grid-cols-2 gap-4 lg:grid-cols-1 lg:grid-rows-2 lg:gap-6">
               {heroPhotos.side.map((photo) => (
-                <HeroPhoto key={photo.src} photo={photo} className="aspect-[4/5] lg:aspect-auto" />
+                <HeroPhoto key={photo.src} photo={photo} className="aspect-square lg:aspect-auto" />
               ))}
             </div>
           </div>
@@ -293,7 +242,7 @@ export function Home() {
         </div>
       </section>
 
-      <section className="container-wide py-20 text-center lg:py-28">
+      <section className="container-wide py-16 text-center lg:py-28">
         <p className="eyebrow mb-6 text-muted-foreground">How we work</p>
         <ScrubWords
           as="h2"
@@ -301,10 +250,7 @@ export function Home() {
         >
           Service is our actual business.
         </ScrubWords>
-        <p className="mx-auto mt-8 max-w-xl text-base leading-7 text-muted-foreground">
-          {business.manifesto}
-        </p>
-        <dl className="mx-auto mt-12 grid max-w-3xl grid-cols-3 border-y text-left">
+        <dl className="mx-auto mt-10 grid max-w-3xl grid-cols-3 border-y text-left">
           {business.milestones.map((m) => (
             <div key={m.year} className="border-l px-4 py-5 first:border-l-0 sm:px-6">
               <dt className="text-3xl font-bold tracking-tight [font-family:var(--font-display)] sm:text-4xl">
@@ -322,17 +268,20 @@ export function Home() {
         </dl>
         <Link
           to="/about"
-          className="mt-10 inline-flex items-center gap-2 border-b border-foreground pb-1 text-sm font-medium"
+          className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium underline underline-offset-4"
         >
           Meet Linda &amp; Tony <ArrowRight size={15} />
         </Link>
       </section>
 
-      <section className="container-wide pb-20 lg:pb-28">
-        <div className="mb-8 flex flex-wrap items-end justify-between gap-5">
+      <section className="container-wide pb-16 lg:pb-28">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-5 lg:mb-8">
           <h2 className="section-title">What we supply</h2>
-          <Link to="/catalogue" className="border-b border-foreground pb-1 text-sm font-medium">
-            View the full catalogue
+          <Link
+            to="/catalogue"
+            className="inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+          >
+            Full catalogue
           </Link>
         </div>
         <div className="supply-list border-b">
@@ -340,12 +289,13 @@ export function Home() {
             <Link
               key={group.title}
               to={`/catalogue?category=${encodeURIComponent(group.category)}`}
-              className="supply-row group relative grid grid-cols-[56px_1fr_20px] items-center gap-x-4 gap-y-1 border-t px-1 py-5 transition-colors hover:bg-secondary sm:grid-cols-[3rem_1fr_1fr_2rem] sm:gap-x-8 sm:py-7"
+              className="supply-row group relative grid grid-cols-[56px_1fr_20px] items-center gap-x-4 gap-y-1 border-t px-1 py-3 transition-colors hover:bg-secondary sm:grid-cols-[3rem_1fr_1fr_2rem] sm:gap-x-8 sm:py-7"
             >
               <span className="eyebrow hidden text-muted-foreground sm:block">0{i + 1}</span>
               <span className="h-14 w-14 overflow-hidden rounded-sm bg-white sm:hidden">
-                <img
+                <ResponsiveImage
                   src={group.image}
+                  sizes="56px"
                   alt=""
                   className="h-full w-full object-cover"
                   loading="lazy"
@@ -353,16 +303,14 @@ export function Home() {
               </span>
               <span>
                 <h3 className="text-xl font-bold tracking-tight sm:text-3xl">{group.title}</h3>
-                <span className="mt-1 block text-xs leading-5 text-muted-foreground sm:hidden">
-                  {group.items}
-                </span>
               </span>
               <p className="hidden text-sm leading-6 text-muted-foreground sm:block">
                 {group.items}
               </p>
               <ArrowRight size={20} className="justify-self-end" aria-hidden="true" />
-              <img
+              <ResponsiveImage
                 src={group.image}
+                sizes="144px"
                 alt=""
                 loading="lazy"
                 className="supply-peek pointer-events-none absolute right-24 top-1/2 z-10 hidden h-44 w-36 -translate-y-1/2 rotate-2 rounded-md object-cover shadow-xl lg:block"
@@ -372,57 +320,37 @@ export function Home() {
         </div>
       </section>
 
-      <section className="container-wide pb-20 lg:pb-28" aria-labelledby="brands-title">
-        <p id="brands-title" className="eyebrow mb-6 text-muted-foreground">
-          Ranges we supply
-        </p>
-        <p className="max-w-5xl text-[clamp(1.6rem,3.4vw,2.9rem)] font-bold leading-[1.15] tracking-[-0.03em] [font-family:var(--font-display)]">
-          {business.brands.map((brand, i) => (
-            <span key={brand}>
-              {brand}
-              <span className="text-muted-foreground/50">
-                {i < business.brands.length - 1 ? ', ' : ''}
-              </span>
-            </span>
-          ))}
-          <span className="text-muted-foreground"> and more, from trusted local suppliers.</span>
-        </p>
-      </section>
+      <BrandWall />
 
       <BrandPreview />
 
-      <section className="container-wide py-20 lg:py-28">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <span className="stitch mb-6 w-16 text-foreground/35" />
-            <p className="eyebrow mb-4 text-muted-foreground">Shop by occasion</p>
-            <h2 className="section-title max-w-xl">What is the order for?</h2>
-          </div>
-          <p className="max-w-72 text-sm leading-6 text-muted-foreground">
-            Start from the moment, not the product list. Each opens a shortlist in the catalogue.
-          </p>
+      <section className="container-wide py-16 lg:py-28">
+        <div className="mb-6 lg:mb-10">
+          <span className="stitch mb-6 w-16 text-foreground/35" />
+          <p className="eyebrow mb-4 text-muted-foreground">Shop by occasion</p>
+          <h2 className="section-title max-w-xl">What is the order for?</h2>
         </div>
-        <div className="grid border-l border-t sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-2 border-l border-t lg:grid-cols-4">
           {occasions.map((occasion) => {
             const count = products.filter((p) => p.occasions.includes(occasion.id)).length
             return (
               <Link
                 key={occasion.id}
                 to={`/catalogue?occasion=${occasion.id}`}
-                className="group flex min-h-32 flex-col justify-between border-b border-r p-5 sm:min-h-40 sm:p-6 transition-colors hover:bg-ink hover:text-white lg:min-h-52 lg:p-8"
+                className="group flex min-h-24 flex-col justify-between border-b border-r p-4 transition-colors hover:bg-ink hover:text-white sm:min-h-36 sm:p-6 lg:min-h-52 lg:p-8"
               >
-                <span className="flex items-start justify-between gap-4">
-                  <span className="text-2xl font-bold tracking-tight [font-family:var(--font-display)] lg:text-3xl">
+                <span className="flex items-start justify-between gap-2 sm:gap-4">
+                  <span className="text-lg font-bold leading-tight tracking-tight [font-family:var(--font-display)] sm:text-2xl lg:text-3xl">
                     {occasion.label}
                   </span>
                   <ArrowUpRight
-                    size={22}
+                    size={20}
                     aria-hidden="true"
                     className="shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal"
                   />
                 </span>
-                <span className="mt-6 flex items-end justify-between gap-4 text-sm text-muted-foreground group-hover:text-white/70">
-                  {occasion.note}
+                <span className="mt-3 flex items-end justify-between gap-4 text-sm text-muted-foreground group-hover:text-white/70 sm:mt-6">
+                  <span className="hidden sm:inline">{occasion.note}</span>
                   <span className="shrink-0 text-xs">{count} items</span>
                 </span>
               </Link>
@@ -431,65 +359,71 @@ export function Home() {
         </div>
       </section>
 
-      <section className="bg-secondary py-16 lg:py-24">
-        <div className="container-wide mb-10 flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <span className="stitch mb-6 w-16 text-foreground/35" />
-            <p className="eyebrow mb-4 text-muted-foreground">Ready-made</p>
-            <h2 className="section-title">Gift sets, boxed and branded.</h2>
-          </div>
-          <Link
-            to="/catalogue?category=Gift+sets"
-            className="border-b border-foreground pb-1 text-sm font-medium"
-          >
-            All {giftSets.length} gift sets
-          </Link>
-        </div>
-        <GiftRail items={giftSets.slice(0, 12)} />
+      <section className="bg-secondary py-14 lg:py-24">
+        <ProductRail
+          label="Gift sets"
+          items={giftSets.slice(0, 12)}
+          heading={
+            <>
+              <span className="stitch mb-6 w-16 text-foreground/35" />
+              <h2 className="section-title">Gift sets, boxed and branded.</h2>
+            </>
+          }
+          action={
+            <Link
+              to="/catalogue?category=Gift+sets"
+              className="inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+            >
+              All {giftSets.length} gift sets
+            </Link>
+          }
+        />
       </section>
 
-      <section className="container-wide py-20 lg:py-28">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-5">
-          <div>
-            <span className="stitch mb-6 w-16 text-foreground/35" />
-            <p className="eyebrow mb-4 text-muted-foreground">Popular starting points</p>
-            <h2 className="section-title">A place to start.</h2>
-          </div>
-          <Link to="/catalogue" className="border-b border-foreground pb-1 text-sm font-medium">
-            Browse all {products.length} products
-          </Link>
-        </div>
-        <div className="product-grid gap-x-5 gap-y-10 lg:gap-7">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
-        </div>
+      <section className="py-14 lg:py-28">
+        <ProductRail
+          label="Popular picks"
+          items={featured}
+          grid
+          heading={
+            <>
+              <span className="stitch mb-6 w-16 text-foreground/35" />
+              <h2 className="section-title">Popular picks.</h2>
+            </>
+          }
+          action={
+            <Link
+              to="/catalogue"
+              className="inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+            >
+              All {products.length} products
+            </Link>
+          }
+        />
       </section>
 
       <section className="on-ink bg-ink text-white">
-        <div className="container-wide py-20 lg:py-28">
-          <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
+        <div className="container-wide py-16 lg:py-28">
+          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
             <div>
               <span className="stitch mb-6 w-16 text-signal" />
               <p className="eyebrow mb-4 text-white/50">Ways to brand</p>
               <h2 className="section-title max-w-sm">The right mark for the material.</h2>
-              <p className="mt-5 max-w-sm text-sm leading-6 text-white/65">
-                All branding is done in-house. Each product suits a different method: tell us what
-                you are after, or choose “please advise” and Linton will recommend the best finish.
+              <p className="mt-4 max-w-sm text-sm leading-6 text-white/65">
+                All done in-house. Not sure? We’ll advise.
               </p>
             </div>
-            <dl className="grid border-t border-white/15 sm:grid-cols-2">
+            <dl className="grid grid-cols-2 border-t border-white/15">
               {methods.map((method, i) => (
                 <div
                   key={method.name}
-                  className={`border-b border-white/15 py-6 sm:pr-8 ${i % 2 ? 'sm:border-l sm:pl-8' : ''}`}
+                  className={`border-b border-white/15 py-4 pr-3 sm:py-6 sm:pr-8 ${i % 2 ? 'border-l pl-4 sm:pl-8' : ''}`}
                 >
-                  <dt className="flex items-baseline gap-3 text-xl font-bold tracking-tight [font-family:var(--font-display)]">
+                  <dt className="flex flex-col gap-1 text-base font-bold leading-tight tracking-tight [font-family:var(--font-display)] sm:flex-row sm:items-baseline sm:gap-3 sm:text-xl">
                     <span className="text-xs font-medium text-signal">0{i + 1}</span>
                     {method.name}
                   </dt>
-                  <dd className="mt-3 text-sm leading-6 text-white/70">{method.note}</dd>
-                  <dd className="mt-2 text-xs leading-5 text-white/45">Best for: {method.best}</dd>
+                  <dd className="mt-2 text-xs leading-5 text-white/60">{method.best}</dd>
                 </div>
               ))}
             </dl>
@@ -497,36 +431,43 @@ export function Home() {
         </div>
       </section>
 
-      <section className="container-wide py-20 lg:py-28" aria-labelledby="clients-title">
-        <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-          <p id="clients-title" className="eyebrow text-muted-foreground">
-            In their words
-          </p>
-          <a
-            href={business.social.facebook}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm underline-offset-4 hover:underline"
-          >
-            <span className="font-bold">{business.facebookRating.percent}%</span> recommend us on
-            Facebook ({business.facebookRating.reviews} reviews)
-          </a>
+      <section className="py-16 lg:py-28" aria-labelledby="clients-title">
+        <div className="container-wide">
+          <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
+            <p id="clients-title" className="eyebrow text-muted-foreground">
+              In their words
+            </p>
+            <a
+              href={business.social.facebook}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm underline-offset-4 hover:underline"
+            >
+              <span className="font-bold">{business.facebookRating.percent}%</span> recommend us on
+              Facebook
+            </a>
+          </div>
+          <figure className="max-w-5xl">
+            <ScrubWords
+              as="blockquote"
+              className="text-[clamp(1.9rem,4.4vw,3.8rem)] font-bold leading-[1.05] tracking-[-0.035em] [font-family:var(--font-display)]"
+            >
+              “{lead.quote}”
+            </ScrubWords>
+            <figcaption className="mt-6 text-sm">
+              <span className="font-medium">{lead.name}</span>
+              <span className="text-muted-foreground"> · {lead.role}</span>
+            </figcaption>
+          </figure>
         </div>
-        <figure className="max-w-5xl">
-          <ScrubWords
-            as="blockquote"
-            className="text-[clamp(1.9rem,4.4vw,3.8rem)] font-bold leading-[1.05] tracking-[-0.035em] [font-family:var(--font-display)]"
-          >
-            “{lead.quote}”
-          </ScrubWords>
-          <figcaption className="mt-6 text-sm">
-            <span className="font-medium">{lead.name}</span>
-            <span className="text-muted-foreground"> · {lead.role}</span>
-          </figcaption>
-        </figure>
-        <div className="mt-14 grid gap-x-8 gap-y-10 border-t pt-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div
+          className="rail rail-narrow rail-grid mt-10 border-t pt-8 lg:mt-14 lg:pt-10"
+          tabIndex={0}
+          role="region"
+          aria-label="More client reviews"
+        >
           {quotes.map((t) => (
-            <figure key={t.name}>
+            <figure key={t.name} className="border-l pl-4 lg:border-l-0 lg:pl-0">
               <blockquote className="text-base leading-7">“{t.quote}”</blockquote>
               <figcaption className="mt-4 text-xs leading-5">
                 <span className="font-medium">{t.name}</span>
@@ -539,20 +480,25 @@ export function Home() {
       </section>
 
       <section className="border-t bg-secondary">
-        <div className="container-wide py-20 lg:py-28">
-          <h2 className="section-title mb-12 max-w-md">One request. Everything in it.</h2>
-          <div className="grid gap-10 sm:grid-cols-3">
+        <div className="container-wide py-16 lg:py-28">
+          <h2 className="section-title mb-8 max-w-md lg:mb-12">One request. Everything in it.</h2>
+          <ol className="grid sm:grid-cols-3 sm:gap-10">
             {steps.map((step) => (
-              <div key={step.n} className="border-t border-foreground pt-5">
-                <span className="text-5xl font-bold tracking-tight [font-family:var(--font-display)]">
+              <li
+                key={step.n}
+                className="grid grid-cols-[3.5rem_1fr] items-baseline border-t border-foreground py-4 sm:block sm:pt-5"
+              >
+                <span className="text-3xl font-bold tracking-tight [font-family:var(--font-display)] sm:text-5xl">
                   {step.n}
                 </span>
-                <h3 className="mb-2 mt-6 text-xl font-bold">{step.title}</h3>
-                <p className="text-sm leading-6 text-muted-foreground">{step.text}</p>
-              </div>
+                <span>
+                  <h3 className="text-lg font-bold sm:mb-2 sm:mt-6 sm:text-xl">{step.title}</h3>
+                  <p className="text-sm leading-6 text-muted-foreground">{step.text}</p>
+                </span>
+              </li>
             ))}
-          </div>
-          <Button asChild className="mt-12 h-12 px-6">
+          </ol>
+          <Button asChild className="mt-8 h-12 px-6 lg:mt-12">
             <Link to="/catalogue">Start your selection</Link>
           </Button>
         </div>

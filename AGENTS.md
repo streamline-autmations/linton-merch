@@ -17,7 +17,7 @@ This is a fast, polished sales demonstration for a potential South African clien
 ## Scope
 
 - React, Vite, strict TypeScript, Tailwind v4, locally owned shadcn/ui primitives.
-- Four routes: `/`, `/catalogue`, `/quote` and `/about` (About & contact, added at the owner's request). Unknown routes show a simple recovery state.
+- Routes: `/`, `/catalogue`, `/quote`, `/about` (About & contact) and `/product/:slug` (one page per catalogue product, added 21 Oct 2026 at the owner's request; slug derived in `products.ts`). Unknown routes and slugs show a simple recovery state.
 - 12–18 illustrative catalogue products; current seed has 16, grouped like the current Linton Enterprises site. Search, categories, details and add-to-quote.
 - Persistent product basket: IDs, quantities and product preferences only. Never persist RFQ contact details or artwork in localStorage.
 - Structured brief, contact, review, and honest local demo completion. Copy/download a summary.
@@ -36,7 +36,7 @@ This is a fast, polished sales demonstration for a potential South African clien
 - Label sample catalogue entries and generated/illustrative artwork. Customer-supplied garment branding remains an unanswered business question.
 - Do not call a local mock request "sent", "received" or "submitted to Linton".
 - Respect reduced motion; support keyboard navigation, visible focus, descriptive labels and mobile layouts.
-- Contact fields live in memory. Files are filename previews only and are never read/uploaded.
+- Contact fields live in memory. Quote-form files are filename previews only and are never read/uploaded. The one exception is the "Put your logo on it" preview, which reads the visitor's logo in the browser to draw it on a product photo and to make the PNG download. It never sends or stores the file (no storage, no network); it is released when the section unmounts.
 - Environment variables beginning `VITE_` are public. Do not place secrets in them.
 
 ## Validation and review

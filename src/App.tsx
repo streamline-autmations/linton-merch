@@ -5,6 +5,7 @@ import { Home } from '@/pages/Home'
 import { Catalogue } from '@/pages/Catalogue'
 import { Quote } from '@/pages/Quote'
 import { About } from '@/pages/About'
+import { ProductPage } from '@/pages/Product'
 import { Button } from '@/components/ui/button'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
             <Route path="catalogue" element={<Catalogue />} />
             <Route path="quote" element={<Quote />} />
             <Route path="about" element={<About />} />
+            <Route path="product/:slug" element={<ProductPage />} />
             <Route
               path="*"
               element={

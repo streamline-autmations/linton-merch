@@ -1,99 +1,107 @@
-import { useEffect, useId, useRef, useState } from 'react'
-import { Check, Plus } from 'lucide-react'
+import { useEffect, useId, useRef, useState, useSyncExternalStore, type ChangeEvent, type CSSProperties, type ReactNode } from 'react'
+import { AlertCircle, Check, Download, Plus, Upload, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { MockupStage, type Placed } from '@/components/MockupStage'
+import { TEXT_WEIGHT, artAspect, type ArtworkSource } from '@/components/MockupArtwork'
 import { useBasket } from '@/context/BasketContext'
-import { productById } from '@/data/products'
+import {
+  LOGO_ACCEPT,
+  LogoError,
+  MAX_LINES,
+  layoutText,
+  logoImage,
+  readLogo,
+  releaseLogo,
+  textLines,
+  type TextLayout,
+  type UploadedLogo,
+} from '@/lib/logo-upload'
+import {
+  INKS,
+  METHOD_NAMES,
+  MIN_SCALE,
+  bestZone,
+  clampPlacement,
+  defaultPlacement,
+  downloadName,
+  effectiveInk,
+  mockupProducts,
+  sizeMm,
+  summaryNote,
+  type MockupProduct,
+  type Placement,
+  type PositionSummary,
+} from '@/lib/mockup'
+import { recalledCompany, rememberCompany } from '@/lib/quote'
 import { cn } from '@/lib/utils'
 
-// "Put your name on it": the visitor types their company name and sees it applied to real
-// product photos with the usual branding method. Positions are in a 1000×1000 viewBox that
-// matches the square supplier photos. It is a sketch, not a proof, and says so.
-type Method = 'embroidery' | 'engraving' | 'print'
-interface Canvas {
-  id: string
-  label: string
-  method: Method
-  methodLabel: string
-  productId: string
-  image: string
-  x: number
-  y: number
-  maxWidth: number
-  baseSize: number
-  rotate?: number
+// "Put your logo on it": the visitor uploads a logo (or types their company name), picks where it
+// goes, and sees it on the product. One artwork is used on every position; each position only has
+// a colour and a size. The logo is read in the browser and never uploaded or stored. It is a
+// sketch, not a proof, and says so.
+
+const PLACEHOLDER = 'Your company'
+const NARROW = '(max-width: 63.99rem)'
+
+interface ProductState {
+  colour: string
+  view: string
+  placements: Record<string, Placement>
+  selected: string | null
+  /** The visitor has changed something here, so a new logo keeps their positions. */
+  touched: boolean
 }
 
-const canvases: Canvas[] = [
-  {
-    id: 'shirt',
-    label: 'Golf shirt',
-    method: 'embroidery',
-    methodLabel: 'Embroidered, left chest',
-    productId: 'LM-014',
-    image: '/products/alt-bbm-n.webp',
-    x: 665,
-    y: 335,
-    maxWidth: 150,
-    baseSize: 26,
-  },
-  {
-    id: 'cap',
-    label: 'Cap',
-    method: 'embroidery',
-    methodLabel: 'Embroidered, front panel',
-    productId: 'LM-019',
-    image: '/products/cap-1008-n.webp',
-    x: 440,
-    y: 360,
-    maxWidth: 190,
-    baseSize: 40,
-    rotate: -4,
-  },
-  {
-    id: 'bottle',
-    label: 'Bottle',
-    method: 'engraving',
-    methodLabel: 'Laser engraved',
-    productId: 'LM-016',
-    image: '/products/gp-al-68-b-bl-no-logo.webp',
-    x: 490,
-    y: 590,
-    maxWidth: 440,
-    baseSize: 46,
-    rotate: -90,
-  },
-  {
-    id: 'tote',
-    label: 'Tote',
-    method: 'print',
-    methodLabel: 'Screen printed, one colour',
-    productId: 'LM-024',
-    image: '/products/idea-1142-bl-no-logo.webp',
-    x: 470,
-    y: 680,
-    maxWidth: 330,
-    baseSize: 64,
-  },
-]
+function initialState(product: MockupProduct): ProductState {
+  const zone = product.zones[0]
+  return {
+    colour: product.colours[0].id,
+    view: zone.view,
+    placements: { [zone.id]: defaultPlacement(zone) },
+    selected: zone.id,
+    touched: false,
+  }
+}
 
-const threads = [
-  { name: 'White thread', value: '#f4f4f0' },
-  { name: 'Teal thread', value: '#2ec4b6' },
-  { name: 'Gold thread', value: '#d8b25a' },
-]
-
-function fitSize(text: string, canvas: Canvas) {
-  // Rough average glyph width for the uppercase display face at 0.04em tracking.
-  const estimate = text.length * 0.7
-  return Math.min(canvas.baseSize, canvas.maxWidth / Math.max(estimate, 1))
+function useNarrow() {
+  return useSyncExternalStore(
+    (onChange) => {
+      const mq = window.matchMedia(NARROW)
+      mq.addEventListener('change', onChange)
+      return () => mq.removeEventListener('change', onChange)
+    },
+    () => window.matchMedia(NARROW).matches,
+    () => false,
+  )
 }
 
 export function BrandPreview() {
-  const [name, setName] = useState('')
-  const [active, setActive] = useState(canvases[0])
-  const [thread, setThread] = useState(threads[0])
-  const { items, add } = useBasket()
-  const inputId = useId()
+  const [wording, setWording] = useState(recalledCompany)
+  const [logo, setLogo] = useState<UploadedLogo | null>(null)
+  const [states, setStates] = useState<Record<string, ProductState>>(() =>
+    Object.fromEntries(mockupProducts.map((p) => [p.id, initialState(p)])),
+  )
+  const [productId, setProductId] = useState(mockupProducts[0].id)
+  const [uploading, setUploading] = useState(false)
+  const [uploadError, setUploadError] = useState<string | null>(null)
+  const [fontsReady, setFontsReady] = useState(false)
+  // On phones the pinned picture shrinks and zooms while the keyboard is up.
+  const [typing, setTyping] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [status, setStatus] = useState('')
+  const narrow = useNarrow()
+  const { items, add, update: updateItem } = useBasket()
+  const ids = useId()
+  const fileRef = useRef<HTMLInputElement>(null)
+  const logoRef = useRef(logo)
+  const layoutCache = useRef(new Map<string, TextLayout>())
+
+  const product = mockupProducts.find((p) => p.id === productId) ?? mockupProducts[0]
+  const state = states[product.id]
+  const colour = product.colours.find((c) => c.id === state.colour) ?? product.colours[0]
+  const inQuote = items.some((item) => item.productId === product.id)
+  const kind = logo ? 'logo' : 'text'
+
   // The first stitch happens when the preview scrolls into view, not on page load off-screen.
   const figureRef = useRef<HTMLElement>(null)
   const [seen, setSeen] = useState(false)
@@ -112,169 +120,531 @@ export function BrandPreview() {
     io.observe(el)
     return () => io.disconnect()
   }, [])
-  const text = (name.trim() || 'Your brand').toUpperCase().slice(0, 28)
-  const size = fitSize(text, active)
-  const product = productById.get(active.productId)!
-  const inQuote = items.some((item) => item.productId === active.productId)
-  const fill =
-    active.method === 'embroidery'
-      ? thread.value
-      : active.method === 'engraving'
-        ? '#c9ccce'
-        : '#0e161d'
+
+  // The name is measured in the real typeface, so wait for it before trusting sizes.
+  useEffect(() => {
+    let live = true
+    document.fonts.load('700 100px "Host Grotesk Variable"').finally(() => {
+      if (!live) return
+      layoutCache.current.clear()
+      setFontsReady(true)
+    })
+    return () => {
+      live = false
+    }
+  }, [])
+
+  // Uploaded logos are object URLs: let go of them when the section goes away.
+  useEffect(() => {
+    logoRef.current = logo
+  }, [logo])
+  useEffect(() => () => (logoRef.current ? releaseLogo(logoRef.current) : undefined), [])
+
+  // Fetch the other colours and views in the background so switching is instant.
+  useEffect(() => {
+    if (!seen) return
+    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 800))
+    idle(() => {
+      for (const p of mockupProducts)
+        for (const c of p.colours) for (const v of p.views) new Image().src = p.photo(c.id, v.id)
+    })
+  }, [seen])
+
+  const text = textLines(wording).join('\n') || PLACEHOLDER
+
+  function artFor(p: Placement): ArtworkSource {
+    if (logo) {
+      const img = logoImage(logo)
+      return { kind: 'image', href: img.url, aspect: img.width / img.height }
+    }
+    const weight = TEXT_WEIGHT[p.method]
+    const key = `${fontsReady}|${weight}|${text}`
+    let layout = layoutCache.current.get(key)
+    if (!layout) {
+      layout = layoutText(text, weight)
+      layoutCache.current.set(key, layout)
+    }
+    return { kind: 'text', layout, weight }
+  }
+
+  // Every position in use on this product, kept inside its area for the current artwork.
+  const placed: Placed[] = product.zones.flatMap((zone) => {
+    const stored = state.placements[zone.id]
+    if (!stored) return []
+    const art = artFor(stored)
+    const placement = clampPlacement(stored, zone, artAspect(art))
+    const look = art.kind === 'image' ? art.href : text
+    return [{ zone, placement, art, ink: effectiveInk(placement, kind, colour.dark), key: `${zone.id}-${look}` }]
+  })
+  const current = placed.find((p) => p.zone.id === state.selected)
+
+  /** Changes this product's state; any change means the visitor has made it theirs. */
+  function edit(change: (s: ProductState) => Partial<ProductState>) {
+    setStates((prev) => ({ ...prev, [product.id]: { ...prev[product.id], ...change(prev[product.id]), touched: true } }))
+    setStatus('')
+  }
+
+  function setPlacement(next: Placement) {
+    edit((s) => ({ placements: { ...s.placements, [next.zoneId]: next } }))
+  }
+
+  function patch(zoneId: string, change: Partial<Placement>) {
+    const zone = product.zones.find((z) => z.id === zoneId)!
+    const next = { ...state.placements[zoneId], ...change }
+    setPlacement(clampPlacement(next, zone, artAspect(artFor(next))))
+  }
+
+  function select(zoneId: string) {
+    const zone = product.zones.find((z) => z.id === zoneId)!
+    edit(() => ({ selected: zoneId, view: zone.view }))
+  }
+
+  function addZone(zoneId: string) {
+    const zone = product.zones.find((z) => z.id === zoneId)!
+    edit((s) => ({ placements: { ...s.placements, [zoneId]: defaultPlacement(zone) }, selected: zoneId, view: zone.view }))
+  }
+
+  function removeZone(zoneId: string) {
+    edit((s) => {
+      const placements = { ...s.placements }
+      delete placements[zoneId]
+      const rest = product.zones.filter((z) => placements[z.id])
+      const selected = s.selected === zoneId ? (rest.at(-1)?.id ?? null) : s.selected
+      return { placements, selected }
+    })
+  }
+
+  function stepView(step: 1 | -1) {
+    const i = product.views.findIndex((v) => v.id === state.view)
+    edit(() => ({ view: product.views[(i + step + product.views.length) % product.views.length].id }))
+  }
+
+  async function upload(file: File | undefined) {
+    if (!file) return
+    setUploadError(null)
+    setUploading(true)
+    try {
+      const next = await readLogo(file)
+      const old = logoRef.current
+      setLogo(next)
+      if (old) releaseLogo(old)
+      const img = logoImage(next)
+      const aspect = img.width / img.height
+      // The logo shows its own colours everywhere. Products the visitor hasn't touched start it in
+      // the area that suits its shape.
+      setStates((prev) =>
+        Object.fromEntries(
+          mockupProducts.map((p) => {
+            const s = prev[p.id]
+            if (!s.touched && p.zones.some((z) => z.auto)) {
+              const zone = bestZone(p, aspect)
+              return [p.id, { ...s, placements: { [zone.id]: defaultPlacement(zone) }, selected: zone.id, view: zone.view }]
+            }
+            const placements = Object.fromEntries(Object.entries(s.placements).map(([k, pl]) => [k, { ...pl, ink: null }]))
+            return [p.id, { ...s, placements }]
+          }),
+        ),
+      )
+      setStatus('')
+    } catch (err) {
+      setUploadError(err instanceof LogoError ? err.message : "That file couldn't be read. Try saving it as a PNG.")
+    } finally {
+      setUploading(false)
+      if (fileRef.current) fileRef.current.value = ''
+    }
+  }
+
+  function removeLogo() {
+    const old = logo
+    setLogo(null)
+    setUploadError(null)
+    if (old) releaseLogo(old)
+  }
+
+  function changeWording(value: string) {
+    const limited = value.split('\n').slice(0, MAX_LINES).join('\n')
+    setWording(limited)
+    rememberCompany(textLines(limited)[0])
+    setStatus('')
+  }
+
+  function positions(): PositionSummary[] {
+    return placed.map(({ zone, placement, ink }) => ({
+      zone: zone.label,
+      method: placement.method,
+      artwork: logo ? 'logo' : `“${textLines(text).join(' / ')}”`,
+      ink: placement.method === 'engraving' ? null : ink,
+      size: sizeMm(product, zone, placement, artAspect(artFor(placement))),
+    }))
+  }
+
+  function addToQuote() {
+    const note = placed.length ? summaryNote(product, colour.name, positions()) : ''
+    const wasIn = inQuote
+    add(product.id)
+    if (note) updateItem(product.id, { specification: note })
+    const count = placed.length === 1 ? '1 position' : `${placed.length} positions`
+    setStatus(wasIn ? `Quote updated with ${count}.` : `Added to your quote${placed.length ? ` with ${count}` : ''}.`)
+  }
+
+  async function download() {
+    setSaving(true)
+    setStatus('')
+    try {
+      const { downloadMockupPng } = await import('@/lib/mockup-export')
+      await downloadMockupPng({ product, colour, placed, view: state.view })
+      setStatus(`Saved ${downloadName(product)}`)
+    } catch (err) {
+      setStatus(err instanceof Error ? err.message : "The picture couldn't be saved. Try again.")
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  const ratio = product.width / product.height
+  const pinWidth = `min(100%, calc(${typing ? 24 : 40}svh * ${ratio.toFixed(3)}))`
 
   return (
     <section className="border-y bg-white" aria-labelledby="brand-preview-title">
-      <div className="container-wide grid gap-8 py-16 lg:grid-cols-[0.9fr_1.1fr] lg:grid-rows-[auto_1fr] lg:gap-x-16 lg:gap-y-0 lg:py-24">
+      <div className="container-wide grid grid-cols-[minmax(0,1fr)] gap-x-16 gap-y-8 py-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:py-24">
         <div className="lg:self-end">
           <p className="eyebrow mb-5 flex items-center gap-3 text-muted-foreground">
             <span className="stitch w-8 text-signal" /> Try it
           </p>
           <h2 id="brand-preview-title" className="section-title max-w-md">
-            Put your name on it.
+            Put your logo on it.
           </h2>
-          <p className="mt-5 max-w-md text-base leading-7 text-muted-foreground">
-            Type your company name and see how it could look stitched, engraved or printed. When you
-            are ready, Linton works from your real logo files.
+          <p className="mt-4 max-w-md text-base leading-7 text-muted-foreground">
+            See it stitched, engraved or printed, then download the picture.
           </p>
         </div>
-        <div className="order-3 lg:order-none lg:col-start-1 lg:row-start-2">
-          <label htmlFor={inputId} className="field-label lg:mt-8">
-            Company name
-          </label>
-          <input
-            id={inputId}
-            className="field h-14 text-lg font-medium"
-            placeholder="e.g. Vaal Engineering"
-            maxLength={28}
-            autoComplete="organization"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <div className="mt-6" role="group" aria-label="Product to preview">
-            <div className="flex flex-wrap gap-2">
-              {canvases.map((canvas) => (
+
+        {/* On phones the picture stays pinned while the controls scroll underneath it. */}
+        <figure
+          ref={figureRef}
+          className="preview-pin relative lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start"
+        >
+          {product.views.length > 1 && (
+            <div className="mockup-views" role="group" aria-label="View">
+              {product.views.map((v) => (
                 <button
-                  key={canvas.id}
+                  key={v.id}
                   type="button"
-                  aria-pressed={active.id === canvas.id}
-                  onClick={() => setActive(canvas)}
-                  className={cn(
-                    'rounded-sm border px-4 py-2.5 text-sm transition-colors',
-                    active.id === canvas.id
-                      ? 'border-ink bg-ink text-white'
-                      : 'bg-white text-muted-foreground hover:border-ink hover:text-ink',
-                  )}
+                  className="mockup-view"
+                  aria-pressed={state.view === v.id}
+                  onClick={() => edit(() => ({ view: v.id }))}
                 >
-                  {canvas.label}
+                  {v.label}
+                  {placed.some((p) => p.zone.view === v.id) && (
+                    <span className="mockup-view-dot" aria-label=", has branding" />
+                  )}
                 </button>
               ))}
             </div>
-          </div>
-          {active.method === 'embroidery' && (
-            <div className="mt-5 flex items-center gap-3" role="group" aria-label="Thread colour">
-              <span className="text-xs text-muted-foreground">Thread</span>
-              {threads.map((option) => (
-                <button
-                  key={option.name}
-                  type="button"
-                  aria-label={option.name}
-                  aria-pressed={thread.name === option.name}
-                  onClick={() => setThread(option)}
-                  className={cn(
-                    'h-7 w-7 rounded-full border-2 transition-transform',
-                    thread.name === option.name
-                      ? 'scale-110 border-ink'
-                      : 'border-black/10 hover:scale-105',
-                  )}
-                  style={{ background: option.value }}
-                />
-              ))}
-            </div>
           )}
-          <div className="mt-8 flex flex-wrap items-center gap-4">
-            <Button
-              className="h-auto min-h-12 max-w-full whitespace-normal px-5 py-3 text-left"
-              disabled={inQuote}
-              onClick={() => add(active.productId)}
-            >
-              {inQuote ? <Check size={16} /> : <Plus size={16} />}
-              {inQuote ? 'In your quote' : `Add this ${active.label.toLowerCase()} to my quote`}
-            </Button>
-          </div>
-        </div>
-
-        <figure
-          ref={figureRef}
-          className="relative order-2 lg:order-none lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center"
-        >
-          <div className="relative aspect-square overflow-hidden rounded-md bg-[#f6f7f6]">
-            <img
-              key={active.image}
-              src={active.image}
-              alt={`${product.name} preview`}
-              className="brand-fade absolute inset-0 h-full w-full object-contain mix-blend-multiply"
+          <div
+            className="mockup-pin-size mx-auto transition-[width]"
+            style={{ width: pinWidth, '--ratio': ratio } as CSSProperties}
+          >
+            <MockupStage
+              product={product}
+              colour={colour}
+              view={state.view}
+              placed={placed}
+              selected={state.selected}
+              seen={seen}
+              autoZoom={narrow && typing}
+              onSelect={select}
+              onAdd={addZone}
+              onChange={setPlacement}
+              onView={stepView}
+              onFile={(file) => upload(file)}
             />
-            <svg
-              viewBox="0 0 1000 1000"
-              className="absolute inset-0 h-full w-full"
-              aria-hidden="true"
-            >
-              <defs>
-                <filter id="thread-shadow" x="-10%" y="-30%" width="120%" height="160%">
-                  <feDropShadow dx="0" dy="1.2" stdDeviation="0.8" floodOpacity="0.55" />
-                </filter>
-                <filter id="engrave" x="-10%" y="-30%" width="120%" height="160%">
-                  <feDropShadow
-                    dx="0"
-                    dy="-0.8"
-                    stdDeviation="0.3"
-                    floodColor="#000"
-                    floodOpacity="0.9"
-                  />
-                </filter>
-              </defs>
-              {seen && (
-                <text
-                  key={`${active.id}-${text}-${thread.value}`}
-                  x={active.x}
-                  y={active.y}
-                  transform={
-                    active.rotate ? `rotate(${active.rotate} ${active.x} ${active.y})` : undefined
-                  }
-                  textAnchor="middle"
-                  dominantBaseline="middle"
-                  fontSize={size}
-                  // Hard cap: never let a long name run past the branding area.
-                  textLength={
-                    text.length * size * 0.7 > active.maxWidth ? active.maxWidth : undefined
-                  }
-                  lengthAdjust="spacingAndGlyphs"
-                  className={cn('brand-mark', `brand-${active.method}`)}
-                  fill={fill}
-                  stroke={active.method === 'embroidery' ? fill : 'none'}
-                  filter={
-                    active.method === 'embroidery'
-                      ? 'url(#thread-shadow)'
-                      : active.method === 'engraving'
-                        ? 'url(#engrave)'
-                        : undefined
-                  }
-                >
-                  {text}
-                </text>
-              )}
-            </svg>
-            <span className="absolute left-3 top-3 rounded-sm bg-ink px-2 py-1 text-[11px] font-medium tracking-wider text-white">
-              {active.methodLabel.toUpperCase()}
-            </span>
           </div>
-          <figcaption className="mt-3 text-xs leading-5 text-muted-foreground">
-            A quick sketch to help you picture it, not an artwork proof. Logo placement, size and
-            thread or ink colours are confirmed with you before production.
+          <figcaption className="mt-3 hidden text-xs leading-5 text-muted-foreground lg:block">
+            A quick sketch, not an artwork proof.
           </figcaption>
         </figure>
+
+        <div className="lg:col-start-1 lg:row-start-2">
+          <Group label="Product">
+            <div className="flex flex-wrap gap-2">
+              {mockupProducts.map((option) => (
+                <Choice key={option.id} active={option.id === product.id} onClick={() => setProductId(option.id)}>
+                  {option.label}
+                </Choice>
+              ))}
+            </div>
+          </Group>
+
+          <Group label="Your logo" labelId={`${ids}-logo`}>
+            <input
+              ref={fileRef}
+              type="file"
+              accept={LOGO_ACCEPT}
+              className="sr-only"
+              tabIndex={-1}
+              aria-labelledby={`${ids}-logo`}
+              onChange={(e: ChangeEvent<HTMLInputElement>) => upload(e.target.files?.[0])}
+            />
+            {logo ? (
+              <>
+                <div className="flex items-center gap-2 rounded-md border bg-background p-2 pr-1">
+                  <span className="logo-thumb h-11 w-11 shrink-0 rounded-sm">
+                    <img src={logoImage(logo).url} alt="" className="h-full w-full object-contain p-1" />
+                  </span>
+                  <span className="min-w-0 flex-1 truncate text-sm">{logo.name}</span>
+                  <Button type="button" variant="ghost" size="sm" className="h-11" onClick={() => fileRef.current?.click()}>
+                    Replace
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" className="h-11" onClick={removeLogo}>
+                    <X aria-hidden="true" /> Remove
+                  </Button>
+                </div>
+                {logo.cutOut && (
+                  <label className="mt-2 flex min-h-11 items-center gap-3 text-sm">
+                    <input
+                      type="checkbox"
+                      className="size-5 accent-ink"
+                      checked={logo.useCutOut}
+                      onChange={(e) => setLogo({ ...logo, useCutOut: e.target.checked })}
+                    />
+                    Remove the logo&rsquo;s background
+                  </label>
+                )}
+              </>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-12 w-full justify-start px-4 sm:w-auto"
+                  disabled={uploading}
+                  onClick={() => fileRef.current?.click()}
+                >
+                  <Upload aria-hidden="true" /> {uploading ? 'Reading your logo…' : 'Upload your logo'}
+                </Button>
+                <p className="mt-2 text-xs leading-5 text-muted-foreground">
+                  PNG, JPG, WebP or SVG, up to 10 MB. Never uploaded.
+                </p>
+                <label htmlFor={`${ids}-text`} className="mt-5 mb-2 block text-sm font-medium">
+                  Or type your company name
+                </label>
+                <textarea
+                  id={`${ids}-text`}
+                  className="field resize-none text-base leading-6"
+                  rows={Math.min(MAX_LINES, Math.max(2, wording.split('\n').length))}
+                  maxLength={90}
+                  placeholder={PLACEHOLDER}
+                  autoComplete="organization"
+                  aria-describedby={`${ids}-text-hint`}
+                  value={wording}
+                  onFocus={() => setTyping(true)}
+                  onBlur={() => setTyping(false)}
+                  onChange={(e) => changeWording(e.target.value)}
+                />
+                <p id={`${ids}-text-hint`} className="mt-1 text-xs text-muted-foreground">
+                  Press Enter for a new line, up to {MAX_LINES} lines.
+                </p>
+              </>
+            )}
+            {uploadError && (
+              <p className="mt-2 flex items-start gap-2 text-sm text-destructive" role="alert">
+                <AlertCircle className="mt-0.5 size-4 shrink-0" aria-hidden="true" /> {uploadError}
+              </p>
+            )}
+          </Group>
+
+          {product.colours.length > 1 && (
+            <Group label={`${product.label} colour`}>
+              <div className="flex flex-wrap gap-2" role="group" aria-label={`${product.label} colour`}>
+                {product.colours.map((c) => (
+                  <Choice key={c.id} active={c.id === colour.id} onClick={() => edit(() => ({ colour: c.id }))}>
+                    <span className="size-4 rounded-full border border-black/15" style={{ background: c.swatch }} aria-hidden="true" />
+                    {c.name}
+                  </Choice>
+                ))}
+              </div>
+            </Group>
+          )}
+
+          {product.zones.length > 1 && (
+            <Group label="Where it goes" aside={placed.length ? `${placed.length} chosen` : 'Pick at least one'}>
+              <div className="flex flex-wrap gap-2">
+                {product.zones.map((zone) => {
+                  const on = !!state.placements[zone.id]
+                  if (!on) {
+                    return (
+                      <button
+                        key={zone.id}
+                        type="button"
+                        className="inline-flex min-h-11 items-center gap-1.5 rounded-sm border border-dashed border-ink/35 px-3 text-sm text-muted-foreground transition-colors hover:border-ink hover:text-ink"
+                        onClick={() => addZone(zone.id)}
+                      >
+                        <Plus className="size-4" aria-hidden="true" />
+                        {zone.label}
+                      </button>
+                    )
+                  }
+                  const active = state.selected === zone.id
+                  return (
+                    <span key={zone.id} className="inline-flex">
+                      <button
+                        type="button"
+                        aria-pressed={active}
+                        className={cn(
+                          'inline-flex min-h-11 items-center gap-1.5 rounded-l-sm border px-3 text-sm transition-colors',
+                          active ? 'border-ink bg-ink text-white' : 'border-ink/40 bg-secondary text-ink hover:border-ink',
+                        )}
+                        onClick={() => select(zone.id)}
+                      >
+                        <Check className="size-4" aria-hidden="true" />
+                        {zone.label}
+                      </button>
+                      <button
+                        type="button"
+                        aria-label={`Remove the ${zone.label.toLowerCase()}`}
+                        className={cn(
+                          'inline-flex min-h-11 w-10 items-center justify-center rounded-r-sm border border-l-0 transition-colors',
+                          active ? 'border-ink bg-ink text-white/80 hover:text-white' : 'border-ink/40 bg-secondary text-ink/70 hover:text-ink',
+                        )}
+                        onClick={() => removeZone(zone.id)}
+                      >
+                        <X className="size-4" aria-hidden="true" />
+                      </button>
+                    </span>
+                  )
+                })}
+              </div>
+            </Group>
+          )}
+
+          {current && (
+            <Group label={current.zone.label} aside={METHOD_NAMES[current.placement.method]}>
+              {current.placement.method === 'engraving' ? (
+                <p className="text-sm leading-6 text-muted-foreground">One colour: the metal itself.</p>
+              ) : (
+                <div className="flex flex-wrap items-center gap-2" role="group" aria-label={current.placement.method === 'embroidery' ? 'Thread colour' : 'Ink colour'}>
+                  {logo && (
+                    <Choice active={current.placement.ink === null} onClick={() => patch(current.zone.id, { ink: null })}>
+                      Logo colours
+                    </Choice>
+                  )}
+                  {INKS.map((ink) => {
+                    const on = current.ink === ink.value
+                    return (
+                      <button
+                        key={ink.value}
+                        type="button"
+                        aria-label={ink.name}
+                        aria-pressed={on}
+                        title={ink.name}
+                        onClick={() => patch(current.zone.id, { ink: ink.value })}
+                        className={cn(
+                          'h-10 w-10 rounded-full border border-black/15 transition-shadow',
+                          on ? 'ring-2 ring-ink ring-offset-2' : 'hover:ring-1 hover:ring-ink/40 hover:ring-offset-2',
+                        )}
+                        style={{ background: ink.value }}
+                      />
+                    )
+                  })}
+                </div>
+              )}
+              <SizeField
+                id={`${ids}-size`}
+                product={product}
+                item={current}
+                onScale={(scale) => patch(current.zone.id, { scale })}
+              />
+            </Group>
+          )}
+
+          <div className="flex flex-wrap items-center gap-3 border-t pt-6">
+            <Button variant="outline" className="h-auto min-h-12 px-5 py-3" disabled={saving || placed.length === 0} onClick={download}>
+              <Download aria-hidden="true" /> {saving ? 'Preparing…' : 'Download PNG'}
+            </Button>
+            <Button className="h-auto min-h-12 max-w-full whitespace-normal px-5 py-3 text-left" onClick={addToQuote}>
+              {inQuote ? <Check aria-hidden="true" /> : <Plus aria-hidden="true" />}
+              {inQuote ? 'Update my quote' : 'Add to my quote'}
+            </Button>
+          </div>
+          <p className="mt-3 min-h-5 text-xs text-muted-foreground" role="status" aria-live="polite">
+            {status}
+          </p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground lg:hidden">A quick sketch, not an artwork proof.</p>
+        </div>
       </div>
     </section>
+  )
+}
+
+/** A control group: hairline above, label, optional note on the right. */
+function Group({ label, labelId, aside, children }: { label: string; labelId?: string; aside?: string; children: ReactNode }) {
+  return (
+    <div className="border-t pt-5 pb-6 first:border-t-0 first:pt-0">
+      <div className="mb-3 flex items-baseline justify-between gap-3">
+        <p id={labelId} className="text-sm font-medium">
+          {label}
+        </p>
+        {aside && <span className="text-xs text-muted-foreground">{aside}</span>}
+      </div>
+      {children}
+    </div>
+  )
+}
+
+function Choice({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
+  return (
+    <button
+      type="button"
+      aria-pressed={active}
+      onClick={onClick}
+      className={cn(
+        'inline-flex min-h-11 items-center gap-2 rounded-sm border px-4 py-2 text-sm transition-colors',
+        active ? 'border-ink bg-ink text-white' : 'bg-white text-muted-foreground hover:border-ink hover:text-ink',
+      )}
+    >
+      {children}
+    </button>
+  )
+}
+
+function SizeField({
+  id,
+  product,
+  item,
+  onScale,
+}: {
+  id: string
+  product: MockupProduct
+  item: Placed
+  onScale: (scale: number) => void
+}) {
+  const { zone, placement, art } = item
+  const size = sizeMm(product, zone, placement, artAspect(art))
+  const percent = Math.round(placement.scale * 100)
+  return (
+    <div className="mt-4">
+      <div className="flex items-baseline justify-between gap-3">
+        <label htmlFor={id} className="text-sm text-muted-foreground">
+          Size
+        </label>
+        <output htmlFor={id} className="text-sm tabular-nums text-muted-foreground">
+          {size ? `About ${size.w} × ${size.h} mm` : `${percent}%`}
+        </output>
+      </div>
+      <input
+        id={id}
+        type="range"
+        className="mockup-range"
+        min={Math.round(MIN_SCALE * 100)}
+        max={100}
+        step={1}
+        value={percent}
+        aria-valuetext={size ? `${size.w} by ${size.h} millimetres` : `${percent} percent of the largest size`}
+        onChange={(e) => onScale(Number(e.target.value) / 100)}
+      />
+      <p className="text-xs text-muted-foreground">Drag it on the picture to move it.</p>
+    </div>
   )
 }

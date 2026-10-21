@@ -1,5 +1,6 @@
+import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { useEffect, useRef, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigationType } from 'react-router-dom'
 import { ShoppingBag, Menu, X, PackagePlus, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
@@ -15,7 +16,8 @@ import { ContactButton } from '@/components/ContactButton'
 import { useBasket } from '@/context/BasketContext'
 import { business } from '@/data/business'
 import { SmoothScroll } from '@/components/SmoothScroll'
-import { scrollToTop } from '@/lib/motion'
+import { scrollToTop, scrollToY } from '@/lib/motion'
+import { setPageMeta } from '@/lib/meta'
 
 const navItems = [
   { to: '/', label: 'Home', end: true },
@@ -24,10 +26,31 @@ const navItems = [
   { to: '/about', label: 'About & contact' },
 ]
 
+const pageTitles: Record<string, string> = {
+  '/': 'Corporate clothing, gifts & uniforms',
+  '/catalogue': 'Catalogue',
+  '/quote': 'Request a quote',
+  '/about': 'About & contact',
+}
+
+function useIsPhone() {
+  const query = '(max-width: 639px)'
+  const [phone, setPhone] = useState(() => window.matchMedia(query).matches)
+  useEffect(() => {
+    const mq = window.matchMedia(query)
+    const onChange = () => setPhone(mq.matches)
+    mq.addEventListener('change', onChange)
+    return () => mq.removeEventListener('change', onChange)
+  }, [])
+  return phone
+}
+
 function Logo({ className = '' }: { className?: string }) {
   return (
-    <img
+    <ResponsiveImage
       src="/brand/linton-logo-white.png"
+      sizes="(min-width: 640px) 187px, 147px"
+      loading="eager"
       alt="Linton Merch — Corporate Clothing, Gifts & Uniforms"
       width={2000}
       height={600}
@@ -41,6 +64,16 @@ export function Layout() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [announcement, setAnnouncement] = useState('')
   const location = useLocation()
+  const navigationType = useNavigationType()
+  const isPhone = useIsPhone()
+  // Scroll positions per history entry, captured before the next page renders, so Back lands
+  // where the visitor left (catalogue filters already live in the URL).
+  const positions = useRef(new Map<string, number>())
+  const lastKey = useRef(location.key)
+  if (lastKey.current !== location.key) {
+    positions.current.set(lastKey.current, window.scrollY)
+    lastKey.current = location.key
+  }
   const mainRef = useRef<HTMLElement>(null)
   const initialRoute = useRef(true)
   // Set once the visitor has navigated away from the landing route (render-time, stable).
@@ -51,16 +84,17 @@ export function Layout() {
   const leavingDrawer = useRef(false)
   useEffect(() => {
     setMenuOpen(false)
-    scrollToTop()
-    const names: Record<string, string> = {
-      '/': 'Corporate clothing, gifts & uniforms',
-      '/catalogue': 'Catalogue',
-      '/quote': 'Request a quote',
-      '/about': 'About & contact',
-    }
-    document.title = `${names[location.pathname] ?? 'Page not found'} — Linton Merch demo`
+    const saved = positions.current.get(location.key)
+    if (navigationType === 'POP' && saved !== undefined) {
+      // Wait a frame so the restored page has its full height before scrolling into it.
+      requestAnimationFrame(() => scrollToY(saved))
+    } else scrollToTop()
+    // Product pages set their own title and description.
+    if (!location.pathname.startsWith('/product/'))
+      setPageMeta({ title: pageTitles[location.pathname] ?? 'Page not found' })
     if (!initialRoute.current) mainRef.current?.focus({ preventScroll: true })
     initialRoute.current = false
+    // Only a new page (not a filter change on the same page) should move the scroll position.
   }, [location.pathname])
   useEffect(() => {
     if (initialCount.current) {
@@ -92,15 +126,20 @@ export function Layout() {
       hideHeader ? '0px' : `${height}px`,
     )
   }, [hideHeader, menuOpen])
-  const showBar = items.length > 0 && location.pathname !== '/quote'
+  const onProduct = location.pathname.startsWith('/product/')
+  // Phones get a basket bar at the bottom; product pages have their own add-to-quote bar there.
+  const showBar = items.length > 0 && location.pathname !== '/quote' && !onProduct
   return (
     <>
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
       <div className="on-ink bg-ink-soft px-5 py-2 text-center text-xs tracking-wide text-white/75">
-        Concept demo <span className="mx-2 opacity-50">/</span> Product range to be confirmed. No
-        enquiries are sent.
+        Concept demo <span className="mx-1.5 opacity-50">/</span>
+        <span className="hidden min-[360px]:inline">
+          Range to be confirmed <span className="mx-1.5 opacity-50">/</span>
+        </span>{' '}
+        No enquiries sent
       </div>
       <SmoothScroll />
       <header
@@ -108,9 +147,9 @@ export function Layout() {
         data-hidden={hideHeader || undefined}
         className="site-header on-ink sticky top-0 z-40 bg-ink text-white"
       >
-        <div className="container-wide flex min-h-20 flex-wrap items-center justify-between gap-4 py-4">
+        <div className="container-wide flex min-h-20 flex-wrap items-center justify-between gap-3 py-4">
           <Link to="/" aria-label="Linton Merch home" className="block">
-            <Logo className="h-11 w-auto sm:h-12" />
+            <Logo className="h-9 w-auto min-[360px]:h-11 sm:h-12" />
           </Link>
           <nav aria-label="Main navigation" className="hidden items-center gap-8 lg:flex">
             {navItems.map((item) => (
@@ -135,7 +174,12 @@ export function Layout() {
                 </Button>
               </SheetTrigger>
               <SheetContent
-                className="flex w-full flex-col sm:max-w-md"
+                side={isPhone ? 'bottom' : 'right'}
+                className={
+                  isPhone
+                    ? 'flex max-h-[88dvh] flex-col rounded-t-lg pb-[calc(1.5rem+env(safe-area-inset-bottom))]'
+                    : 'flex w-full flex-col sm:max-w-md'
+                }
                 onCloseAutoFocus={(event) => {
                   // After "Continue to your request" the new page owns focus, not the header.
                   if (leavingDrawer.current) {
@@ -148,8 +192,8 @@ export function Layout() {
                   <SheetTitle className="text-2xl font-bold tracking-tight">Your quote</SheetTitle>
                   <SheetDescription>
                     {items.length
-                      ? `${items.length} product${items.length === 1 ? '' : 's'}. Adjust quantities below.`
-                      : 'Add products and send one request.'}
+                      ? `${items.length} product${items.length === 1 ? '' : 's'}`
+                      : 'One request for everything you need.'}
                   </SheetDescription>
                 </SheetHeader>
                 {items.length ? (
@@ -159,8 +203,7 @@ export function Layout() {
                     </div>
                     <div className="border-t pt-4">
                       <p className="mb-4 text-xs leading-relaxed text-muted-foreground">
-                        25 is a starting quantity, not a minimum order. This demo does not show
-                        prices or place orders.
+                        25 is a starting point, not a minimum.
                       </p>
                       <Button
                         asChild
@@ -186,7 +229,7 @@ export function Layout() {
                     <PackagePlus className="mb-5 text-muted-foreground" size={36} />
                     <h3 className="mb-2 text-xl font-bold">Nothing added yet.</h3>
                     <p className="mb-6 max-w-64 text-sm text-muted-foreground">
-                      Browse the catalogue and add the products you are interested in.
+                      Add products from the catalogue.
                     </p>
                     <Button asChild onClick={() => setDrawerOpen(false)}>
                       <Link to="/catalogue">Browse the catalogue</Link>
@@ -233,7 +276,9 @@ export function Layout() {
           <Outlet />
         </div>
       </main>
-      <footer className={`on-ink bg-ink text-white ${showBar ? 'pb-16 lg:pb-0' : ''}`}>
+      <footer
+        className={`on-ink bg-ink text-white ${showBar ? 'pb-16 lg:pb-0' : onProduct ? 'pb-20 lg:pb-0' : ''}`}
+      >
         <div className="container-wide grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
           <div>
             <Logo className="h-14 w-auto" />
@@ -243,9 +288,13 @@ export function Layout() {
           </div>
           <div>
             <p className="eyebrow mb-4 text-white/50">Explore</p>
-            <div className="flex flex-col items-start gap-3 text-sm">
+            <div className="flex flex-col items-start text-sm">
               {navItems.map((item) => (
-                <Link key={item.to} to={item.to} className="text-white/85 hover:text-white">
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className="inline-flex min-h-11 items-center text-white/85 hover:text-white"
+                >
                   {item.label}
                 </Link>
               ))}
@@ -272,22 +321,19 @@ export function Layout() {
               variant="outline"
               className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
             />
-            <p className="mt-3 text-xs text-white/50">
-              Opens a message preview. You press Send in WhatsApp.
-            </p>
           </div>
         </div>
         <div className="container-wide flex flex-col justify-between gap-2 border-t border-white/15 py-6 text-xs text-white/50 sm:flex-row">
           <span>Linton Enterprises · Concept demo, not the live website</span>
-          <span>Product range and imagery to be confirmed. No enquiries are sent.</span>
+          <span>No enquiries are sent.</span>
         </div>
       </footer>
       {showBar && (
-        <div className="on-ink fixed inset-x-0 bottom-0 z-30 border-t border-white/15 bg-ink px-5 py-3 text-white lg:hidden">
+        <div className="on-ink fixed inset-x-0 bottom-0 z-30 border-t border-white/15 bg-ink px-5 pb-[env(safe-area-inset-bottom)] text-white lg:hidden">
           <button
             type="button"
             onClick={() => setDrawerOpen(true)}
-            className="flex w-full items-center justify-between text-sm font-medium"
+            className="flex min-h-14 w-full items-center justify-between text-sm font-medium"
           >
             <span>
               <span className="mr-2 inline-flex h-5 min-w-5 items-center justify-center rounded-sm bg-signal px-1 text-[11px] font-bold text-ink">
