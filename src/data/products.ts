@@ -7,15 +7,65 @@ export const categories = [
 ] as const
 export type Category = (typeof categories)[number]
 
+// Each occasion shows one real photo already used in the catalogue (see IMAGE_PROVENANCE.md).
+// `focus` is the CSS object-position that keeps faces and products in frame when cropped.
 export const occasions = [
-  { id: 'golf-day', label: 'Golf days', note: 'Where Linton started, in 1999' },
-  { id: 'onboarding', label: 'New staff', note: 'Welcome packs and first-day kit' },
-  { id: 'site', label: 'Site & safety', note: 'Workwear, hi-viz and boots' },
-  { id: 'events', label: 'Expos & events', note: 'Banners, tees, flash drives, bags' },
-  { id: 'year-end', label: 'Year-end gifts', note: 'Boxed sets for clients and teams' },
-  { id: 'front-of-house', label: 'Front of house', note: 'Shirts, blouses, skirts and trousers' },
-  { id: 'hospitality', label: 'Kitchens & hospitality', note: 'Chef’s wear, aprons and caps' },
-  { id: 'schools', label: 'Kids & schools', note: 'Kids’ golf shirts, tees and stationery' },
+  {
+    id: 'golf-day',
+    label: 'Golf days',
+    note: 'Where Linton started, in 1999',
+    image: '/products/um-ub-27-b-lifestyle-ai-no-logo.webp',
+    focus: '50% 40%',
+  },
+  {
+    id: 'onboarding',
+    label: 'New staff',
+    note: 'Welcome packs and first-day kit',
+    image: '/gifts/an-gft-005-01-hero.webp',
+    focus: '50% 45%',
+  },
+  {
+    id: 'site',
+    label: 'Site & safety',
+    note: 'Workwear, hi-viz and boots',
+    image: '/products/alt-1402-y-mofr10.webp',
+    focus: '50% 20%',
+  },
+  {
+    id: 'events',
+    label: 'Expos & events',
+    note: 'Banners, tees, flash drives, bags',
+    image: '/products/ts-al-59-a-02-no-logo.webp',
+    focus: '50% 20%',
+  },
+  {
+    id: 'year-end',
+    label: 'Year-end gifts',
+    note: 'Boxed sets for clients and teams',
+    image: '/gifts/an-gft-002-01-hero.webp',
+    focus: '50% 50%',
+  },
+  {
+    id: 'front-of-house',
+    label: 'Front of house',
+    note: 'Shirts, blouses, skirts and trousers',
+    image: '/products/alt-chi-n-mofr-033-no-logo.webp',
+    focus: '50% 18%',
+  },
+  {
+    id: 'hospitality',
+    label: 'Kitchens & hospitality',
+    note: 'Chef’s wear, aprons and caps',
+    image: '/products/alt-avl-bl-lifestyle01.webp',
+    focus: '30% 30%',
+  },
+  {
+    id: 'schools',
+    label: 'Kids & schools',
+    note: 'Kids’ golf shirts, tees and stationery',
+    image: '/products/bas-4757-02-no-logo.webp',
+    focus: '50% 20%',
+  },
 ] as const
 export type Occasion = (typeof occasions)[number]['id']
 

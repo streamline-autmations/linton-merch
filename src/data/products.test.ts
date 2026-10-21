@@ -22,3 +22,11 @@ describe('product slugs', () => {
     expect(related[0].category).toBe(shirt.category)
   })
 })
+
+describe('occasions', () => {
+  it('each show a real photo that went through the responsive image pipeline', async () => {
+    const { occasions } = await import('./products')
+    const manifest = (await import('./image-manifest.json')).default as Record<string, unknown>
+    for (const occasion of occasions) expect(manifest[occasion.image]).toBeDefined()
+  })
+})

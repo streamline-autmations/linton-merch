@@ -164,3 +164,39 @@ Owner requested better hero images. Replaced the industrial red-workwear lead an
 - `pnpm typecheck`, `pnpm test` (**16/16**), `pnpm build`, `pnpm test:e2e` (**8/8**, desktop and touch mobile): pass. `git diff --check`: pass. Build retains the previously documented large-chunk advisory.
 - New local production measurement, touch Chromium **390×844 / DPR2, 4× CPU, 1.6 Mbps down, 150ms latency**: **LCP 2.424s, CLS 0**, one 960px AVIF lead request (~34kB payload), no visible broken images, overflow or browser errors. Report: `docs/preview/hero-refresh/performance.json`. This is a local lab measurement, not a deployed Lighthouse or Safari result.
 - WebKit/iOS remains unverified for the host-library reason recorded above. No new Safari claim. Existing noindex/demo behaviour and OG share composition are unchanged. Changes remain uncommitted; nothing was pushed or deployed.
+
+## Homepage mobile pass — 21 October 2026 (Claude)
+
+Brief: `docs/PROMPT_HOMEPAGE_MOBILE_PASS.md`. Baseline commit `9ce142a`, clean tree at start; mockup files' mtimes checked before editing `BrandPreview.tsx` (unchanged since that commit). No commit, push or deploy.
+
+### What changed
+
+Top demo bar removed (footer notice kept). New hero (one photo, one primary action, promises on a sewn label). `BrandTeaser.tsx` replaces the inline builder with a blue band; the builder lazy-loads into a Radix dialog. Occasion photo tiles. New section palette (no `bg-secondary` bands). Rail arrows hidden below 768px with a stitched progress thread. `BrandingMethods.tsx` pictograms. `TrustBand.tsx` (manifesto + 92% Facebook meter + founders + pull-quote + clamped cards); steps merged into the closing contact band. Screens before/after: `docs/preview/homepage-mobile-pass/`.
+
+Page height, home: **390px 9,748 → 8,088**; **1440px 9,432 → 7,636**. Builder section on a phone: **1,953px → 422px** teaser.
+
+### Checks actually run (final run is the last step)
+
+- Per slice: Playwright Chromium screenshots at 390×844 and 360×800; 768 and 1440 for anything touching desktop. Each inspected and fixed before moving on (hero photo aspect at 768; teaser desktop spacing; occasion tile height; methods rule colours; trust desktop photo height).
+- Horizontal overflow scan at 320/360/390/768/1024/1440: found and fixed a 564px phone layout caused by `sr-only` text inside a review card escaping the scroll row (cards are now `relative`). Final: no overflow at any width.
+- Builder dialog (390, 360, 768, 1440): no builder module requested before opening; `aria-expanded` false → true → false; focus moves to Close on open, returns to the trigger after Escape; photo stays pinned under the dialog's title bar while controls scroll. "Add to my quote" inside the dialog opens the quote drawer over it on the first add (existing once-per-visit behaviour); Escape closes one layer at a time and the scroll lock clears. Production build: builder is its own **32 kB** chunk (11.4 kB gzip).
+- Reduced motion (390): hero lines, label and teaser patch render in their final state immediately.
+- Enlarged text: hero label at 200% root size wraps inside the photo width (fixed after review, see below).
+- Final: `pnpm typecheck` pass; `pnpm test` **17/17** (new: every occasion image is in `image-manifest.json`); `pnpm build` pass (existing >500 kB chunk advisory unchanged); `pnpm check:presentation` **31 checks, 0 overflow, 0 axe WCAG A/AA violations** at 390 and 1440 on all routes; `pnpm test:e2e` **10/10** desktop + mobile (new test: banner gone, builder loads only on open, Escape/focus return, add to quote, no overflow); `git diff --check` pass.
+
+### Codex review
+
+Read-only `codex exec -s read-only` review of the uncommitted diff (a first `codex exec review --uncommitted` attempt failed on a CLI flag conflict and reviewed nothing). Two medium findings, both reproduced in reasoning and fixed:
+
+1. `BrandPreview.tsx`: a logo still being read when the dialog closed was never released (blob URLs kept). Now released if the component has unmounted by the time reading finishes.
+2. `index.css` `.hero-label`: non-wrapping two-column label clipped at 200% text. Now shrinks to the photo width and wraps.
+
+### Not verified
+
+- WebKit/iOS Safari (host libraries unavailable in WSL, as before): sticky pin inside a scrolling dialog and stacked drawer-over-dialog are Chromium-only results.
+- Physical phone touch; emulation only.
+- `MockupArtwork.tsx` fails `prettier --check` (not touched in this pass).
+
+### Open: star ratings
+
+Owner asked for stars. The only sourced figure is "92% recommend us on Facebook" (`business.facebookRating`), shown as a large figure with a stitched meter. `Testimonial.stars` (optional, 1–5) was added to `business.ts` but is **not rendered**; AGENTS.md forbids invented ratings. To show stars, the owner needs to supply each reviewer's actual rating (e.g. from their Facebook review).

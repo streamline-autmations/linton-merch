@@ -1,3 +1,15 @@
+export interface Testimonial {
+  quote: string
+  name: string
+  role: string
+  /**
+   * A star rating, only once one is sourced from the reviewer (e.g. their Facebook review).
+   * Not rendered yet: none of the current quotes has a sourced rating, and AGENTS.md forbids
+   * fake ratings. The only sourced figure is `facebookRating`.
+   */
+  stars?: 1 | 2 | 3 | 4 | 5
+}
+
 // Business facts. Source: the public Linton Enterprises website (lintonent.co.za), read on
 // 9 October 2026, plus the WhatsApp number supplied by the project owner. Confirm with the
 // client before any public release. Do not add claims that are not in this file.
@@ -129,7 +141,7 @@ export const business = {
       name: 'Sazie Zwane',
       role: 'Customer',
     },
-  ],
+  ] satisfies Testimonial[] as readonly Testimonial[],
   social: {
     facebook: 'https://www.facebook.com/pages/Linton-Enterprises/388180024533955',
     instagram: 'https://www.instagram.com/lintonenterprisessa/',

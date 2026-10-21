@@ -84,7 +84,11 @@ function useNarrow() {
   )
 }
 
-export function BrandPreview() {
+/**
+ * `embedded`: rendered inside the home page's "Put your logo on it" dialog, which supplies the
+ * title and the page padding. The section layout is used when it stands on its own.
+ */
+export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) {
   const [wording, setWording] = useState(recalledCompany)
   const [logo, setLogo] = useState<UploadedLogo | null>(null)
   const [states, setStates] = useState<Record<string, ProductState>>(() =>
@@ -147,7 +151,15 @@ export function BrandPreview() {
   useEffect(() => {
     logoRef.current = logo
   }, [logo])
-  useEffect(() => () => (logoRef.current ? releaseLogo(logoRef.current) : undefined), [])
+  // `alive` lets a logo that finishes reading after the dialog closed release itself too.
+  const alive = useRef(true)
+  useEffect(() => {
+    alive.current = true
+    return () => {
+      alive.current = false
+      if (logoRef.current) releaseLogo(logoRef.current)
+    }
+  }, [])
 
   const text = textLines(wording).join('\n') || PLACEHOLDER
 
@@ -241,6 +253,10 @@ export function BrandPreview() {
     setUploading(true)
     try {
       const next = await readLogo(file)
+      if (!alive.current) {
+        releaseLogo(next)
+        return
+      }
       const old = logoRef.current
       setLogo(next)
       if (old) releaseLogo(old)
@@ -338,20 +354,33 @@ export function BrandPreview() {
   const ratio = product.width / product.height
   const pinWidth = `min(100%, calc(${typing ? 24 : 40}svh * ${ratio.toFixed(3)}))`
 
+  const Wrapper = embedded ? 'div' : 'section'
   return (
-    <section className="border-y bg-white" aria-labelledby="brand-preview-title">
-      <div className="container-wide grid grid-cols-[minmax(0,1fr)] gap-x-16 gap-y-8 py-16 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:grid-rows-[auto_1fr] lg:py-24">
-        <div className="lg:self-end">
-          <p className="eyebrow mb-5 flex items-center gap-3 text-muted-foreground">
-            <span className="stitch w-8 text-signal" /> Try it
-          </p>
-          <h2 id="brand-preview-title" className="section-title max-w-md">
-            Put your logo on it.
-          </h2>
-          <p className="mt-4 max-w-md text-base leading-7 text-muted-foreground">
-            See it stitched, engraved or printed, then download the picture.
-          </p>
-        </div>
+    <Wrapper
+      className={embedded ? undefined : 'border-y bg-white'}
+      aria-labelledby={embedded ? undefined : 'brand-preview-title'}
+    >
+      <div
+        className={cn(
+          'grid grid-cols-[minmax(0,1fr)] gap-x-16 gap-y-8 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)]',
+          embedded
+            ? 'gap-y-6 lg:gap-x-12'
+            : 'container-wide py-16 lg:grid-rows-[auto_1fr] lg:py-24',
+        )}
+      >
+        {!embedded && (
+          <div className="lg:self-end">
+            <p className="eyebrow mb-5 flex items-center gap-3 text-muted-foreground">
+              <span className="stitch w-8 text-signal" /> Try it
+            </p>
+            <h2 id="brand-preview-title" className="section-title max-w-md">
+              Put your logo on it.
+            </h2>
+            <p className="mt-4 max-w-md text-base leading-7 text-muted-foreground">
+              See it stitched, engraved or printed, then download the picture.
+            </p>
+          </div>
+        )}
 
         {/* On phones the picture stays pinned while the controls scroll underneath it. */}
         <figure
@@ -400,7 +429,7 @@ export function BrandPreview() {
           </figcaption>
         </figure>
 
-        <div className="lg:col-start-1 lg:row-start-2">
+        <div className={cn('lg:col-start-1', embedded ? 'lg:row-start-1' : 'lg:row-start-2')}>
           <Group label="Product">
             <div className="flex flex-wrap gap-2">
               {mockupProducts.map((option) => (
@@ -675,7 +704,7 @@ export function BrandPreview() {
           </p>
         </div>
       </div>
-    </section>
+    </Wrapper>
   )
 }
 

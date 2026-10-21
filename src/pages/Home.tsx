@@ -5,11 +5,12 @@ import { ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ProductRail } from '@/components/ProductRail'
 import { BrandWall } from '@/components/BrandWall'
+import { BrandingMethods } from '@/components/BrandingMethods'
+import { TrustBand } from '@/components/TrustBand'
 import { ContactButton } from '@/components/ContactButton'
-import { BrandPreview } from '@/components/BrandPreview'
+import { BrandTeaser } from '@/components/BrandTeaser'
 import { occasions, products } from '@/data/products'
 import { business } from '@/data/business'
-import { ScrubWords } from '@/components/ScrubWords'
 import { gsap, MOTION_OK, useGSAP } from '@/lib/motion'
 
 const steps = [
@@ -18,91 +19,9 @@ const steps = [
   { n: '03', title: 'Review', text: 'One clear request. Done.' },
 ]
 
-// The methods Linton names on lintonent.co.za and its Facebook flyers. Branding is done in-house.
-const methods = [
-  {
-    name: 'Embroidery',
-    best: 'Golf shirts, corporate shirts, jackets, caps',
-  },
-  {
-    name: 'Screen printing',
-    best: 'T-shirts, workwear backs, bags, umbrellas',
-  },
-  {
-    name: 'Pad printing',
-    best: 'Pens, mugs, flash drives, small gifts',
-  },
-  {
-    name: 'Engraving',
-    best: 'Steel bottles, knives, card holders, bamboo',
-  },
-  {
-    name: 'Embossing',
-    best: 'Journals, folders, leather-look goods',
-  },
-  {
-    name: 'Sublimation & digital',
-    best: 'Mugs, event tees, banners, full-colour art',
-  },
-]
-
-const heroPhotos = {
-  main: {
-    src: '/hero/team-golf-shirts.webp',
-    alt: 'Two models wearing coordinated charcoal golf shirts with cyan shoulder details',
-    caption: 'A coordinated look for your team',
-    to: '/catalogue?category=Corporate+clothing',
-  },
-  side: [
-    {
-      src: '/hero/uniform-detail.webp',
-      alt: 'Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket',
-      caption: 'Corporate shirts',
-      to: '/catalogue?category=Corporate+clothing',
-    },
-    {
-      src: '/hero/executive-gifting.webp',
-      alt: 'A black notebook, bottle with a gold lid and matching pen against a geometric backdrop',
-      caption: 'Executive gifting',
-      to: '/catalogue?category=Gift+sets',
-      contain: true,
-    },
-  ],
-}
-
-function HeroPhoto({
-  photo,
-  className = '',
-  eager = false,
-}: {
-  photo: { src: string; alt: string; caption: string; to: string; contain?: boolean }
-  className?: string
-  eager?: boolean
-}) {
-  return (
-    <Link to={photo.to} className={`hero-photo group block ${className}`}>
-      <span className="hero-frame block h-[calc(100%_-_2rem)] overflow-hidden rounded-md bg-ink-soft">
-        <span className="hero-shift block h-full w-full">
-          <ResponsiveImage
-            src={photo.src}
-            sizes={
-              eager
-                ? '(min-width: 1376px) 520px, (min-width: 1024px) 42vw, calc(100vw - 40px)'
-                : '(min-width: 1376px) 320px, (min-width: 1024px) 25vw, 44vw'
-            }
-            alt={photo.alt}
-            loading={eager ? 'eager' : 'lazy'}
-            fetchPriority={eager ? 'high' : undefined}
-            className={`hero-img h-full w-full ${photo.contain ? 'bg-ink object-contain' : 'object-cover object-top'}`}
-          />
-        </span>
-      </span>
-      <span className="hero-caption mt-2.5 flex items-center justify-between gap-2 text-xs text-white/65 group-hover:text-white">
-        {photo.caption}
-        <ArrowUpRight size={14} aria-hidden="true" />
-      </span>
-    </Link>
-  )
+const heroPhoto = {
+  src: '/hero/team-golf-shirts.webp',
+  alt: 'Two people in matching charcoal golf shirts with cyan shoulder panels',
 }
 
 function useHeroMotion() {
@@ -128,125 +47,67 @@ function useHeroMotion() {
 export function Home() {
   const featured = products.filter((product) => product.featured)
   const giftSets = products.filter((product) => product.category === 'Gift sets')
-  const [lead, ...quotes] = business.testimonials
   const hero = useHeroMotion()
   return (
     <>
+      {/* Hero: what we do, how we help, one action. The promises sit on a woven label sewn
+          onto the photo's edge. */}
       <section ref={hero} className="on-ink overflow-hidden bg-ink text-white">
-        <div className="container-wide pb-12 pt-10 lg:pb-16 lg:pt-14">
-          <p className="hero-fade eyebrow mb-6 flex items-center gap-3 text-white/60">
-            <span className="stitch w-8 text-signal" />
-            {business.town}, South Africa · Since {business.founded}
-          </p>
-          <h1 className="display max-w-5xl">
-            <span className="hero-line block overflow-hidden pb-[0.06em]">
-              <span className="block">Corporate clothing,</span>
-            </span>
-            <span className="hero-line block overflow-hidden pb-[0.06em]">
-              <span className="block">gifts &amp; uniforms.</span>
-            </span>
-          </h1>
-          <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)_minmax(0,0.75fr)] lg:gap-6">
-            <div className="hero-fade order-1 flex flex-col justify-between gap-8 lg:order-1 lg:pr-6">
-              <div>
-                <p className="max-w-80 text-base leading-7 text-white/75">
-                  <span className="text-white">{business.slogan}</span> Golf shirts to gift boxes,
-                  branded in-house.
-                </p>
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <Button
-                    asChild
-                    size="lg"
-                    className="h-12 bg-signal px-6 text-ink hover:bg-signal/90"
-                  >
-                    <Link to="/catalogue">Browse the catalogue</Link>
-                  </Button>
-                  <Button
-                    asChild
-                    size="lg"
-                    variant="outline"
-                    className="h-12 border-white/30 bg-transparent px-6 text-white hover:bg-white/10 hover:text-white"
-                  >
-                    <Link to="/quote">Request a quote</Link>
-                  </Button>
-                </div>
-              </div>
-              <ol className="hidden lg:block" aria-label="What we supply">
-                {business.groups.map((group, i) => (
-                  <li key={group.title} className="border-t border-white/15 text-sm">
-                    <Link
-                      to={`/catalogue?category=${encodeURIComponent(group.category)}`}
-                      className="flex items-baseline gap-4 py-2.5 text-white/80 hover:text-white"
-                    >
-                      <span className="text-xs text-white/60">0{i + 1}</span>
-                      {group.title}
-                    </Link>
-                  </li>
-                ))}
-              </ol>
-            </div>
-            <HeroPhoto
-              photo={heroPhotos.main}
-              eager
-              className="order-2 aspect-[4/4.5] lg:order-2 lg:aspect-auto lg:h-[560px]"
-            />
-            <div className="hero-secondary order-3 grid grid-cols-2 gap-4 lg:h-[560px] lg:grid-cols-1 lg:grid-rows-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-6">
-              {heroPhotos.side.map((photo) => (
-                <HeroPhoto
-                  key={photo.src}
-                  photo={photo}
-                  className="aspect-[1/1.2] min-h-0 lg:aspect-auto"
-                />
-              ))}
+        <div className="container-wide grid items-center gap-x-16 gap-y-8 pb-12 pt-7 sm:pt-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pb-20 lg:pt-12">
+          <div>
+            <p className="hero-fade mb-5 flex items-center gap-3 text-sm text-white/70">
+              <span className="stitch w-8 text-signal" />
+              {business.town}, since {business.founded}
+            </p>
+            <h1 className="hero-title">
+              <span className="hero-line block overflow-hidden pb-[0.06em]">
+                <span className="block">Corporate</span>
+              </span>
+              <span className="hero-line block overflow-hidden pb-[0.06em]">
+                <span className="block">clothing, gifts</span>
+              </span>
+              <span className="hero-line block overflow-hidden pb-[0.06em]">
+                <span className="block">&amp; uniforms.</span>
+              </span>
+            </h1>
+            <p className="hero-fade mt-5 max-w-md text-balance text-base leading-7 text-white/80 sm:text-lg sm:leading-8 lg:mt-7">
+              Tell us what your team needs. We source it, brand it and deliver it.
+            </p>
+            <div className="hero-fade mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 lg:mt-9">
+              <Button asChild size="lg" className="h-12 bg-signal px-6 text-ink hover:bg-signal/90">
+                <Link to="/quote">Request a quote</Link>
+              </Button>
+              <Link
+                to="/catalogue"
+                className="inline-flex min-h-11 items-center text-sm font-medium text-white underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-signal"
+              >
+                Browse the catalogue
+              </Link>
             </div>
           </div>
-          <ul
-            className="hero-fade mt-12 grid grid-cols-2 border-t border-white/15 pt-6 text-sm text-white/80 sm:flex sm:flex-wrap sm:justify-between sm:gap-6 lg:mt-14"
-            aria-label="What Linton promises"
-          >
-            {business.promises.map((promise) => (
-              <li key={promise} className="flex items-center gap-2.5 py-1.5">
-                <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-signal" aria-hidden="true" />
-                {promise}
-              </li>
-            ))}
-          </ul>
+          <figure className="relative mb-6 lg:mb-0">
+            <div className="hero-frame aspect-[5/4] overflow-hidden rounded-md bg-ink-soft sm:aspect-[16/9] lg:aspect-[1/1.08]">
+              <ResponsiveImage
+                src={heroPhoto.src}
+                sizes="(min-width: 1376px) 540px, (min-width: 1024px) 40vw, calc(100vw - 40px)"
+                alt={heroPhoto.alt}
+                loading="eager"
+                fetchPriority="high"
+                className="h-full w-full object-cover object-[50%_18%]"
+              />
+            </div>
+            <div className="hero-label-wrap hero-fade">
+              <ul className="hero-label" aria-label="What Linton promises">
+                {business.promises.map((promise) => (
+                  <li key={promise}>{promise}</li>
+                ))}
+              </ul>
+            </div>
+          </figure>
         </div>
       </section>
 
-      <section className="container-wide py-16 text-center lg:py-28">
-        <p className="eyebrow mb-6 text-muted-foreground">How we work</p>
-        <ScrubWords
-          as="h2"
-          className="mx-auto max-w-4xl text-[clamp(2.4rem,6vw,5.2rem)] font-bold uppercase leading-[0.98] tracking-[-0.045em]"
-        >
-          Service is our actual business.
-        </ScrubWords>
-        <dl className="mx-auto mt-10 grid max-w-3xl grid-cols-3 border-y text-left">
-          {business.milestones.map((m) => (
-            <div key={m.year} className="border-l px-4 py-5 first:border-l-0 sm:px-6">
-              <dt className="text-3xl font-bold tracking-tight [font-family:var(--font-display)] sm:text-4xl">
-                {m.year}
-              </dt>
-              <dd className="mt-1 text-xs leading-5 text-muted-foreground">
-                {m.year === '1999'
-                  ? 'Started with golf shirts'
-                  : m.year === '2001'
-                    ? 'Registered as a CC'
-                    : 'Became a (Pty) Ltd'}
-              </dd>
-            </div>
-          ))}
-        </dl>
-        <Link
-          to="/about"
-          className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium underline underline-offset-4"
-        >
-          Meet Linda &amp; Tony <ArrowRight size={15} />
-        </Link>
-      </section>
-
-      <section className="container-wide pb-16 lg:pb-28">
+      <section className="container-wide py-14 lg:py-24">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-5 lg:mb-8">
           <h2 className="section-title">What we supply</h2>
           <Link
@@ -294,57 +155,73 @@ export function Home() {
 
       <BrandWall />
 
-      <BrandPreview />
+      <BrandTeaser />
 
-      <section className="container-wide py-16 lg:py-28">
-        <div className="mb-6 lg:mb-10">
-          <span className="stitch mb-6 w-16 text-foreground/35" />
-          <p className="eyebrow mb-4 text-muted-foreground">Shop by occasion</p>
-          <h2 className="section-title max-w-xl">What is the order for?</h2>
+      {/* Shop by occasion: one real photo per occasion, the label on a dark fade for contrast. */}
+      <section className="container-wide py-14 lg:py-24" aria-labelledby="occasions-title">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-x-6 gap-y-3 lg:mb-10">
+          <div>
+            <span className="stitch mb-5 w-16 text-foreground/35" />
+            <p className="eyebrow mb-3 text-muted-foreground">Shop by occasion</p>
+            <h2 id="occasions-title" className="section-title max-w-xl">
+              What is the order for?
+            </h2>
+          </div>
         </div>
-        <div className="grid grid-cols-2 border-l border-t lg:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-2 sm:gap-3 lg:grid-cols-4 lg:gap-4">
           {occasions.map((occasion) => {
             const count = products.filter((p) => p.occasions.includes(occasion.id)).length
             return (
-              <Link
-                key={occasion.id}
-                to={`/catalogue?occasion=${occasion.id}`}
-                className="group flex min-h-24 flex-col justify-between border-b border-r p-4 transition-colors hover:bg-ink hover:text-white sm:min-h-36 sm:p-6 lg:min-h-52 lg:p-8"
-              >
-                <span className="flex items-start justify-between gap-2 sm:gap-4">
-                  <span className="text-lg font-bold leading-tight tracking-tight [font-family:var(--font-display)] sm:text-2xl lg:text-3xl">
-                    {occasion.label}
-                  </span>
-                  <ArrowUpRight
-                    size={20}
-                    aria-hidden="true"
-                    className="shrink-0 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-signal"
+              <li key={occasion.id}>
+                <Link
+                  to={`/catalogue?occasion=${occasion.id}`}
+                  className="occasion-tile group relative block aspect-square overflow-hidden rounded-md bg-ink text-white sm:aspect-[4/3] lg:aspect-[5/4]"
+                >
+                  <ResponsiveImage
+                    src={occasion.image}
+                    sizes="(min-width: 1376px) 308px, (min-width: 1024px) 23vw, 46vw"
+                    alt=""
+                    loading="lazy"
+                    style={{ objectPosition: occasion.focus }}
+                    className="occasion-photo absolute inset-0 h-full w-full object-cover"
                   />
-                </span>
-                <span className="mt-3 flex items-end justify-between gap-4 text-sm text-muted-foreground group-hover:text-white/70 sm:mt-6">
-                  <span className="hidden sm:inline">{occasion.note}</span>
-                  <span className="shrink-0 text-xs">{count} items</span>
-                </span>
-              </Link>
+                  <span className="occasion-fade absolute inset-0" aria-hidden="true" />
+                  <span className="absolute inset-x-3 bottom-3 sm:inset-x-4 sm:bottom-4 lg:inset-x-5 lg:bottom-5">
+                    <span className="flex items-end justify-between gap-2">
+                      <span className="text-[1.0625rem] font-bold leading-tight tracking-tight [font-family:var(--font-display)] sm:text-xl lg:text-2xl">
+                        {occasion.label}
+                      </span>
+                      <ArrowUpRight
+                        size={18}
+                        aria-hidden="true"
+                        className="mb-0.5 shrink-0 text-signal transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                      />
+                    </span>
+                    <span className="mt-1 block text-xs text-white/85">{count} items</span>
+                  </span>
+                </Link>
+              </li>
             )
           })}
-        </div>
+        </ul>
       </section>
 
-      <section className="bg-secondary py-14 lg:py-24">
+      {/* Gift sets on ink: the boxed sets read as premium, cards stay white. */}
+      <section className="on-ink bg-ink py-14 text-white lg:py-24">
         <ProductRail
           label="Gift sets"
+          tone="dark"
           items={giftSets.slice(0, 12)}
           heading={
             <>
-              <span className="stitch mb-6 w-16 text-foreground/35" />
+              <span className="stitch mb-6 w-16 text-signal" />
               <h2 className="section-title">Gift sets, boxed and branded.</h2>
             </>
           }
           action={
             <Link
               to="/catalogue?category=Gift+sets"
-              className="inline-flex min-h-11 items-center text-sm font-medium underline underline-offset-4"
+              className="inline-flex min-h-11 items-center text-sm font-medium underline decoration-white/40 underline-offset-4 hover:decoration-signal"
             >
               All {giftSets.length} gift sets
             </Link>
@@ -374,133 +251,79 @@ export function Home() {
         />
       </section>
 
-      <section className="on-ink bg-ink text-white">
-        <div className="container-wide py-16 lg:py-28">
-          <div className="grid gap-8 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-            <div>
-              <span className="stitch mb-6 w-16 text-signal" />
-              <p className="eyebrow mb-4 text-white/50">Ways to brand</p>
-              <h2 className="section-title max-w-sm">The right mark for the material.</h2>
-              <p className="mt-4 max-w-sm text-sm leading-6 text-white/65">
-                All done in-house. Not sure? We’ll advise.
-              </p>
-            </div>
-            <dl className="grid grid-cols-2 border-t border-white/15">
-              {methods.map((method, i) => (
-                <div
-                  key={method.name}
-                  className={`border-b border-white/15 py-4 pr-3 sm:py-6 sm:pr-8 ${i % 2 ? 'border-l pl-4 sm:pl-8' : ''}`}
+      <BrandingMethods />
+
+      <TrustBand />
+
+      {/* Closing band: how a request works, or talk to a person. */}
+      <section className="on-ink bg-ink text-white" aria-labelledby="request-title">
+        <div className="container-wide grid gap-12 py-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-20 lg:py-24">
+          <div>
+            <span className="stitch mb-6 w-16 text-signal" />
+            <h2 id="request-title" className="section-title mb-8 max-w-md lg:mb-12">
+              One request. Everything in it.
+            </h2>
+            <ol className="grid sm:grid-cols-3 sm:gap-8">
+              {steps.map((step) => (
+                <li
+                  key={step.n}
+                  className="request-step grid grid-cols-[3.25rem_1fr] items-baseline border-t py-4 sm:block sm:pt-5"
                 >
-                  <dt className="flex flex-col gap-1 text-base font-bold leading-tight tracking-tight [font-family:var(--font-display)] sm:flex-row sm:items-baseline sm:gap-3 sm:text-xl">
-                    <span className="text-xs font-medium text-signal">0{i + 1}</span>
-                    {method.name}
-                  </dt>
-                  <dd className="mt-2 text-xs leading-5 text-white/60">{method.best}</dd>
-                </div>
+                  <span className="text-2xl font-bold tracking-tight text-signal [font-family:var(--font-display)] sm:text-4xl">
+                    {step.n}
+                  </span>
+                  <span>
+                    <h3 className="text-lg font-bold sm:mb-1 sm:mt-5">{step.title}</h3>
+                    <p className="text-sm leading-6 text-white/75">{step.text}</p>
+                  </span>
+                </li>
               ))}
+            </ol>
+            <Button
+              asChild
+              size="lg"
+              className="mt-8 h-12 bg-signal px-6 text-ink hover:bg-signal/90 lg:mt-10"
+            >
+              <Link to="/catalogue">Start your selection</Link>
+            </Button>
+          </div>
+          <div className="request-talk border-t pt-10 lg:border-l lg:border-t-0 lg:pl-12 lg:pt-0">
+            <h3 className="text-2xl font-bold tracking-tight [font-family:var(--font-display)] lg:text-3xl">
+              Prefer to talk it through?
+            </h3>
+            <dl className="mt-6 grid gap-5 text-sm leading-6 text-white/85 sm:grid-cols-2 lg:grid-cols-1">
+              <div>
+                <dt className="mb-1 text-white/60">Call or email</dt>
+                <dd>
+                  <a
+                    href={business.phoneHref}
+                    className="inline-flex min-h-11 items-center hover:text-white sm:min-h-0"
+                  >
+                    {business.phoneDisplay}
+                  </a>
+                  <br />
+                  <a
+                    href={`mailto:${business.email}`}
+                    className="inline-flex min-h-11 items-center hover:text-white sm:min-h-0"
+                  >
+                    {business.email}
+                  </a>
+                </dd>
+              </div>
+              <div>
+                <dt className="mb-1 text-white/60">Hours</dt>
+                {business.hours.map((h) => (
+                  <dd key={h.days}>
+                    {h.days}: {h.time}
+                  </dd>
+                ))}
+              </div>
             </dl>
+            <ContactButton
+              variant="outline"
+              className="mt-7 h-12 border-white/30 bg-transparent px-6 text-white hover:bg-white/10 hover:text-white"
+            />
           </div>
-        </div>
-      </section>
-
-      <section className="py-16 lg:py-28" aria-labelledby="clients-title">
-        <div className="container-wide">
-          <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
-            <p id="clients-title" className="eyebrow text-muted-foreground">
-              In their words
-            </p>
-            <a
-              href={business.social.facebook}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm underline-offset-4 hover:underline"
-            >
-              <span className="font-bold">{business.facebookRating.percent}%</span> recommend us on
-              Facebook
-            </a>
-          </div>
-          <figure className="max-w-5xl">
-            <ScrubWords
-              as="blockquote"
-              className="text-[clamp(1.9rem,4.4vw,3.8rem)] font-bold leading-[1.05] tracking-[-0.035em] [font-family:var(--font-display)]"
-            >
-              “{lead.quote}”
-            </ScrubWords>
-            <figcaption className="mt-6 text-sm">
-              <span className="font-medium">{lead.name}</span>
-              <span className="text-muted-foreground"> · {lead.role}</span>
-            </figcaption>
-          </figure>
-        </div>
-        <div
-          className="rail rail-narrow rail-grid mt-10 border-t pt-8 lg:mt-14 lg:pt-10"
-          tabIndex={0}
-          role="region"
-          aria-label="More client reviews"
-        >
-          {quotes.map((t) => (
-            <figure key={t.name} className="border-l pl-4 lg:border-l-0 lg:pl-0">
-              <blockquote className="text-base leading-7">“{t.quote}”</blockquote>
-              <figcaption className="mt-4 text-xs leading-5">
-                <span className="font-medium">{t.name}</span>
-                <br />
-                <span className="text-muted-foreground">{t.role}</span>
-              </figcaption>
-            </figure>
-          ))}
-        </div>
-      </section>
-
-      <section className="border-t bg-secondary">
-        <div className="container-wide py-16 lg:py-28">
-          <h2 className="section-title mb-8 max-w-md lg:mb-12">One request. Everything in it.</h2>
-          <ol className="grid sm:grid-cols-3 sm:gap-10">
-            {steps.map((step) => (
-              <li
-                key={step.n}
-                className="grid grid-cols-[3.5rem_1fr] items-baseline border-t border-foreground py-4 sm:block sm:pt-5"
-              >
-                <span className="text-3xl font-bold tracking-tight [font-family:var(--font-display)] sm:text-5xl">
-                  {step.n}
-                </span>
-                <span>
-                  <h3 className="text-lg font-bold sm:mb-2 sm:mt-6 sm:text-xl">{step.title}</h3>
-                  <p className="text-sm leading-6 text-muted-foreground">{step.text}</p>
-                </span>
-              </li>
-            ))}
-          </ol>
-          <Button asChild className="mt-8 h-12 px-6 lg:mt-12">
-            <Link to="/catalogue">Start your selection</Link>
-          </Button>
-        </div>
-      </section>
-
-      <section className="on-ink bg-ink text-white">
-        <div className="container-wide grid gap-10 py-14 lg:grid-cols-[1.2fr_1fr_1fr_auto] lg:items-center">
-          <h2 className="section-title max-w-sm">Prefer to talk it through?</h2>
-          <div className="text-sm leading-6 text-white/80">
-            <p className="eyebrow mb-3 text-white/50">Call or email</p>
-            <a href={business.phoneHref} className="hover:text-white">
-              {business.phoneDisplay}
-            </a>
-            <br />
-            <a href={`mailto:${business.email}`} className="hover:text-white">
-              {business.email}
-            </a>
-          </div>
-          <div className="text-sm leading-6 text-white/80">
-            <p className="eyebrow mb-3 text-white/50">Hours</p>
-            {business.hours.map((h) => (
-              <p key={h.days}>
-                {h.days}: {h.time}
-              </p>
-            ))}
-          </div>
-          <ContactButton
-            variant="outline"
-            className="h-12 border-white/30 bg-transparent px-6 text-white hover:bg-white/10 hover:text-white"
-          />
         </div>
       </section>
     </>

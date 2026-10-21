@@ -107,3 +107,18 @@ The current pass adds no routes and preserves the product pages and expanded bui
 - [x] Typecheck, 16 unit tests, production build and 8 e2e tests pass; new throttled mobile measurement records LCP 2.424s and CLS 0.
 
 Review captures and reports: `docs/preview/hero-refresh/`. No generated product photographs, new categories, commits, pushes or deployments.
+
+## Homepage mobile pass — 21 October 2026 (Claude)
+
+Owner reviewed Home on a phone. Brief: `docs/PROMPT_HOMEPAGE_MOBILE_PASS.md`.
+
+- [x] Top demo banner removed from `Layout.tsx` (footer notice kept). Nothing depended on its height; e2e now asserts it is gone and the footer notice remains.
+- [x] Hero: plain headline, one sentence, one primary action (Request a quote) with the catalogue as a text link, one photo; the four promises sit on a sewn "woven label" on the photo edge. Fits one 390×844 / 360×800 screen.
+- [x] "Put your logo on it" → `BrandTeaser.tsx`: compact blue band with a shirt sketch; the builder opens in a Radix dialog (bottom sheet on phones), lazy-loaded (separate 32 kB chunk), unmounts on close so any logo is released. `BrandPreview.tsx` only gained an `embedded` layout prop.
+- [x] Shop by occasion: one real catalogue photo per occasion (`occasions[].image/focus` in `products.ts`, all already in `image-manifest.json`; unit test enforces it), label on an ink fade.
+- [x] Section palette: ink / paper / white / brand-blue / paper / ink (gift sets, white cards) / paper / brand-teal (ways to brand) / white (trust) / ink (closing). `bg-secondary` no longer used as a section background on Home.
+- [x] Rails: prev/next arrows hidden below 768px; next card peeks; stitched progress thread (`RailProgress`) under both rails and the review row.
+- [x] Ways to brand → `BrandingMethods.tsx`: six drawn line pictograms, method names and "best for" copy unchanged.
+- [x] Trust → `TrustBand.tsx`: "Service is our actual business." (manifesto folded in), 92% Facebook figure as a stitched meter, founders photo, milestones, one pull-quote, four compact cards with "Read more" when longer than two lines. "One request" steps merged into the ink closing band with contact.
+- [ ] **Stars (open):** `Testimonial.stars` exists but is unrendered. Needs a sourced per-review rating (e.g. from the reviewers' Facebook reviews) before it can be shown.
+- [ ] WebKit/iOS check of the builder dialog (sticky pin inside a scrolling dialog, drawer stacking) — not possible in this WSL host.

@@ -205,3 +205,41 @@ test('product page: direct load, meta, quantity, related products and back to th
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(before - 80)
   expect(errors).toEqual([])
 })
+
+test('home: the logo builder loads only when opened, and closes back to its trigger', async ({
+  page,
+}) => {
+  const errors: string[] = []
+  page.on('pageerror', (error) => errors.push(error.message))
+  const builderRequests: string[] = []
+  page.on('request', (request) => {
+    if (/MockupStage|BrandPreview|logo-upload/.test(request.url()))
+      builderRequests.push(request.url())
+  })
+  await page.goto('/')
+  await expect(page.locator('h1')).toBeVisible()
+  // No top demo banner; the notice stays in the footer.
+  await expect(page.getByText('Range to be confirmed')).toHaveCount(0)
+  await expect(page.getByText('Concept demo, not the live website')).toBeVisible()
+  const trigger = page.getByRole('button', { name: 'Try it with your logo' })
+  await trigger.scrollIntoViewIfNeeded()
+  expect(builderRequests).toEqual([])
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+  await trigger.click()
+  const dialog = page.getByRole('dialog', { name: 'Put your logo on it' })
+  await expect(dialog.getByRole('button', { name: 'Golf shirt' })).toBeVisible()
+  await page.keyboard.press('Escape')
+  await expect(dialog).toHaveCount(0)
+  await expect(trigger).toBeFocused()
+  await expect(trigger).toHaveAttribute('aria-expanded', 'false')
+
+  await trigger.click()
+  await dialog.getByLabel('Or type your company name').fill('Acme Mining')
+  await dialog.getByRole('button', { name: 'Add to my quote' }).click()
+  const stored = await page.evaluate(() => localStorage.getItem('linton-demo-basket-v1'))
+  expect(stored).toContain('Acme Mining')
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  )
+  expect(errors).toEqual([])
+})

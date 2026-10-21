@@ -93,3 +93,26 @@ The ink/paper/signal palette, Host Grotesk and Satoshi, original company facts a
 - Delivery: source-bounded AVIF/WebP srcsets, explicit dimensions, lazy secondary content, early hero discovery and critical-font preloads.
 
 No new motion library was added. Sharp is dev-only image tooling.
+
+## Homepage mobile pass — 21 October 2026 (Claude)
+
+Concept: Linton puts marks on garments, so the page borrows the garment's own language. The promises are a woven label sewn onto the hero photo; the "Put your logo on it" band shows a patch stitching onto a shirt chest. The stitch stays the only signature motion; nothing new animates on scroll except existing `.stitch` reveals (the teaser patch reuses them).
+
+Section rhythm on Home (light / dark / saturated, no `bg-secondary` bands):
+
+| Section | Background | Notes |
+| --- | --- | --- |
+| Hero | ink | One photo, `.hero-label` (paper, teal dashed seams at both ends) |
+| What we supply | paper | unchanged |
+| Brands we supply | white | unchanged (`BrandWall`) |
+| Put your logo on it | **brand blue** `#004298` | white text 9.4:1; builder opens in `.builder-dialog` |
+| Shop by occasion | paper | photo tiles, `.occasion-fade` ink gradient behind labels |
+| Gift sets | ink | `ProductRail tone="dark"`: cards become white panels |
+| Popular picks | paper | rail on phones, grid on desktop |
+| Ways to brand | **brand teal** `#029B97` | ink text 5.3:1 (white would fail at 3.4:1) |
+| Trust | white | blue 92% block with `.trust-meter`, founders photo |
+| Closing (steps + contact) | ink | then footer |
+
+- Rails: arrows from 768px only; `RailProgress` (dashed track, solid thumb; signal on dark) under each row.
+- Known quirk: the global `* { border-color }` rule is unlayered, so Tailwind `border-*/opacity` colour utilities lose to it. Set rule colours in CSS (see `.methods-grid`, `.request-step`) when they matter.
+- `Ink soft` is no longer used for the demo bar (removed); it remains the hero photo placeholder colour.

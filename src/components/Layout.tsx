@@ -134,13 +134,7 @@ export function Layout() {
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>
-      <div className="on-ink bg-ink-soft px-5 py-2 text-center text-xs tracking-wide text-white/75">
-        Concept demo <span className="mx-1.5 opacity-50">/</span>
-        <span className="hidden min-[360px]:inline">
-          Range to be confirmed <span className="mx-1.5 opacity-50">/</span>
-        </span>{' '}
-        No enquiries sent
-      </div>
+      {/* The demo notice lives in the footer only (owner request, 21 Oct 2026). */}
       <SmoothScroll />
       <header
         ref={headerRef}
