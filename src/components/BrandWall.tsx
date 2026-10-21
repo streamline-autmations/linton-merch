@@ -1,3 +1,4 @@
+import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { business } from '@/data/business'
 
 // Real brand marks for the ranges Linton lists on lintonent.co.za. Sources are recorded in
@@ -28,8 +29,9 @@ function Mark({ brand }: { brand: string }) {
     )
   const height = Math.round(heightFor(logo.ratio) * (logo.scale ?? 1))
   return (
-    <img
+    <ResponsiveImage
       src={logo.src}
+      sizes={`${Math.round(height * logo.ratio)}px`}
       alt={brand}
       loading="lazy"
       decoding="async"

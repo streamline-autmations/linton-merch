@@ -1,4 +1,13 @@
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type ChangeEvent, type CSSProperties, type ReactNode } from 'react'
+import {
+  useEffect,
+  useId,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ChangeEvent,
+  type CSSProperties,
+  type ReactNode,
+} from 'react'
 import { AlertCircle, Check, Download, Plus, Upload, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { MockupStage, type Placed } from '@/components/MockupStage'
@@ -140,16 +149,6 @@ export function BrandPreview() {
   }, [logo])
   useEffect(() => () => (logoRef.current ? releaseLogo(logoRef.current) : undefined), [])
 
-  // Fetch the other colours and views in the background so switching is instant.
-  useEffect(() => {
-    if (!seen) return
-    const idle = window.requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 800))
-    idle(() => {
-      for (const p of mockupProducts)
-        for (const c of p.colours) for (const v of p.views) new Image().src = p.photo(c.id, v.id)
-    })
-  }, [seen])
-
   const text = textLines(wording).join('\n') || PLACEHOLDER
 
   function artFor(p: Placement): ArtworkSource {
@@ -174,13 +173,24 @@ export function BrandPreview() {
     const art = artFor(stored)
     const placement = clampPlacement(stored, zone, artAspect(art))
     const look = art.kind === 'image' ? art.href : text
-    return [{ zone, placement, art, ink: effectiveInk(placement, kind, colour.dark), key: `${zone.id}-${look}` }]
+    return [
+      {
+        zone,
+        placement,
+        art,
+        ink: effectiveInk(placement, kind, colour.dark),
+        key: `${zone.id}-${look}`,
+      },
+    ]
   })
   const current = placed.find((p) => p.zone.id === state.selected)
 
   /** Changes this product's state; any change means the visitor has made it theirs. */
   function edit(change: (s: ProductState) => Partial<ProductState>) {
-    setStates((prev) => ({ ...prev, [product.id]: { ...prev[product.id], ...change(prev[product.id]), touched: true } }))
+    setStates((prev) => ({
+      ...prev,
+      [product.id]: { ...prev[product.id], ...change(prev[product.id]), touched: true },
+    }))
     setStatus('')
   }
 
@@ -201,7 +211,11 @@ export function BrandPreview() {
 
   function addZone(zoneId: string) {
     const zone = product.zones.find((z) => z.id === zoneId)!
-    edit((s) => ({ placements: { ...s.placements, [zoneId]: defaultPlacement(zone) }, selected: zoneId, view: zone.view }))
+    edit((s) => ({
+      placements: { ...s.placements, [zoneId]: defaultPlacement(zone) },
+      selected: zoneId,
+      view: zone.view,
+    }))
   }
 
   function removeZone(zoneId: string) {
@@ -216,7 +230,9 @@ export function BrandPreview() {
 
   function stepView(step: 1 | -1) {
     const i = product.views.findIndex((v) => v.id === state.view)
-    edit(() => ({ view: product.views[(i + step + product.views.length) % product.views.length].id }))
+    edit(() => ({
+      view: product.views[(i + step + product.views.length) % product.views.length].id,
+    }))
   }
 
   async function upload(file: File | undefined) {
@@ -238,16 +254,30 @@ export function BrandPreview() {
             const s = prev[p.id]
             if (!s.touched && p.zones.some((z) => z.auto)) {
               const zone = bestZone(p, aspect)
-              return [p.id, { ...s, placements: { [zone.id]: defaultPlacement(zone) }, selected: zone.id, view: zone.view }]
+              return [
+                p.id,
+                {
+                  ...s,
+                  placements: { [zone.id]: defaultPlacement(zone) },
+                  selected: zone.id,
+                  view: zone.view,
+                },
+              ]
             }
-            const placements = Object.fromEntries(Object.entries(s.placements).map(([k, pl]) => [k, { ...pl, ink: null }]))
+            const placements = Object.fromEntries(
+              Object.entries(s.placements).map(([k, pl]) => [k, { ...pl, ink: null }]),
+            )
             return [p.id, { ...s, placements }]
           }),
         ),
       )
       setStatus('')
     } catch (err) {
-      setUploadError(err instanceof LogoError ? err.message : "That file couldn't be read. Try saving it as a PNG.")
+      setUploadError(
+        err instanceof LogoError
+          ? err.message
+          : "That file couldn't be read. Try saving it as a PNG.",
+      )
     } finally {
       setUploading(false)
       if (fileRef.current) fileRef.current.value = ''
@@ -284,7 +314,11 @@ export function BrandPreview() {
     add(product.id)
     if (note) updateItem(product.id, { specification: note })
     const count = placed.length === 1 ? '1 position' : `${placed.length} positions`
-    setStatus(wasIn ? `Quote updated with ${count}.` : `Added to your quote${placed.length ? ` with ${count}` : ''}.`)
+    setStatus(
+      wasIn
+        ? `Quote updated with ${count}.`
+        : `Added to your quote${placed.length ? ` with ${count}` : ''}.`,
+    )
   }
 
   async function download() {
@@ -370,7 +404,11 @@ export function BrandPreview() {
           <Group label="Product">
             <div className="flex flex-wrap gap-2">
               {mockupProducts.map((option) => (
-                <Choice key={option.id} active={option.id === product.id} onClick={() => setProductId(option.id)}>
+                <Choice
+                  key={option.id}
+                  active={option.id === product.id}
+                  onClick={() => setProductId(option.id)}
+                >
                   {option.label}
                 </Choice>
               ))}
@@ -391,13 +429,29 @@ export function BrandPreview() {
               <>
                 <div className="flex items-center gap-2 rounded-md border bg-background p-2 pr-1">
                   <span className="logo-thumb h-11 w-11 shrink-0 rounded-sm">
-                    <img src={logoImage(logo).url} alt="" className="h-full w-full object-contain p-1" />
+                    <img
+                      src={logoImage(logo).url}
+                      alt=""
+                      className="h-full w-full object-contain p-1"
+                    />
                   </span>
                   <span className="min-w-0 flex-1 truncate text-sm">{logo.name}</span>
-                  <Button type="button" variant="ghost" size="sm" className="h-11" onClick={() => fileRef.current?.click()}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-11"
+                    onClick={() => fileRef.current?.click()}
+                  >
                     Replace
                   </Button>
-                  <Button type="button" variant="ghost" size="sm" className="h-11" onClick={removeLogo}>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="sm"
+                    className="h-11"
+                    onClick={removeLogo}
+                  >
                     <X aria-hidden="true" /> Remove
                   </Button>
                 </div>
@@ -422,7 +476,8 @@ export function BrandPreview() {
                   disabled={uploading}
                   onClick={() => fileRef.current?.click()}
                 >
-                  <Upload aria-hidden="true" /> {uploading ? 'Reading your logo…' : 'Upload your logo'}
+                  <Upload aria-hidden="true" />{' '}
+                  {uploading ? 'Reading your logo…' : 'Upload your logo'}
                 </Button>
                 <p className="mt-2 text-xs leading-5 text-muted-foreground">
                   PNG, JPG, WebP or SVG, up to 10 MB. Never uploaded.
@@ -457,10 +512,22 @@ export function BrandPreview() {
 
           {product.colours.length > 1 && (
             <Group label={`${product.label} colour`}>
-              <div className="flex flex-wrap gap-2" role="group" aria-label={`${product.label} colour`}>
+              <div
+                className="flex flex-wrap gap-2"
+                role="group"
+                aria-label={`${product.label} colour`}
+              >
                 {product.colours.map((c) => (
-                  <Choice key={c.id} active={c.id === colour.id} onClick={() => edit(() => ({ colour: c.id }))}>
-                    <span className="size-4 rounded-full border border-black/15" style={{ background: c.swatch }} aria-hidden="true" />
+                  <Choice
+                    key={c.id}
+                    active={c.id === colour.id}
+                    onClick={() => edit(() => ({ colour: c.id }))}
+                  >
+                    <span
+                      className="size-4 rounded-full border border-black/15"
+                      style={{ background: c.swatch }}
+                      aria-hidden="true"
+                    />
                     {c.name}
                   </Choice>
                 ))}
@@ -469,7 +536,10 @@ export function BrandPreview() {
           )}
 
           {product.zones.length > 1 && (
-            <Group label="Where it goes" aside={placed.length ? `${placed.length} chosen` : 'Pick at least one'}>
+            <Group
+              label="Where it goes"
+              aside={placed.length ? `${placed.length} chosen` : 'Pick at least one'}
+            >
               <div className="flex flex-wrap gap-2">
                 {product.zones.map((zone) => {
                   const on = !!state.placements[zone.id]
@@ -494,7 +564,9 @@ export function BrandPreview() {
                         aria-pressed={active}
                         className={cn(
                           'inline-flex min-h-11 items-center gap-1.5 rounded-l-sm border px-3 text-sm transition-colors',
-                          active ? 'border-ink bg-ink text-white' : 'border-ink/40 bg-secondary text-ink hover:border-ink',
+                          active
+                            ? 'border-ink bg-ink text-white'
+                            : 'border-ink/40 bg-secondary text-ink hover:border-ink',
                         )}
                         onClick={() => select(zone.id)}
                       >
@@ -505,8 +577,10 @@ export function BrandPreview() {
                         type="button"
                         aria-label={`Remove the ${zone.label.toLowerCase()}`}
                         className={cn(
-                          'inline-flex min-h-11 w-10 items-center justify-center rounded-r-sm border border-l-0 transition-colors',
-                          active ? 'border-ink bg-ink text-white/80 hover:text-white' : 'border-ink/40 bg-secondary text-ink/70 hover:text-ink',
+                          'inline-flex min-h-11 w-11 items-center justify-center rounded-r-sm border border-l-0 transition-colors',
+                          active
+                            ? 'border-ink bg-ink text-white/80 hover:text-white'
+                            : 'border-ink/40 bg-secondary text-ink/70 hover:text-ink',
                         )}
                         onClick={() => removeZone(zone.id)}
                       >
@@ -522,11 +596,22 @@ export function BrandPreview() {
           {current && (
             <Group label={current.zone.label} aside={METHOD_NAMES[current.placement.method]}>
               {current.placement.method === 'engraving' ? (
-                <p className="text-sm leading-6 text-muted-foreground">One colour: the metal itself.</p>
+                <p className="text-sm leading-6 text-muted-foreground">
+                  One colour: the metal itself.
+                </p>
               ) : (
-                <div className="flex flex-wrap items-center gap-2" role="group" aria-label={current.placement.method === 'embroidery' ? 'Thread colour' : 'Ink colour'}>
+                <div
+                  className="flex flex-wrap items-center gap-2"
+                  role="group"
+                  aria-label={
+                    current.placement.method === 'embroidery' ? 'Thread colour' : 'Ink colour'
+                  }
+                >
                   {logo && (
-                    <Choice active={current.placement.ink === null} onClick={() => patch(current.zone.id, { ink: null })}>
+                    <Choice
+                      active={current.placement.ink === null}
+                      onClick={() => patch(current.zone.id, { ink: null })}
+                    >
                       Logo colours
                     </Choice>
                   )}
@@ -541,8 +626,10 @@ export function BrandPreview() {
                         title={ink.name}
                         onClick={() => patch(current.zone.id, { ink: ink.value })}
                         className={cn(
-                          'h-10 w-10 rounded-full border border-black/15 transition-shadow',
-                          on ? 'ring-2 ring-ink ring-offset-2' : 'hover:ring-1 hover:ring-ink/40 hover:ring-offset-2',
+                          'h-11 w-11 rounded-full border border-black/15 transition-shadow',
+                          on
+                            ? 'ring-2 ring-ink ring-offset-2'
+                            : 'hover:ring-1 hover:ring-ink/40 hover:ring-offset-2',
                         )}
                         style={{ background: ink.value }}
                       />
@@ -560,18 +647,32 @@ export function BrandPreview() {
           )}
 
           <div className="flex flex-wrap items-center gap-3 border-t pt-6">
-            <Button variant="outline" className="h-auto min-h-12 px-5 py-3" disabled={saving || placed.length === 0} onClick={download}>
+            <Button
+              variant="outline"
+              className="h-auto min-h-12 px-5 py-3"
+              disabled={saving || placed.length === 0}
+              onClick={download}
+            >
               <Download aria-hidden="true" /> {saving ? 'Preparing…' : 'Download PNG'}
             </Button>
-            <Button className="h-auto min-h-12 max-w-full whitespace-normal px-5 py-3 text-left" onClick={addToQuote}>
+            <Button
+              className="h-auto min-h-12 max-w-full whitespace-normal px-5 py-3 text-left"
+              onClick={addToQuote}
+            >
               {inQuote ? <Check aria-hidden="true" /> : <Plus aria-hidden="true" />}
               {inQuote ? 'Update my quote' : 'Add to my quote'}
             </Button>
           </div>
-          <p className="mt-3 min-h-5 text-xs text-muted-foreground" role="status" aria-live="polite">
+          <p
+            className="mt-3 min-h-5 text-xs text-muted-foreground"
+            role="status"
+            aria-live="polite"
+          >
             {status}
           </p>
-          <p className="mt-1 text-xs leading-5 text-muted-foreground lg:hidden">A quick sketch, not an artwork proof.</p>
+          <p className="mt-1 text-xs leading-5 text-muted-foreground lg:hidden">
+            A quick sketch, not an artwork proof.
+          </p>
         </div>
       </div>
     </section>
@@ -579,7 +680,17 @@ export function BrandPreview() {
 }
 
 /** A control group: hairline above, label, optional note on the right. */
-function Group({ label, labelId, aside, children }: { label: string; labelId?: string; aside?: string; children: ReactNode }) {
+function Group({
+  label,
+  labelId,
+  aside,
+  children,
+}: {
+  label: string
+  labelId?: string
+  aside?: string
+  children: ReactNode
+}) {
   return (
     <div className="border-t pt-5 pb-6 first:border-t-0 first:pt-0">
       <div className="mb-3 flex items-baseline justify-between gap-3">
@@ -593,7 +704,15 @@ function Group({ label, labelId, aside, children }: { label: string; labelId?: s
   )
 }
 
-function Choice({ active, onClick, children }: { active: boolean; onClick: () => void; children: ReactNode }) {
+function Choice({
+  active,
+  onClick,
+  children,
+}: {
+  active: boolean
+  onClick: () => void
+  children: ReactNode
+}) {
   return (
     <button
       type="button"
@@ -601,7 +720,9 @@ function Choice({ active, onClick, children }: { active: boolean; onClick: () =>
       onClick={onClick}
       className={cn(
         'inline-flex min-h-11 items-center gap-2 rounded-sm border px-4 py-2 text-sm transition-colors',
-        active ? 'border-ink bg-ink text-white' : 'bg-white text-muted-foreground hover:border-ink hover:text-ink',
+        active
+          ? 'border-ink bg-ink text-white'
+          : 'bg-white text-muted-foreground hover:border-ink hover:text-ink',
       )}
     >
       {children}
@@ -641,7 +762,9 @@ function SizeField({
         max={100}
         step={1}
         value={percent}
-        aria-valuetext={size ? `${size.w} by ${size.h} millimetres` : `${percent} percent of the largest size`}
+        aria-valuetext={
+          size ? `${size.w} by ${size.h} millimetres` : `${percent} percent of the largest size`
+        }
         onChange={(e) => onScale(Number(e.target.value) / 100)}
       />
       <p className="text-xs text-muted-foreground">Drag it on the picture to move it.</p>

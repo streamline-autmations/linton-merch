@@ -48,23 +48,24 @@ const methods = [
 
 const heroPhotos = {
   main: {
-    src: '/products/alt-1101-r-lifestyle03.webp',
-    alt: 'A worker in a red polycotton conti suit and gumboots leaning against a corrugated-iron wall',
-    caption: 'Conti suits and workwear',
-    to: '/catalogue?category=Uniforms+%26+workwear',
+    src: '/hero/team-golf-shirts.webp',
+    alt: 'Two models wearing coordinated charcoal golf shirts with cyan shoulder details',
+    caption: 'A coordinated look for your team',
+    to: '/catalogue?category=Corporate+clothing',
   },
   side: [
     {
-      src: '/products/alt-bbm-dg1-mofr-027-no-logo.webp',
-      alt: 'A man wearing a bottle-green pique golf shirt and chinos',
-      caption: 'The golf shirt, since 1999',
-      to: '/catalogue?occasion=golf-day',
+      src: '/hero/uniform-detail.webp',
+      alt: 'Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket',
+      caption: 'Corporate shirts',
+      to: '/catalogue?category=Corporate+clothing',
     },
     {
-      src: '/gifts/an-gft-001-01-hero.webp',
-      alt: 'A black bottle, notebook and pen in front of a kraft gift box, each marked “Your brand”',
-      caption: 'Year-end gift sets',
+      src: '/hero/executive-gifting.webp',
+      alt: 'A black notebook, bottle with a gold lid and matching pen against a geometric backdrop',
+      caption: 'Executive gifting',
       to: '/catalogue?category=Gift+sets',
+      contain: true,
     },
   ],
 }
@@ -74,13 +75,13 @@ function HeroPhoto({
   className = '',
   eager = false,
 }: {
-  photo: { src: string; alt: string; caption: string; to: string }
+  photo: { src: string; alt: string; caption: string; to: string; contain?: boolean }
   className?: string
   eager?: boolean
 }) {
   return (
     <Link to={photo.to} className={`hero-photo group block ${className}`}>
-      <span className="hero-frame block h-[calc(100%-2rem)] overflow-hidden rounded-md bg-ink-soft">
+      <span className="hero-frame block h-[calc(100%_-_2rem)] overflow-hidden rounded-md bg-ink-soft">
         <span className="hero-shift block h-full w-full">
           <ResponsiveImage
             src={photo.src}
@@ -92,7 +93,7 @@ function HeroPhoto({
             alt={photo.alt}
             loading={eager ? 'eager' : 'lazy'}
             fetchPriority={eager ? 'high' : undefined}
-            className="hero-img h-full w-full object-cover object-top"
+            className={`hero-img h-full w-full ${photo.contain ? 'bg-ink object-contain' : 'object-cover object-top'}`}
           />
         </span>
       </span>
@@ -109,45 +110,12 @@ function useHeroMotion() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia()
-      // Parallax: photos sit at 1.2x inside their frames so a drift of up to 9% of their height
-      // never exposes the frame behind them.
-      mm.add(
-        {
-          desktop: `(min-width: 1024px) and ${MOTION_OK}`,
-          mobile: `(max-width: 1023px) and ${MOTION_OK}`,
-        },
-        (ctx) => {
-          if (!ctx.conditions?.desktop) return
-          const range = 2
-          // Parallax lives on a wrapper, the intro zoom on the image, so each reverts cleanly.
-          gsap.utils.toArray<HTMLElement>('.hero-shift').forEach((shift, i) => {
-            const drift = range * (i === 0 ? 1 : 0.6)
-            gsap.set(shift, { scale: 1.06 })
-            gsap.fromTo(
-              shift,
-              { yPercent: -drift },
-              {
-                yPercent: drift,
-                ease: 'none',
-                scrollTrigger: {
-                  trigger: shift.closest('.hero-photo'),
-                  start: 'top bottom',
-                  end: 'bottom top',
-                  scrub: true,
-                },
-              },
-            )
-          })
-        },
-      )
-      // Intro, once per load: the headline rises line by line, then the photos unroll like
-      // cloth coming off a bolt, top to bottom.
+      // Let the frames settle without zooming or drifting into the team photograph's faces.
       mm.add(MOTION_OK, () => {
         gsap
           .timeline({ defaults: { ease: 'expo.out' } })
           .from('.hero-line > span', { yPercent: 104, duration: 0.65, stagger: 0.08 })
           .from('.hero-frame', { y: 14, duration: 0.7, stagger: 0.08, ease: 'power3.out' }, 0.25)
-          .from('.hero-img', { scale: 1.04, duration: 0.8, stagger: 0.08 }, 0.15)
           .from('.hero-fade', { opacity: 0, y: 8, duration: 0.5, stagger: 0.04 }, 0.2)
       })
       return () => mm.revert()
@@ -179,7 +147,7 @@ export function Home() {
             </span>
           </h1>
           <div className="mt-10 grid gap-8 lg:mt-14 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.2fr)_minmax(0,0.75fr)] lg:gap-6">
-            <div className="hero-fade order-2 flex flex-col justify-between gap-8 lg:order-1 lg:pr-6">
+            <div className="hero-fade order-1 flex flex-col justify-between gap-8 lg:order-1 lg:pr-6">
               <div>
                 <p className="max-w-80 text-base leading-7 text-white/75">
                   <span className="text-white">{business.slogan}</span> Golf shirts to gift boxes,
@@ -220,11 +188,15 @@ export function Home() {
             <HeroPhoto
               photo={heroPhotos.main}
               eager
-              className="order-1 aspect-[4/4.5] lg:order-2 lg:aspect-auto lg:h-[560px]"
+              className="order-2 aspect-[4/4.5] lg:order-2 lg:aspect-auto lg:h-[560px]"
             />
-            <div className="order-3 grid grid-cols-2 gap-4 lg:grid-cols-1 lg:grid-rows-2 lg:gap-6">
+            <div className="hero-secondary order-3 grid grid-cols-2 gap-4 lg:h-[560px] lg:grid-cols-1 lg:grid-rows-[minmax(0,0.75fr)_minmax(0,1.25fr)] lg:gap-6">
               {heroPhotos.side.map((photo) => (
-                <HeroPhoto key={photo.src} photo={photo} className="aspect-square lg:aspect-auto" />
+                <HeroPhoto
+                  key={photo.src}
+                  photo={photo}
+                  className="aspect-[1/1.2] min-h-0 lg:aspect-auto"
+                />
               ))}
             </div>
           </div>

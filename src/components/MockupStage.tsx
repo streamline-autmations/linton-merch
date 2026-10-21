@@ -1,5 +1,13 @@
-import { useRef, useState, type CSSProperties, type DragEvent, type KeyboardEvent, type PointerEvent } from 'react'
+import {
+  useRef,
+  useState,
+  type CSSProperties,
+  type DragEvent,
+  type KeyboardEvent,
+  type PointerEvent,
+} from 'react'
 import { ZoomIn, ZoomOut } from 'lucide-react'
+import { gsap, MOTION_OK, useGSAP } from '@/lib/motion'
 import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { ArtworkLayer, artAspect, type ArtworkSource } from '@/components/MockupArtwork'
 import {
@@ -25,7 +33,14 @@ export interface Placed {
   key: string
 }
 
-type Drag = { kind: 'move' | 'resize'; zone: Zone; x: number; y: number; start: Placement; aspect: number }
+type Drag = {
+  kind: 'move' | 'resize'
+  zone: Zone
+  x: number
+  y: number
+  start: Placement
+  aspect: number
+}
 
 /** The product photo for one colour and view, with the visitor's artwork on it. */
 export function MockupStage({
@@ -58,6 +73,30 @@ export function MockupStage({
   onFile: (file: File) => void
 }) {
   const stageRef = useRef<HTMLDivElement>(null)
+  const viewportRef = useRef<HTMLDivElement>(null)
+  useGSAP(
+    () => {
+      if (!seen) return
+      const mm = gsap.matchMedia()
+      mm.add(MOTION_OK, () => {
+        gsap
+          .timeline()
+          .fromTo(
+            '.preview-seam-x',
+            { scaleX: 0 },
+            { scaleX: 1, duration: 0.5, stagger: 0.12, ease: 'power2.inOut' },
+          )
+          .fromTo(
+            '.preview-seam-y',
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.5, stagger: 0.12, ease: 'power2.inOut' },
+            0.18,
+          )
+      })
+      return () => mm.revert()
+    },
+    { scope: viewportRef, dependencies: [seen, product.id], revertOnUpdate: true },
+  )
   const drag = useRef<Drag | null>(null)
   const swipe = useRef<{ x: number; y: number } | null>(null)
   const [dragging, setDragging] = useState(false)
@@ -67,7 +106,9 @@ export function MockupStage({
   const H = product.height
   const viewLabel = product.views.find((v) => v.id === view)?.label ?? view
   const inView = placed.filter((p) => p.zone.view === view)
-  const empty = product.zones.filter((z) => z.view === view && !placed.some((p) => p.zone.id === z.id))
+  const empty = product.zones.filter(
+    (z) => z.view === view && !placed.some((p) => p.zone.id === z.id),
+  )
   const focus = inView.find((p) => p.zone.id === selected)
   const zoom = (zoomOn || autoZoom) && focus ? zoomFor(product, focus.zone) : null
 
@@ -92,7 +133,14 @@ export function MockupStage({
     e.stopPropagation()
     e.currentTarget.setPointerCapture(e.pointerId)
     const { x, y } = toPhoto(e)
-    drag.current = { kind, zone: item.zone, x, y, start: item.placement, aspect: artAspect(item.art) }
+    drag.current = {
+      kind,
+      zone: item.zone,
+      x,
+      y,
+      start: item.placement,
+      aspect: artAspect(item.art),
+    }
     setDragging(true)
     onSelect(item.zone.id)
   }
@@ -103,12 +151,27 @@ export function MockupStage({
     const pt = toPhoto(e)
     if (d.kind === 'move') {
       const delta = toZoneFrame(d.zone, pt.x - d.x, pt.y - d.y)
-      onChange(clampPlacement({ ...d.start, dx: d.start.dx + delta.x, dy: d.start.dy + delta.y }, d.zone, d.aspect))
+      onChange(
+        clampPlacement(
+          { ...d.start, dx: d.start.dx + delta.x, dy: d.start.dy + delta.y },
+          d.zone,
+          d.aspect,
+        ),
+      )
     } else {
       // The corner follows the pointer; the artwork grows or shrinks around its centre.
       const local = toZoneFrame(d.zone, pt.x - d.zone.cx, pt.y - d.zone.cy)
-      const width = Math.max(2 * Math.abs(local.x - d.start.dx), 2 * Math.abs(local.y - d.start.dy) * d.aspect)
-      onChange(clampPlacement({ ...d.start, scale: width / maxWidthFor(d.zone, d.aspect) }, d.zone, d.aspect))
+      const width = Math.max(
+        2 * Math.abs(local.x - d.start.dx),
+        2 * Math.abs(local.y - d.start.dy) * d.aspect,
+      )
+      onChange(
+        clampPlacement(
+          { ...d.start, scale: width / maxWidthFor(d.zone, d.aspect) },
+          d.zone,
+          d.aspect,
+        ),
+      )
     }
   }
 
@@ -156,6 +219,7 @@ export function MockupStage({
 
   return (
     <div
+      ref={viewportRef}
       className="mockup-viewport preview-canvas"
       data-dark={colour.dark || undefined}
       data-over={over || undefined}
@@ -181,7 +245,11 @@ export function MockupStage({
           draggable={false}
           className="brand-fade pointer-events-none absolute inset-0 h-full w-full object-contain mix-blend-multiply"
         />
-        <svg viewBox={`0 0 ${W} ${H}`} className="pointer-events-none absolute inset-0 h-full w-full" aria-hidden="true">
+        <svg
+          viewBox={`0 0 ${W} ${H}`}
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          aria-hidden="true"
+        >
           {seen &&
             inView.map((item) => (
               <ArtworkLayer
@@ -262,6 +330,10 @@ export function MockupStage({
         })}
       </div>
 
+      <span className="preview-seam preview-seam-x seam-top" aria-hidden="true" />
+      <span className="preview-seam preview-seam-y seam-right" aria-hidden="true" />
+      <span className="preview-seam preview-seam-x seam-bottom" aria-hidden="true" />
+      <span className="preview-seam preview-seam-y seam-left" aria-hidden="true" />
       {focus && (
         <button
           type="button"
@@ -270,7 +342,11 @@ export function MockupStage({
           onClick={() => setZoomOn((z) => !z)}
           onPointerDown={(e) => e.stopPropagation()}
         >
-          {zoomOn ? <ZoomOut size={16} aria-hidden="true" /> : <ZoomIn size={16} aria-hidden="true" />}
+          {zoomOn ? (
+            <ZoomOut size={16} aria-hidden="true" />
+          ) : (
+            <ZoomIn size={16} aria-hidden="true" />
+          )}
           {zoomOn ? 'Zoom out' : 'Zoom in'}
         </button>
       )}
@@ -284,18 +360,19 @@ export function MockupStage({
 }
 
 /**
- * Zooms by enlarging the stage inside the clipped viewport (not a CSS scale), so outlines and the
- * size label stay crisp. The zone's centre stays put and the photo always covers the viewport.
+ * Transform-only zoom keeps pointer coordinates in the same photo space without layout work.
+ * The zone centre stays put and the photo always covers the viewport.
  */
 function zoomFor(product: MockupProduct, zone: Zone): CSSProperties {
   const span = Math.max(zone.w, zone.h)
-  const scale = Math.max(1, Math.min(2.6, (0.5 * product.width) / span, (0.5 * product.height) / span))
+  const scale = Math.max(
+    1,
+    Math.min(2.6, (0.5 * product.width) / span, (0.5 * product.height) / span),
+  )
   const ox = zone.cx / product.width
   const oy = zone.cy / product.height
   return {
-    width: `${scale * 100}%`,
-    height: `${scale * 100}%`,
-    left: `${ox * (1 - scale) * 100}%`,
-    top: `${oy * (1 - scale) * 100}%`,
-  }
+    '--mockup-zoom': scale,
+    transform: `translate(${ox * (1 - scale) * 100}%, ${oy * (1 - scale) * 100}%) scale(${scale})`,
+  } as CSSProperties
 }

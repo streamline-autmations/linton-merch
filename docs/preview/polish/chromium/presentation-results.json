@@ -1,0 +1,198 @@
+[
+  {
+    "width": 320,
+    "route": "/",
+    "noOverflow": true,
+    "scroll": 320,
+    "viewport": 320
+  },
+  {
+    "width": 320,
+    "route": "/catalogue",
+    "noOverflow": true,
+    "scroll": 320,
+    "viewport": 320
+  },
+  {
+    "width": 320,
+    "route": "/quote",
+    "noOverflow": true,
+    "scroll": 320,
+    "viewport": 320
+  },
+  {
+    "width": 320,
+    "route": "/about",
+    "noOverflow": true,
+    "scroll": 320,
+    "viewport": 320
+  },
+  {
+    "width": 320,
+    "route": "/product/corporate-shirt",
+    "noOverflow": true,
+    "scroll": 320,
+    "viewport": 320
+  },
+  {
+    "width": 390,
+    "route": "/",
+    "noOverflow": true,
+    "scroll": 390,
+    "viewport": 390
+  },
+  {
+    "width": 390,
+    "route": "/",
+    "accessibility": []
+  },
+  {
+    "width": 390,
+    "route": "/catalogue",
+    "noOverflow": true,
+    "scroll": 390,
+    "viewport": 390
+  },
+  {
+    "width": 390,
+    "route": "/catalogue",
+    "accessibility": []
+  },
+  {
+    "width": 390,
+    "route": "/quote",
+    "noOverflow": true,
+    "scroll": 390,
+    "viewport": 390
+  },
+  {
+    "width": 390,
+    "route": "/quote",
+    "accessibility": []
+  },
+  {
+    "width": 390,
+    "route": "/about",
+    "noOverflow": true,
+    "scroll": 390,
+    "viewport": 390
+  },
+  {
+    "width": 390,
+    "route": "/about",
+    "accessibility": []
+  },
+  {
+    "width": 390,
+    "route": "/product/corporate-shirt",
+    "noOverflow": true,
+    "scroll": 390,
+    "viewport": 390
+  },
+  {
+    "width": 390,
+    "route": "/product/corporate-shirt",
+    "accessibility": []
+  },
+  {
+    "width": 768,
+    "route": "/",
+    "noOverflow": true,
+    "scroll": 768,
+    "viewport": 768
+  },
+  {
+    "width": 768,
+    "route": "/catalogue",
+    "noOverflow": true,
+    "scroll": 768,
+    "viewport": 768
+  },
+  {
+    "width": 768,
+    "route": "/quote",
+    "noOverflow": true,
+    "scroll": 768,
+    "viewport": 768
+  },
+  {
+    "width": 768,
+    "route": "/about",
+    "noOverflow": true,
+    "scroll": 768,
+    "viewport": 768
+  },
+  {
+    "width": 768,
+    "route": "/product/corporate-shirt",
+    "noOverflow": true,
+    "scroll": 768,
+    "viewport": 768
+  },
+  {
+    "width": 1440,
+    "route": "/",
+    "noOverflow": true,
+    "scroll": 1440,
+    "viewport": 1440
+  },
+  {
+    "width": 1440,
+    "route": "/",
+    "accessibility": []
+  },
+  {
+    "width": 1440,
+    "route": "/catalogue",
+    "noOverflow": true,
+    "scroll": 1440,
+    "viewport": 1440
+  },
+  {
+    "width": 1440,
+    "route": "/catalogue",
+    "accessibility": []
+  },
+  {
+    "width": 1440,
+    "route": "/quote",
+    "noOverflow": true,
+    "scroll": 1440,
+    "viewport": 1440
+  },
+  {
+    "width": 1440,
+    "route": "/quote",
+    "accessibility": []
+  },
+  {
+    "width": 1440,
+    "route": "/about",
+    "noOverflow": true,
+    "scroll": 1440,
+    "viewport": 1440
+  },
+  {
+    "width": 1440,
+    "route": "/about",
+    "accessibility": []
+  },
+  {
+    "width": 1440,
+    "route": "/product/corporate-shirt",
+    "noOverflow": true,
+    "scroll": 1440,
+    "viewport": 1440
+  },
+  {
+    "width": 1440,
+    "route": "/product/corporate-shirt",
+    "accessibility": []
+  },
+  {
+    "enlargedText": true,
+    "width": 390,
+    "noOverflow": true,
+    "scroll": 390
+  }
+]

@@ -29,7 +29,8 @@ export function SmoothScroll() {
       lerp: 0.11,
       anchors: true,
       // Dialogs, sheets, horizontal rails, the gallery and the logo row scroll natively.
-      prevent: (node) => Boolean(node.closest('[role="dialog"], .rail, .gallery-track, .brand-marquee')),
+      prevent: (node) =>
+        Boolean(node.closest('[role="dialog"], .rail, .gallery-track, .brand-marquee')),
     })
     setLenis(instance)
     instance.on('scroll', ScrollTrigger.update)
@@ -42,6 +43,7 @@ export function SmoothScroll() {
       else instance.start()
     })
     observer.observe(document.body, { attributes: true, attributeFilter: ['data-scroll-locked'] })
+    if (document.body.hasAttribute('data-scroll-locked')) instance.stop()
     // Keyboard and focus scrolling are native: drop any wheel inertia so it cannot fight them.
     const cancelInertia = () => {
       if (!instance.isScrolling || instance.isStopped) return
@@ -73,6 +75,7 @@ export function SmoothScroll() {
         { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } },
       )
     })
+    return () => mm.revert()
   })
 
   // Lazy images and route changes alter the page height; keep trigger positions current.

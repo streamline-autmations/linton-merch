@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { ContactButton } from '@/components/ContactButton'
 import { Search, SlidersHorizontal, X } from 'lucide-react'
@@ -6,6 +6,10 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { ProductCard } from '@/components/ProductCard'
 import { categories, occasions, products } from '@/data/products'
+import { gsap, MOTION_OK, prefersReducedMotion, useGSAP } from '@/lib/motion'
+import { Flip } from 'gsap/Flip'
+
+gsap.registerPlugin(Flip)
 
 export function Catalogue() {
   const [params, setParams] = useSearchParams()
@@ -13,7 +17,24 @@ export function Catalogue() {
   const query = params.get('q') ?? ''
   const occasion = occasions.find((value) => value.id === params.get('occasion'))
   const [sort, setSort] = useState('curated')
+  const grid = useRef<HTMLDivElement>(null)
+  const previous = useRef<ReturnType<typeof Flip.getState> | null>(null)
+  function captureGrid() {
+    if (!grid.current || prefersReducedMotion() || window.innerWidth < 768) return
+    const visible = Array.from(grid.current.querySelectorAll<HTMLElement>('[data-product-id]'))
+      .filter((el) => {
+        const box = el.getBoundingClientRect()
+        return box.bottom > 0 && box.top < innerHeight
+      })
+      .slice(0, 16)
+    previous.current = Flip.getState(visible, { simple: true })
+  }
+  function reset() {
+    captureGrid()
+    setParams({}, { replace: true })
+  }
   function filter(key: string, value: string) {
+    captureGrid()
     const next = new URLSearchParams(params)
     if (value && value !== 'All products') next.set(key, value)
     else next.delete(key)
@@ -33,6 +54,44 @@ export function Catalogue() {
     )
     return sort === 'az' ? [...found].sort((a, b) => a.name.localeCompare(b.name)) : found
   }, [category, occasion, query, sort])
+  useGSAP(
+    () => {
+      const state = previous.current
+      previous.current = null
+      const mm = gsap.matchMedia()
+      mm.add(MOTION_OK, () => {
+        if (!grid.current) return
+        if (state && window.innerWidth >= 768) {
+          const targets = Array.from(grid.current.children)
+            .filter((el) => {
+              const box = el.getBoundingClientRect()
+              return box.bottom > 0 && box.top < innerHeight
+            })
+            .slice(0, 16)
+          Flip.from(state, {
+            targets,
+            duration: 0.42,
+            ease: 'power3.inOut',
+            scale: true,
+            prune: true,
+            onEnter: (elements) =>
+              gsap.fromTo(elements, { opacity: 0 }, { opacity: 1, duration: 0.24 }),
+          })
+        } else {
+          const visible = Array.from(grid.current.children)
+            .filter((el) => el.getBoundingClientRect().top < innerHeight)
+            .slice(0, 12)
+          gsap.fromTo(
+            visible,
+            { opacity: 0.5, y: 6 },
+            { opacity: 1, y: 0, duration: 0.28, stagger: 0.025, ease: 'power2.out' },
+          )
+        }
+      })
+      return () => mm.revert()
+    },
+    { scope: grid, dependencies: [results], revertOnUpdate: true },
+  )
   return (
     <div className="container-wide pb-20 pt-8 lg:pt-16">
       <div className="mb-6 lg:mb-10">
@@ -41,15 +100,15 @@ export function Catalogue() {
           A starting selection. Ask for anything you don’t see.
         </p>
       </div>
-      <div className="mb-4 flex gap-2 sm:mb-7 sm:gap-4">
-        <div className="relative flex-1">
+      <div className="mb-4 flex flex-wrap gap-2 sm:mb-7 sm:gap-4">
+        <div className="relative min-w-[min(100%,9rem)] flex-1">
           <Search size={18} className="absolute left-3.5 top-3.5 text-muted-foreground" />
           <Input
             type="search"
             enterKeyHint="search"
             aria-label="Search products"
             placeholder="Search golf shirts, navy…"
-            className="h-12 bg-white pl-11"
+            className="h-12 min-w-0 bg-white pl-11 pr-12"
             value={query}
             onChange={(e) => filter('q', e.target.value)}
           />
@@ -72,7 +131,10 @@ export function Catalogue() {
             id="sort"
             className="field h-12 w-28 text-sm sm:w-auto sm:min-w-44"
             value={sort}
-            onChange={(e) => setSort(e.target.value)}
+            onChange={(e) => {
+              captureGrid()
+              setSort(e.target.value)
+            }}
           >
             <option value="curated">Curated</option>
             <option value="az">A–Z</option>
@@ -95,7 +157,7 @@ export function Catalogue() {
           </button>
         ))}
       </div>
-      <div className="mb-6 flex min-h-11 items-center justify-between gap-2 border-t pt-4">
+      <div className="mb-6 flex min-h-11 flex-wrap items-center justify-between gap-2 border-t pt-4">
         <p className="text-xs text-muted-foreground" role="status">
           {results.length} {results.length === 1 ? 'product' : 'products'}
           {category !== 'All products' ? ` · ${category}` : ''}
@@ -114,14 +176,14 @@ export function Catalogue() {
           <Button
             variant="ghost"
             className="h-11 px-3 text-xs underline underline-offset-4"
-            onClick={() => setParams({}, { replace: true })}
+            onClick={reset}
           >
             Reset
           </Button>
         )}
       </div>
       {results.length ? (
-        <div className="product-grid gap-x-5 gap-y-10 lg:gap-x-7">
+        <div ref={grid} className="catalogue-grid product-grid gap-x-5 gap-y-10 lg:gap-x-7">
           {results.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
@@ -133,7 +195,7 @@ export function Catalogue() {
           </h2>
           <p className="mb-6 text-sm text-muted-foreground">Not listed? Ask us for it.</p>
           <div className="flex flex-wrap justify-center gap-3">
-            <Button className="h-11 px-5" onClick={() => setParams({}, { replace: true })}>
+            <Button className="h-11 px-5" onClick={reset}>
               Show all products
             </Button>
             <ContactButton variant="outline" className="h-11 px-5" label="Ask us" />

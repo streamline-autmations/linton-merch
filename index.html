@@ -5,13 +5,56 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <link
+      rel="preload"
+      href="/src/fonts/Satoshi-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/node_modules/@fontsource-variable/host-grotesk/files/host-grotesk-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <script>
+      // Discover the homepage LCP photo before the React bundle; other routes skip it.
+      if (location.pathname === '/') {
+        const hero = document.createElement('link')
+        hero.rel = 'preload'
+        hero.as = 'image'
+        hero.type = 'image/avif'
+        hero.href = '/media/hero-team-golf-shirts-1280.avif'
+        hero.imageSrcset =
+          '/media/hero-team-golf-shirts-160.avif 160w, /media/hero-team-golf-shirts-320.avif 320w, /media/hero-team-golf-shirts-640.avif 640w, /media/hero-team-golf-shirts-960.avif 960w, /media/hero-team-golf-shirts-1280.avif 1280w'
+        hero.imageSizes = '(min-width: 1376px) 520px, (min-width: 1024px) 42vw, calc(100vw - 40px)'
+        hero.fetchPriority = 'high'
+        document.head.appendChild(hero)
+      }
+    </script>
     <meta name="robots" content="noindex, nofollow" />
     <meta name="theme-color" content="#0e161d" />
     <meta
       name="description"
       content="A concept website for Linton Merch (Linton Enterprises): corporate clothing, gifts and uniforms. Explore sample products and try a demo quote builder."
     />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Linton Merch" />
+    <meta property="og:title" content="Linton Merch — Corporate clothing, gifts &amp; uniforms" />
+    <meta
+      property="og:description"
+      content="Explore the Linton Merch concept demo: corporate clothing, gifts and uniforms, branded in-house."
+    />
+    <meta property="og:image" content="https://linton-merch.vercel.app/og-linton.jpg" />
+    <meta
+      property="og:image:alt"
+      content="Linton Merch concept demo — corporate clothing, gifts and uniforms"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://linton-merch.vercel.app/og-linton.jpg" />
     <title>Linton Merch — Corporate clothing, gifts &amp; uniforms (concept demo)</title>
   </head>
   <body>

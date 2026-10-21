@@ -401,11 +401,8 @@ main#main-content:focus-visible {
   top: 0;
   width: 100%;
   height: 100%;
-  transition:
-    left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-    height 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: top left;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 /* An empty branding position: a dashed area with a + to add artwork. */
 .mockup-empty {
@@ -706,4 +703,268 @@ main#main-content:focus-visible {
 }
 input[type='search']::-webkit-search-cancel-button {
   appearance: none;
+}
+
+/* Finishing pass: quiet plates, tactile actions, and one clean reveal on the founders photo. */
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.product-card > p:last-of-type {
+  margin-bottom: 0.9rem;
+}
+.product-card .quick-add {
+  margin-top: auto;
+  align-self: flex-start;
+}
+.product-photo {
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+.product-artwork > picture > img {
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.product-alternate {
+  transition: opacity 0.35s ease;
+}
+.product-card:focus-within .product-alternate {
+  opacity: 1;
+}
+.quick-add {
+  transition:
+    background-color 0.2s,
+    border-color 0.2s,
+    color 0.2s;
+}
+.product-card[data-selected] .quick-add {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: white;
+  opacity: 1;
+}
+.product-card[data-selected] .quick-add svg {
+  animation: mark-added 0.3s ease-out;
+}
+@keyframes mark-added {
+  from {
+    transform: scale(0.65);
+    opacity: 0;
+  }
+}
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-photo {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 22px -18px var(--ink);
+  }
+  .product-card:hover .product-artwork > picture > img:first-child {
+    transform: scale(1.025);
+  }
+  .product-card:hover .product-alternate {
+    opacity: 1;
+  }
+}
+.product-photo:active {
+  transform: scale(0.99);
+}
+.quick-add:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.photo-shutter {
+  position: absolute;
+  inset: 0;
+  background: var(--secondary);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  pointer-events: none;
+}
+/* Keep controls legible when the keyboard or browser chrome reduces the usable height. */
+input,
+textarea,
+select {
+  scroll-margin-top: calc(var(--header-offset, 0px) + 24px);
+  scroll-margin-bottom: 120px;
+}
+.mockup-view,
+.mockup-zoom {
+  min-height: 44px;
+}
+.mockup-view {
+  min-width: 44px;
+}
+.linton-dialog {
+  max-height: 92dvh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.linton-dialog[data-state='open'] {
+  animation: dialog-in 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.linton-dialog[data-state='closed'] {
+  animation: dialog-out 0.18s ease-in;
+}
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+}
+@keyframes dialog-out {
+  to {
+    opacity: 0;
+    transform: translateY(6px) scale(0.98);
+  }
+}
+.sheet-panel {
+  overscroll-behavior: contain;
+}
+.sheet-panel[data-state='open'] {
+  animation-duration: 0.4s;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+.sheet-panel[data-state='closed'] {
+  animation-duration: 0.2s;
+}
+.sheet-panel[data-state='open'] > :not(button) {
+  animation: sheet-content-in 0.25s 0.07s both;
+}
+@keyframes sheet-content-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+@media (max-width: 639px) {
+  .linton-dialog {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-width: none;
+    translate: none;
+    transform: none;
+    border-radius: 12px 12px 0 0;
+    padding: 28px 20px calc(20px + env(safe-area-inset-bottom));
+  }
+  .linton-dialog[data-state='open'] {
+    animation-name: mobile-dialog-in;
+  }
+  .linton-dialog[data-state='closed'] {
+    animation-name: mobile-dialog-out;
+  }
+  @keyframes mobile-dialog-in {
+    from {
+      opacity: 0.5;
+      transform: translateY(36px);
+    }
+  }
+  @keyframes mobile-dialog-out {
+    to {
+      opacity: 0;
+      transform: translateY(28px);
+    }
+  }
+  .product-card .quick-add {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .product-photo:hover,
+  .product-photo:active,
+  .product-card:hover .product-photo,
+  .product-card:hover .product-artwork > picture > img:first-child {
+    transform: none;
+  }
+}
+
+/* The live mark is framed by four stitched edges; the controls and artwork stay still. */
+.preview-seam {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+  color: var(--brand-teal);
+}
+.preview-seam-x {
+  height: 1px;
+  left: 8px;
+  right: 8px;
+  transform-origin: left;
+  background: repeating-linear-gradient(90deg, currentColor 0 6px, transparent 6px 11px);
+}
+.preview-seam-y {
+  width: 1px;
+  top: 8px;
+  bottom: 8px;
+  transform-origin: top;
+  background: repeating-linear-gradient(0deg, currentColor 0 6px, transparent 6px 11px);
+}
+.seam-top {
+  top: 8px;
+}
+.seam-bottom {
+  bottom: 8px;
+  transform-origin: right;
+}
+.seam-left {
+  left: 8px;
+  transform-origin: bottom;
+}
+.seam-right {
+  right: 8px;
+}
+.mockup-empty {
+  min-width: 44px;
+  min-height: 44px;
+}
+.mockup-frame::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100%, 44px);
+  height: max(100%, 44px);
+  transform: translate(-50%, -50%);
+}
+@media (max-width: 767px) {
+  .mockup-stage {
+    transition-duration: 0.2s;
+  }
+}
+
+/* Keep edit handles and dimensions at their physical size while the product zooms. */
+.mockup-size {
+  top: calc(100% + 8px / var(--mockup-zoom, 1));
+  padding: calc(2px / var(--mockup-zoom, 1)) calc(6px / var(--mockup-zoom, 1));
+  font-size: calc(11px / var(--mockup-zoom, 1));
+  line-height: 1.3;
+}
+.mockup-handle {
+  right: calc(-7px / var(--mockup-zoom, 1));
+  bottom: calc(-7px / var(--mockup-zoom, 1));
+  width: calc(14px / var(--mockup-zoom, 1));
+  height: calc(14px / var(--mockup-zoom, 1));
+  border-width: calc(1.5px / var(--mockup-zoom, 1));
+}
+.mockup-handle::after {
+  inset: calc(-15px / var(--mockup-zoom, 1));
+}
+.mockup-frame {
+  min-width: calc(14px / var(--mockup-zoom, 1));
+  min-height: calc(14px / var(--mockup-zoom, 1));
+  outline-width: calc(1.5px / var(--mockup-zoom, 1));
+}
+.mockup-frame::before {
+  width: max(100%, calc(44px / var(--mockup-zoom, 1)));
+  height: max(100%, calc(44px / var(--mockup-zoom, 1)));
+}
+.mockup-limit,
+.mockup-empty {
+  border-width: calc(1px / var(--mockup-zoom, 1));
+}
+.mockup-empty {
+  min-width: calc(44px / var(--mockup-zoom, 1));
+  min-height: calc(44px / var(--mockup-zoom, 1));
+  font-size: calc(1.1rem / var(--mockup-zoom, 1));
 }

@@ -21,7 +21,7 @@ export function ScrubWords({
         const split = SplitText.create(ref.current, { type: 'words', aria: 'auto' })
         gsap.fromTo(
           split.words,
-          { opacity: 0.14 },
+          { opacity: 0.68 },
           {
             opacity: 1,
             ease: 'none',
@@ -36,6 +36,7 @@ export function ScrubWords({
         )
         return () => split.revert()
       })
+      return () => mm.revert()
     },
     { scope: ref },
   )

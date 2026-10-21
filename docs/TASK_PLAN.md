@@ -32,7 +32,7 @@
 - [x] Home rebuilt; categories follow the live site; products renamed to match.
 - [x] About & contact page with real details and a local-only demo message form.
 - [x] Drawer signature motion; mobile review bar; sticky scrolling category chips.
-- [ ] Optimise hero image (WebP/AVIF) or move imagery to Cloudinary (owner plans this).
+- [x] Optimise hero image (local AVIF/WebP srcsets, completed 21 Oct 2026).
 - [ ] Quote page polish: styled artwork picker, sticky mobile summary.
 - [x] Replace placeholder favicon with a logo-derived one.
 - [ ] Codex review (read-only) of the redesign.
@@ -82,3 +82,28 @@
 4. Refresh the Netlify build and walk the client through the selection-to-brief story.
 
 Keep production capabilities out of this MVP. A real enquiry receiver, privacy wording, spam protection and file upload need a separately agreed production scope.
+
+## Production visual finishing — 21 October 2026 (Codex)
+
+- [x] Audit initial product/gift/hero/About imagery before bulk changes; record file issues and source corrections in `IMAGE_PROVENANCE.md`.
+- [x] Replace three collage/model primaries with matching no-logo pack shots; normalise chef-jacket framing; restore larger founders original; preserve complete gift compositions.
+- [x] Generate and verify AVIF/WebP srcsets and intrinsic dimensions for 122 source assets; optimise logo and hero delivery; retain originals/provenance.
+- [x] Align desktop hero and move mobile actions above imagery; refine cards, galleries, empty/search states, focus, target sizes and drawer/dialog motion.
+- [x] Add restrained catalogue reflow, stitched builder frame and About photo reveal; use transform zoom; verify reduced-motion cleanup.
+- [x] Add static branded OG/Twitter share image; retain logo-derived icons, noindex, page titles and 404 recovery.
+- [x] Typecheck, 16 unit tests, build and 8 desktop/mobile e2e journeys pass; production screenshot/a11y/overflow checks and throttled mobile/Lighthouse measurements recorded in QA report.
+- [ ] Safari/iOS rendering: WebKit downloaded, host dependencies unavailable in WSL. No Safari result claimed.
+- [ ] Owner assets: sharper real founders portrait; higher-resolution Altitude/Elevate and approved Barron/Pro-Active/Rolando logos. No generated substitute required.
+
+The current pass adds no routes and preserves the product pages and expanded builder that were already present on resumption. Changes from this pass are left for owner review; no commit or push was run.
+
+## Hero photography refinement — 21 October 2026 (Codex)
+
+- [x] Find sharper real supplier originals and record source/crop details.
+- [x] Replace the homepage image trio with coordinated corporate clothing, shirt detail and executive gifting; preserve existing catalogue assets.
+- [x] Adjust desktop/mobile frames and remove face-clipping photo drift/zoom; retain the existing frame/type intro and reduced-motion handling.
+- [x] Deliver responsive AVIF/WebP, intrinsic dimensions and a matching high-priority preload; supporting images stay lazy.
+- [x] Inspect revised hero at 1440/1024/390/320px; capture tablet, 360px and landscape too; verify no overflow, broken images, accessibility violations or duplicate lead requests.
+- [x] Typecheck, 16 unit tests, production build and 8 e2e tests pass; new throttled mobile measurement records LCP 2.424s and CLS 0.
+
+Review captures and reports: `docs/preview/hero-refresh/`. No generated product photographs, new categories, commits, pushes or deployments.

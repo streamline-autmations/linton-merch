@@ -1,0 +1,250 @@
+{
+  "baseURL": "http://127.0.0.1:4174",
+  "results": [
+    {
+      "width": 1440,
+      "height": 1200,
+      "overflow": false,
+      "heroBottom": 1195,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif",
+          "width": 519,
+          "height": 528
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-320.avif",
+          "width": 324,
+          "height": 169
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-320.avif",
+          "width": 324,
+          "height": 303
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 1024,
+      "height": 1100,
+      "overflow": false,
+      "heroBottom": 1140,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif",
+          "width": 371,
+          "height": 528
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-320.avif",
+          "width": 232,
+          "height": 169
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-320.avif",
+          "width": 232,
+          "height": 303
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "overflow": false,
+      "heroBottom": 1932,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif",
+          "width": 728,
+          "height": 787
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-640.avif",
+          "width": 356,
+          "height": 395
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-640.avif",
+          "width": 356,
+          "height": 395
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "overflow": false,
+      "heroBottom": 1337,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif",
+          "width": 350,
+          "height": 362
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-640.avif",
+          "width": 167,
+          "height": 168
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-640.avif",
+          "width": 167,
+          "height": 168
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 360,
+      "height": 800,
+      "overflow": false,
+      "heroBottom": 1420,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif",
+          "width": 320,
+          "height": 328
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-320.avif",
+          "width": 152,
+          "height": 150
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-320.avif",
+          "width": 152,
+          "height": 150
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 320,
+      "height": 740,
+      "overflow": false,
+      "heroBottom": 1363,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif",
+          "width": 280,
+          "height": 283
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-320.avif",
+          "width": 132,
+          "height": 126
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-320.avif",
+          "width": 132,
+          "height": 126
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-640.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "overflow": false,
+      "heroBottom": 1976,
+      "images": [
+        {
+          "alt": "Two models wearing coordinated charcoal golf shirts with cyan shoulder details",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif",
+          "width": 748,
+          "height": 810
+        },
+        {
+          "alt": "Close-up of a navy corporate shirt showing the collar, buttons and stitched chest pocket",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-uniform-detail-640.avif",
+          "width": 366,
+          "height": 407
+        },
+        {
+          "alt": "A black notebook, bottle with a gold lid and matching pen against a geometric backdrop",
+          "loaded": true,
+          "src": "http://127.0.0.1:4174/media/hero-executive-gifting-640.avif",
+          "width": 366,
+          "height": 407
+        }
+      ],
+      "leadRequests": [
+        "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif"
+      ],
+      "noindex": "noindex, nofollow",
+      "errors": [],
+      "violations": []
+    }
+  ]
+}

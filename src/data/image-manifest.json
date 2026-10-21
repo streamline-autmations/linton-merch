@@ -741,6 +741,27 @@
     "webp": "/media/story-linda-and-tony-160.webp 160w, /media/story-linda-and-tony-320.webp 320w, /media/story-linda-and-tony-640.webp 640w, /media/story-linda-and-tony-960.webp 960w, /media/story-linda-and-tony-1188.webp 1188w",
     "avif": "/media/story-linda-and-tony-160.avif 160w, /media/story-linda-and-tony-320.avif 320w, /media/story-linda-and-tony-640.avif 640w, /media/story-linda-and-tony-960.avif 960w, /media/story-linda-and-tony-1188.avif 1188w"
   },
+  "/hero/executive-gifting.webp": {
+    "width": 1400,
+    "height": 1400,
+    "src": "/media/hero-executive-gifting-1280.webp",
+    "webp": "/media/hero-executive-gifting-160.webp 160w, /media/hero-executive-gifting-320.webp 320w, /media/hero-executive-gifting-640.webp 640w, /media/hero-executive-gifting-960.webp 960w, /media/hero-executive-gifting-1280.webp 1280w",
+    "avif": "/media/hero-executive-gifting-160.avif 160w, /media/hero-executive-gifting-320.avif 320w, /media/hero-executive-gifting-640.avif 640w, /media/hero-executive-gifting-960.avif 960w, /media/hero-executive-gifting-1280.avif 1280w"
+  },
+  "/hero/team-golf-shirts.webp": {
+    "width": 1600,
+    "height": 1600,
+    "src": "/media/hero-team-golf-shirts-1280.webp",
+    "webp": "/media/hero-team-golf-shirts-160.webp 160w, /media/hero-team-golf-shirts-320.webp 320w, /media/hero-team-golf-shirts-640.webp 640w, /media/hero-team-golf-shirts-960.webp 960w, /media/hero-team-golf-shirts-1280.webp 1280w",
+    "avif": "/media/hero-team-golf-shirts-160.avif 160w, /media/hero-team-golf-shirts-320.avif 320w, /media/hero-team-golf-shirts-640.avif 640w, /media/hero-team-golf-shirts-960.avif 960w, /media/hero-team-golf-shirts-1280.avif 1280w"
+  },
+  "/hero/uniform-detail.webp": {
+    "width": 1400,
+    "height": 1255,
+    "src": "/media/hero-uniform-detail-1280.webp",
+    "webp": "/media/hero-uniform-detail-160.webp 160w, /media/hero-uniform-detail-320.webp 320w, /media/hero-uniform-detail-640.webp 640w, /media/hero-uniform-detail-960.webp 960w, /media/hero-uniform-detail-1280.webp 1280w",
+    "avif": "/media/hero-uniform-detail-160.avif 160w, /media/hero-uniform-detail-320.avif 320w, /media/hero-uniform-detail-640.avif 640w, /media/hero-uniform-detail-960.avif 960w, /media/hero-uniform-detail-1280.avif 1280w"
+  },
   "/brand/linton-logo-white.png": {
     "width": 2000,
     "height": 600,
@@ -754,5 +775,103 @@
     "src": "/media/brand-linton-merch-logo-colour-900.webp",
     "webp": "/media/brand-linton-merch-logo-colour-160.webp 160w, /media/brand-linton-merch-logo-colour-320.webp 320w, /media/brand-linton-merch-logo-colour-640.webp 640w, /media/brand-linton-merch-logo-colour-900.webp 900w",
     "avif": "/media/brand-linton-merch-logo-colour-160.avif 160w, /media/brand-linton-merch-logo-colour-320.avif 320w, /media/brand-linton-merch-logo-colour-640.avif 640w, /media/brand-linton-merch-logo-colour-900.avif 900w"
+  },
+  "/mockups/golf-shirt/black-back.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-black-back-1122.webp",
+    "webp": "/media/mockups-golf-shirt-black-back-160.webp 160w, /media/mockups-golf-shirt-black-back-320.webp 320w, /media/mockups-golf-shirt-black-back-640.webp 640w, /media/mockups-golf-shirt-black-back-960.webp 960w, /media/mockups-golf-shirt-black-back-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-black-back-160.avif 160w, /media/mockups-golf-shirt-black-back-320.avif 320w, /media/mockups-golf-shirt-black-back-640.avif 640w, /media/mockups-golf-shirt-black-back-960.avif 960w, /media/mockups-golf-shirt-black-back-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/black-front.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-black-front-1122.webp",
+    "webp": "/media/mockups-golf-shirt-black-front-160.webp 160w, /media/mockups-golf-shirt-black-front-320.webp 320w, /media/mockups-golf-shirt-black-front-640.webp 640w, /media/mockups-golf-shirt-black-front-960.webp 960w, /media/mockups-golf-shirt-black-front-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-black-front-160.avif 160w, /media/mockups-golf-shirt-black-front-320.avif 320w, /media/mockups-golf-shirt-black-front-640.avif 640w, /media/mockups-golf-shirt-black-front-960.avif 960w, /media/mockups-golf-shirt-black-front-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/black-side.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-black-side-1122.webp",
+    "webp": "/media/mockups-golf-shirt-black-side-160.webp 160w, /media/mockups-golf-shirt-black-side-320.webp 320w, /media/mockups-golf-shirt-black-side-640.webp 640w, /media/mockups-golf-shirt-black-side-960.webp 960w, /media/mockups-golf-shirt-black-side-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-black-side-160.avif 160w, /media/mockups-golf-shirt-black-side-320.avif 320w, /media/mockups-golf-shirt-black-side-640.avif 640w, /media/mockups-golf-shirt-black-side-960.avif 960w, /media/mockups-golf-shirt-black-side-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/blue-back.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-blue-back-1122.webp",
+    "webp": "/media/mockups-golf-shirt-blue-back-160.webp 160w, /media/mockups-golf-shirt-blue-back-320.webp 320w, /media/mockups-golf-shirt-blue-back-640.webp 640w, /media/mockups-golf-shirt-blue-back-960.webp 960w, /media/mockups-golf-shirt-blue-back-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-blue-back-160.avif 160w, /media/mockups-golf-shirt-blue-back-320.avif 320w, /media/mockups-golf-shirt-blue-back-640.avif 640w, /media/mockups-golf-shirt-blue-back-960.avif 960w, /media/mockups-golf-shirt-blue-back-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/blue-front.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-blue-front-1122.webp",
+    "webp": "/media/mockups-golf-shirt-blue-front-160.webp 160w, /media/mockups-golf-shirt-blue-front-320.webp 320w, /media/mockups-golf-shirt-blue-front-640.webp 640w, /media/mockups-golf-shirt-blue-front-960.webp 960w, /media/mockups-golf-shirt-blue-front-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-blue-front-160.avif 160w, /media/mockups-golf-shirt-blue-front-320.avif 320w, /media/mockups-golf-shirt-blue-front-640.avif 640w, /media/mockups-golf-shirt-blue-front-960.avif 960w, /media/mockups-golf-shirt-blue-front-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/blue-side.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-blue-side-1122.webp",
+    "webp": "/media/mockups-golf-shirt-blue-side-160.webp 160w, /media/mockups-golf-shirt-blue-side-320.webp 320w, /media/mockups-golf-shirt-blue-side-640.webp 640w, /media/mockups-golf-shirt-blue-side-960.webp 960w, /media/mockups-golf-shirt-blue-side-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-blue-side-160.avif 160w, /media/mockups-golf-shirt-blue-side-320.avif 320w, /media/mockups-golf-shirt-blue-side-640.avif 640w, /media/mockups-golf-shirt-blue-side-960.avif 960w, /media/mockups-golf-shirt-blue-side-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/white-back.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-white-back-1122.webp",
+    "webp": "/media/mockups-golf-shirt-white-back-160.webp 160w, /media/mockups-golf-shirt-white-back-320.webp 320w, /media/mockups-golf-shirt-white-back-640.webp 640w, /media/mockups-golf-shirt-white-back-960.webp 960w, /media/mockups-golf-shirt-white-back-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-white-back-160.avif 160w, /media/mockups-golf-shirt-white-back-320.avif 320w, /media/mockups-golf-shirt-white-back-640.avif 640w, /media/mockups-golf-shirt-white-back-960.avif 960w, /media/mockups-golf-shirt-white-back-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/white-front.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-white-front-1122.webp",
+    "webp": "/media/mockups-golf-shirt-white-front-160.webp 160w, /media/mockups-golf-shirt-white-front-320.webp 320w, /media/mockups-golf-shirt-white-front-640.webp 640w, /media/mockups-golf-shirt-white-front-960.webp 960w, /media/mockups-golf-shirt-white-front-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-white-front-160.avif 160w, /media/mockups-golf-shirt-white-front-320.avif 320w, /media/mockups-golf-shirt-white-front-640.avif 640w, /media/mockups-golf-shirt-white-front-960.avif 960w, /media/mockups-golf-shirt-white-front-1122.avif 1122w"
+  },
+  "/mockups/golf-shirt/white-side.webp": {
+    "width": 1122,
+    "height": 1402,
+    "src": "/media/mockups-golf-shirt-white-side-1122.webp",
+    "webp": "/media/mockups-golf-shirt-white-side-160.webp 160w, /media/mockups-golf-shirt-white-side-320.webp 320w, /media/mockups-golf-shirt-white-side-640.webp 640w, /media/mockups-golf-shirt-white-side-960.webp 960w, /media/mockups-golf-shirt-white-side-1122.webp 1122w",
+    "avif": "/media/mockups-golf-shirt-white-side-160.avif 160w, /media/mockups-golf-shirt-white-side-320.avif 320w, /media/mockups-golf-shirt-white-side-640.avif 640w, /media/mockups-golf-shirt-white-side-960.avif 960w, /media/mockups-golf-shirt-white-side-1122.avif 1122w"
+  },
+  "/brands/altitude.png": {
+    "width": 87,
+    "height": 19,
+    "src": "/media/brands-altitude-87.webp",
+    "webp": "/media/brands-altitude-87.webp 87w",
+    "avif": "/media/brands-altitude-87.avif 87w"
+  },
+  "/brands/cutter-buck.png": {
+    "width": 563,
+    "height": 160,
+    "src": "/media/brands-cutter-buck-563.webp",
+    "webp": "/media/brands-cutter-buck-160.webp 160w, /media/brands-cutter-buck-320.webp 320w, /media/brands-cutter-buck-563.webp 563w",
+    "avif": "/media/brands-cutter-buck-160.avif 160w, /media/brands-cutter-buck-320.avif 320w, /media/brands-cutter-buck-563.avif 563w"
+  },
+  "/brands/elevate.png": {
+    "width": 209,
+    "height": 59,
+    "src": "/media/brands-elevate-209.webp",
+    "webp": "/media/brands-elevate-160.webp 160w, /media/brands-elevate-209.webp 209w",
+    "avif": "/media/brands-elevate-160.avif 160w, /media/brands-elevate-209.avif 209w"
+  },
+  "/brands/ogio.png": {
+    "width": 245,
+    "height": 60,
+    "src": "/media/brands-ogio-245.webp",
+    "webp": "/media/brands-ogio-160.webp 160w, /media/brands-ogio-245.webp 245w",
+    "avif": "/media/brands-ogio-160.avif 160w, /media/brands-ogio-245.avif 245w"
+  },
+  "/brands/polo.png": {
+    "width": 177,
+    "height": 240,
+    "src": "/media/brands-polo-177.webp",
+    "webp": "/media/brands-polo-160.webp 160w, /media/brands-polo-177.webp 177w",
+    "avif": "/media/brands-polo-160.avif 160w, /media/brands-polo-177.avif 177w"
   }
 }

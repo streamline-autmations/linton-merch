@@ -1,0 +1,73 @@
+[
+  {
+    "route": "/",
+    "network": "1.6 Mbps down, 750 Kbps up, 150ms latency",
+    "cpu": "4× slowdown",
+    "lcp": 2704,
+    "cls": 0,
+    "longTasks": [
+      144,
+      300,
+      76
+    ],
+    "transferKB": 461,
+    "overflow": false,
+    "brokenVisible": [],
+    "images": [
+      {
+        "url": "brand-linton-logo-white-640.avif",
+        "width": 146.65625,
+        "source": 147
+      },
+      {
+        "url": "products-alt-1101-r-lifestyle03-762.avif",
+        "width": 350,
+        "source": 350
+      }
+    ],
+    "errors": []
+  },
+  {
+    "route": "/catalogue",
+    "network": "1.6 Mbps down, 750 Kbps up, 150ms latency",
+    "cpu": "4× slowdown",
+    "lcp": 2480,
+    "cls": 0,
+    "longTasks": [
+      135,
+      252,
+      65
+    ],
+    "transferKB": 396,
+    "overflow": false,
+    "brokenVisible": [],
+    "images": [
+      {
+        "url": "brand-linton-logo-white-640.avif",
+        "width": 146.65625,
+        "source": 147
+      },
+      {
+        "url": "products-bas-7756-w-640.avif",
+        "width": 165,
+        "source": 171
+      },
+      {
+        "url": "products-bas-7759-lb-640.avif",
+        "width": 165,
+        "source": 171
+      },
+      {
+        "url": "products-alt-pam-bl-640.avif",
+        "width": 165,
+        "source": 171
+      },
+      {
+        "url": "products-jc-av-118-a-n-640.avif",
+        "width": 165,
+        "source": 171
+      }
+    ],
+    "errors": []
+  }
+]

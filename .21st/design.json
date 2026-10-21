@@ -207,7 +207,12 @@
     "must": [],
     "avoid": []
   },
-  "decisions": [],
+  "decisions": [
+    {
+      "date": "2026-10-21",
+      "decision": "Preserve Linton ink/paper/signal, Host Grotesk and Satoshi. Refine the existing stitch with a framed builder reveal, restrained photo motion and transform-based catalogue reflow. Use native touch scrolling and visible, 44px controls."
+    }
+  ],
   "evidence": [
     {
       "fact": "components.installed",

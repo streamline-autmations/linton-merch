@@ -5,7 +5,13 @@ type ImageAsset = { width: number; height: number; src: string; webp: string; av
 const assets: Record<string, ImageAsset> = manifest
 
 /** All candidates retain the source aspect ratio; layout is reserved before decoding. */
-export function ResponsiveImage({ src = '', alt, sizes = '100vw', loading = 'lazy', ...props }: ImgHTMLAttributes<HTMLImageElement>) {
+export function ResponsiveImage({
+  src = '',
+  alt,
+  sizes = '100vw',
+  loading = 'lazy',
+  ...props
+}: ImgHTMLAttributes<HTMLImageElement>) {
   const asset = assets[src]
   return (
     <picture className="contents">

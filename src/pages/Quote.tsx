@@ -79,7 +79,7 @@ export function Quote() {
           <CheckCircle2 size={26} />
         </span>
         <p className="eyebrow mb-4 text-muted-foreground">Demo complete</p>
-        <h1 ref={headingRef} tabIndex={-1} className="page-title outline-none">
+        <h1 ref={headingRef} tabIndex={-1} className="page-title">
           Your brief is ready.
         </h1>
         <p className="mb-8 mt-5 max-w-xl text-base leading-7">
@@ -181,11 +181,7 @@ export function Quote() {
             ))}
           </ol>
           <form onSubmit={submit}>
-            <h2
-              ref={headingRef}
-              tabIndex={-1}
-              className="mb-7 text-2xl font-medium tracking-tight outline-none"
-            >
+            <h2 ref={headingRef} tabIndex={-1} className="mb-7 text-2xl font-medium tracking-tight">
               {step === 0 ? 'Your details' : 'Check and create'}
             </h2>
             {step === 0 && (

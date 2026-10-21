@@ -16,6 +16,7 @@ export function ProductCard({ product }: { product: Product }) {
     <article
       className="product-card min-w-0"
       data-product-id={product.id}
+      data-flip-id={product.id}
       data-selected={selected || undefined}
     >
       <Link

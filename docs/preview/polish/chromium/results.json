@@ -1,0 +1,432 @@
+{
+  "findings": [
+    {
+      "width": 1440,
+      "height": 1000,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1440,
+      "route": "/",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1440,
+      "route": "/catalogue",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1440,
+      "route": "/about",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1440,
+      "route": "/quote",
+      "violations": []
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1440,
+      "route": "/product/corporate-shirt",
+      "violations": []
+    },
+    {
+      "width": 896,
+      "route": "dialog-bounds",
+      "x": 272,
+      "y": 55,
+      "height": 890,
+      "inside": true
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 1024,
+      "height": 900,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 896,
+      "route": "dialog-bounds",
+      "x": 64,
+      "y": 47,
+      "height": 806,
+      "inside": true
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 744,
+      "route": "dialog-bounds",
+      "x": 12,
+      "y": 132,
+      "height": 760,
+      "inside": true
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 390,
+      "route": "/",
+      "violations": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 390,
+      "route": "/catalogue",
+      "violations": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 390,
+      "route": "/about",
+      "violations": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 390,
+      "route": "/quote",
+      "violations": []
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 390,
+      "route": "/product/corporate-shirt",
+      "violations": []
+    },
+    {
+      "width": 390,
+      "route": "dialog-bounds",
+      "x": 0,
+      "y": 430,
+      "height": 414,
+      "inside": true
+    },
+    {
+      "width": 390,
+      "route": "dialog",
+      "violations": []
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 360,
+      "height": 740,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 360,
+      "route": "dialog-bounds",
+      "x": 0,
+      "y": 356,
+      "height": 384,
+      "inside": true
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 320,
+      "height": 640,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 320,
+      "route": "dialog-bounds",
+      "x": 0,
+      "y": 296,
+      "height": 344,
+      "inside": true
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "route": "/",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "route": "/catalogue",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "route": "/about",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "route": "/quote",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 844,
+      "height": 390,
+      "route": "/product/corporate-shirt",
+      "overflow": false,
+      "brokenImages": [],
+      "missingAlt": [],
+      "atTop": 0
+    },
+    {
+      "width": 820,
+      "route": "dialog-bounds",
+      "x": 12,
+      "y": 15.6015625,
+      "height": 358.796875,
+      "inside": true
+    }
+  ],
+  "failures": [],
+  "errors": []
+}

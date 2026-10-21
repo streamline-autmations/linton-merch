@@ -28,7 +28,7 @@ export function ProductRail({
     if (!el) return
     const card = el.querySelector<HTMLElement>('[role="listitem"]')
     el.scrollBy({
-      left: dir * ((card?.offsetWidth ?? 300) + 20) * 2,
+      left: dir * ((card?.offsetWidth ?? 300) + 20) * (window.innerWidth < 768 ? 1 : 2),
       behavior: prefersReducedMotion() ? 'auto' : 'smooth',
     })
   }
@@ -39,7 +39,7 @@ export function ProductRail({
         <div className="flex items-center gap-5">
           {action}
           {/* Arrows for mouse users on wider screens; touch swipes. */}
-          <div className={cn('hidden gap-2 md:flex', grid && 'lg:hidden')}>
+          <div className={cn('flex gap-2', grid && 'lg:hidden')}>
             {([-1, 1] as const).map((dir) => (
               <button
                 key={dir}

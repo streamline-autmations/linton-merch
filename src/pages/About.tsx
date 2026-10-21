@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ContactButton } from '@/components/ContactButton'
 import { business } from '@/data/business'
+import { gsap, MOTION_OK, useGSAP } from '@/lib/motion'
 
 function MessageForm() {
   const [draft, setDraft] = useState({ name: '', email: '', message: '' })
@@ -15,10 +16,11 @@ function MessageForm() {
   const [copyFailed, setCopyFailed] = useState(false)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const nameRef = useRef<HTMLInputElement>(null)
-  const mounted = useRef(false)
+  const previousSummary = useRef(summary)
   useEffect(() => {
-    if (mounted.current) (summary ? headingRef.current : nameRef.current)?.focus()
-    mounted.current = true
+    if (previousSummary.current === summary) return
+    previousSummary.current = summary
+    ;(summary ? headingRef.current : nameRef.current)?.focus()
   }, [summary])
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -46,7 +48,7 @@ function MessageForm() {
   if (summary)
     return (
       <div className="rounded-md border bg-white p-6">
-        <h3 ref={headingRef} tabIndex={-1} className="text-xl font-bold outline-none">
+        <h3 ref={headingRef} tabIndex={-1} className="text-xl font-bold">
           Demo message ready.
         </h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
@@ -128,6 +130,32 @@ function MessageForm() {
 }
 
 export function About() {
+  const photo = useRef<HTMLDivElement>(null)
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia()
+      mm.add(MOTION_OK, () => {
+        gsap.fromTo(
+          '.photo-shutter',
+          { scaleY: 1 },
+          {
+            scaleY: 0,
+            duration: 0.65,
+            ease: 'power3.inOut',
+            scrollTrigger: { trigger: photo.current, start: 'top 88%', once: true },
+          },
+        )
+        gsap.from('.founders-photo', {
+          scale: 1.035,
+          duration: 0.9,
+          ease: 'power2.out',
+          scrollTrigger: { trigger: photo.current, start: 'top 88%', once: true },
+        })
+      })
+      return () => mm.revert()
+    },
+    { scope: photo },
+  )
   return (
     <>
       <section className="on-ink bg-ink text-white">
@@ -143,7 +171,7 @@ export function About() {
 
       <section className="container-wide grid gap-10 py-12 lg:grid-cols-[1fr_1.1fr] lg:gap-20 lg:py-24">
         <figure className="lg:sticky lg:top-8 lg:self-start">
-          <div className="overflow-hidden rounded-md bg-secondary">
+          <div ref={photo} className="relative overflow-hidden rounded-md bg-secondary">
             <ResponsiveImage
               src="/story/linda-and-tony.webp"
               alt="Linda and Tony, the founders of Linton Enterprises, smiling together"
@@ -151,8 +179,9 @@ export function About() {
               loading="eager"
               width={1188}
               height={863}
-              className="aspect-[1188/863] w-full object-cover object-[40%_center]"
+              className="founders-photo aspect-[1188/863] w-full object-cover object-[40%_center]"
             />
+            <span className="photo-shutter" aria-hidden="true" />
           </div>
           <figcaption className="mt-3 flex items-baseline justify-between gap-4 text-sm">
             <span>

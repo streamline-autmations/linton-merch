@@ -77,3 +77,19 @@ Next products: add photos per colour and view under `public/mockups/<product>/` 
 - **Product page:** gallery left, facts right (sticky on desktop); fact rows not chips; demo note uses the signal left-rule style.
 - **Tap targets:** Button default 44 px, `lg` 48 px, icon 44 px; Input 44 px.
 - **Drawer:** right sheet on ≥640 px, bottom sheet below.
+
+
+## Visual finishing pass — 21 October 2026 (Codex)
+
+The ink/paper/signal palette, Host Grotesk and Satoshi, original company facts and testimonials remain the authority. Existing product pages and the expanded live logo builder were preserved.
+
+- Hero: shorter type/photo settling, desktop-only 2% drift on the main workwear image; supporting images hold still so faces and gift contents stay in frame. Mobile copy/actions precede the main photograph. The desktop triptych has one consistent 560px height.
+- Catalogue: GSAP Flip reflows the currently visible cards on desktop filter/sort actions; newly mounted cards receive a brief entrance. Phones receive only a short opacity/6px response. All runs are scoped and reverted with `gsap.matchMedia`; no layout-property tweening.
+- Cards: a small desktop lift/zoom and an on-demand alternate photo; keyboard focus and the product gallery provide equivalent access. Quick-add becomes a solid ink confirmation with a brief check-mark settle. Equal-height card bodies align actions.
+- About: a single transform-based shutter and slight photo settle; the full founders composition remains visible.
+- Builder: four stitched edges draw around the existing preview, and zoom now animates a single transform. Source photo/placement coordinates and PNG export stay unchanged. Redundant speculative image warming is removed.
+- Dialogs/drawer: short eased entrance, quicker exit, staggered drawer content, 44px close buttons, native internal scrolling, safe-area bottom padding and phone bottom sheets. Desktop centering utilities only apply from `sm` upward.
+- Reading reveal: initial word opacity is 0.68 instead of 0.14, keeping contrast legible through the whole animation. Reduced motion returns all content to its final state and removes decorative motion.
+- Delivery: source-bounded AVIF/WebP srcsets, explicit dimensions, lazy secondary content, early hero discovery and critical-font preloads.
+
+No new motion library was added. Sharp is dev-only image tooling.

@@ -22,12 +22,21 @@ export default function App() {
             <Route
               path="*"
               element={
-                <section className="container-wide py-20">
+                <section className="container-wide py-20 lg:py-28">
+                  <span className="stitch mb-6 w-20 text-brand-teal" aria-hidden="true" />
                   <p className="eyebrow mb-5">Page not found</p>
                   <h1 className="page-title mb-6">That page doesn’t exist.</h1>
-                  <Button asChild>
-                    <Link to="/">Back to home</Link>
-                  </Button>
+                  <p className="mb-8 max-w-md text-base leading-7 text-muted-foreground">
+                    Find your way back to the catalogue or start again from home.
+                  </p>
+                  <div className="flex flex-wrap gap-3">
+                    <Button asChild>
+                      <Link to="/">Back to home</Link>
+                    </Button>
+                    <Button asChild variant="outline">
+                      <Link to="/catalogue">Browse the catalogue</Link>
+                    </Button>
+                  </div>
                 </section>
               }
             />

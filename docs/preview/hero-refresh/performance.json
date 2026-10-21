@@ -1,0 +1,17 @@
+{
+  "viewport": "390×844, DPR2, touch Chromium",
+  "network": "1.6 Mbps down / 750 Kbps up / 150ms latency",
+  "cpu": "4× slowdown",
+  "lcp": 2424,
+  "cls": 0,
+  "overflow": false,
+  "lead": "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif",
+  "leadRequests": [
+    {
+      "url": "http://127.0.0.1:4174/media/hero-team-golf-shirts-960.avif",
+      "bytes": 34768
+    }
+  ],
+  "brokenVisible": [],
+  "errors": []
+}
