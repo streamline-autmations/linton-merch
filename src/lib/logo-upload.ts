@@ -259,7 +259,7 @@ export function layoutText(text: string, weight: number): TextLayout {
   }
   const width = right - left
   const height = bottom - top
-  return { lines, aspect: Math.max(0.2, width / height), left, top, width, height, lineGap: LINE_GAP }
+  return { lines, aspect: width / height, left, top, width, height, lineGap: LINE_GAP }
 }
 
 /** The text as a tight black PNG data URL, so the download can place it like any logo. */

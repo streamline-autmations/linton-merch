@@ -210,10 +210,9 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
     edit((s) => ({ placements: { ...s.placements, [next.zoneId]: next } }))
   }
 
+  // Not clamped here: the render keeps it inside the area, so a passing limit is never saved.
   function patch(zoneId: string, change: Partial<Placement>) {
-    const zone = product.zones.find((z) => z.id === zoneId)!
-    const next = { ...state.placements[zoneId], ...change }
-    setPlacement(clampPlacement(next, zone, artAspect(artFor(next))))
+    setPlacement({ ...state.placements[zoneId], ...change })
   }
 
   function select(zoneId: string) {
@@ -235,8 +234,9 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
       const placements = { ...s.placements }
       delete placements[zoneId]
       const rest = product.zones.filter((z) => placements[z.id])
-      const selected = s.selected === zoneId ? (rest.at(-1)?.id ?? null) : s.selected
-      return { placements, selected }
+      if (s.selected !== zoneId) return { placements }
+      const next = rest.at(-1)
+      return { placements, selected: next?.id ?? null, view: next?.view ?? s.view }
     })
   }
 
