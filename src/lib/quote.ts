@@ -74,35 +74,80 @@ export function sanitiseBasket(value: unknown): QuoteItem[] {
   return [...unique.values()]
 }
 
-export function quoteSummary(items: QuoteItem[], brief: Brief): string {
-  return [
-    'LINTON MERCH — DEMO REQUEST',
-    'Concept only. No enquiry has been sent. Products, sizes, colours and branding are illustrative and subject to confirmation.',
+/** A short, readable reference for a request, e.g. LM-261022-7K4P. Made in the browser. */
+export function quoteReference(date = new Date()): string {
+  const alphabet = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789' // no 0/O or 1/I/L to misread
+  const bytes = new Uint8Array(4)
+  crypto.getRandomValues(bytes)
+  const code = [...bytes].map((b) => alphabet[b % alphabet.length]).join('')
+  const ymd = [date.getFullYear() % 100, date.getMonth() + 1, date.getDate()]
+    .map((n) => String(n).padStart(2, '0'))
+    .join('')
+  return `LM-${ymd}-${code}`
+}
+
+/** "22 October 2026". Accepts a Date or a YYYY-MM-DD string from a date input (read as local). */
+export function formatDate(value: Date | string): string {
+  const date =
+    typeof value === 'string'
+      ? (() => {
+          const [y, m, d] = value.split('-').map(Number)
+          return new Date(y, (m ?? 1) - 1, d ?? 1)
+        })()
+      : value
+  if (Number.isNaN(date.getTime())) return String(value)
+  return date.toLocaleDateString('en-ZA', { day: 'numeric', month: 'long', year: 'numeric' })
+}
+
+export interface QuoteMeta {
+  reference: string
+  /** When the request was confirmed. */
+  date: Date
+}
+
+export const totalUnits = (items: QuoteItem[]) =>
+  items.reduce((sum, item) => sum + item.quantity, 0)
+
+/** The request as plain text: what goes into WhatsApp, email and the clipboard. */
+export function quoteSummary(items: QuoteItem[], brief: Brief, meta: QuoteMeta): string {
+  const lines = [
+    `QUOTE REQUEST ${meta.reference}`,
+    formatDate(meta.date),
     '',
-    ...(items.length
-      ? [
-          'PRODUCT SELECTION',
-          ...items.map(
-            (item) =>
-              `${productById.get(item.productId)?.name ?? item.productId} (${item.productId}) — ${item.quantity} units${item.specification ? `\nPreferences: ${item.specification}` : ''}`,
-          ),
-          '',
-        ]
-      : []),
-    ...(brief.request.trim() ? ['WHAT WE NEED', brief.request.trim(), ''] : []),
-    'PROJECT BRIEF',
+    'Hello Linton Merch, please could you quote on the following.',
+    '',
+  ]
+  if (items.length) {
+    lines.push('PRODUCTS')
+    items.forEach((item, index) => {
+      const name = productById.get(item.productId)?.name ?? item.productId
+      lines.push(`${index + 1}. ${name} (${item.productId}) — ${item.quantity} units`)
+      if (item.specification.trim()) lines.push(`   Preferences: ${item.specification.trim()}`)
+    })
+    lines.push(`Total: ${totalUnits(items)} units`, '')
+  }
+  if (brief.request.trim()) lines.push('WHAT WE NEED', brief.request.trim(), '')
+  lines.push(
+    'DETAILS',
     `Branding: ${brief.branding}`,
-    `Delivery area: ${brief.location || 'Not provided'}`,
-    `Target date: ${brief.deadline || 'To be discussed'}`,
-    `Artwork filename: ${brief.artworkName || 'Not selected'} (not uploaded; file is not included in this summary)`,
-    `Notes: ${brief.notes || 'None'}`,
+    `Deliver to: ${brief.location.trim() || 'Not given'}`,
+    `Needed by: ${brief.deadline ? formatDate(brief.deadline) : 'Flexible'}`,
+    `Artwork: ${brief.artworkName ? `${brief.artworkName} (I'll send the file separately)` : 'To follow'}`,
+  )
+  if (brief.notes.trim()) lines.push(`Notes: ${brief.notes.trim()}`)
+  lines.push(
     '',
     'CONTACT',
-    `Name: ${brief.name}`,
-    `Company: ${brief.company}`,
-    `Email: ${brief.email}`,
-    `Phone: ${brief.phone || 'Not provided'}`,
-  ].join('\n')
+    `${brief.name.trim()} · ${brief.company.trim()}`,
+    brief.email.trim(),
+    ...(brief.phone.trim() ? [brief.phone.trim()] : []),
+  )
+  return lines.join('\n')
+}
+
+/** A mailto link to Linton with the request filled in. The visitor still presses Send. */
+export function emailLink(to: string, subject: string, body: string): string {
+  return `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
 }
 
 export function whatsappLink(number: string | undefined, message: string): string | null {
@@ -110,13 +155,4 @@ export function whatsappLink(number: string | undefined, message: string): strin
   // South African mobile numbers in international format. No placeholder destination.
   if (!/^27[6-8]\d{8}$/.test(clean)) return null
   return `https://wa.me/${clean}?text=${encodeURIComponent(message)}`
-}
-
-export function downloadSummary(summary: string) {
-  const url = URL.createObjectURL(new Blob([summary], { type: 'text/plain;charset=utf-8' }))
-  const link = document.createElement('a')
-  link.href = url
-  link.download = 'linton-demo-quote.txt'
-  link.click()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
 }

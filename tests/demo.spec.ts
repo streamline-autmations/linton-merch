@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-test('catalogue, persistent multi-product basket and complete demo RFQ', async ({ page }) => {
+test('catalogue, persistent multi-product basket and complete quote request', async ({ page }) => {
   const errors: string[] = []
   page.on('pageerror', (error) => errors.push(error.message))
   await page.goto('/catalogue')
@@ -33,47 +33,58 @@ test('catalogue, persistent multi-product basket and complete demo RFQ', async (
       .getByLabel('Corporate shirt quantity', { exact: true }),
   ).toHaveValue('40')
   await page.getByLabel('Colour, sizes & preferences').first().fill('Navy, 20 M + 20 L')
-  // Two steps: details, then review. Required fields block Continue until filled.
-  await page.getByRole('button', { name: 'Continue', exact: true }).click()
-  await expect(page.getByRole('heading', { name: 'Your details' })).toBeVisible()
-  await page.getByLabel('Your name').fill('Demo Person')
+  // Details, then review, then send. Required fields block Review until filled.
+  await page.getByRole('button', { name: 'Review request' }).click()
+  await expect(page.getByRole('heading', { name: 'Your details' })).toBeAttached()
+  await page.getByLabel('Your name').fill('Thandi Mokoena')
   await page.getByLabel(/^Company/).fill('Example Company')
-  await page.getByLabel('Email address').fill('demo@example.com')
+  await page.getByLabel('Email address').fill('thandi@example.com')
   await page.getByLabel('Delivery city & province').fill('Johannesburg, Gauteng')
   await page.getByLabel('Preferred branding').selectOption('Embroidery')
-  await page.getByText('Add a date, notes or artwork').click()
-  await page.getByLabel('Notes').fill('Sample annual team event')
+  await page.getByText('Add notes or artwork').click()
+  await page.getByLabel('Notes').fill('Annual team event')
   await page.getByLabel('Logo or artwork').setInputFiles({
     name: 'sample-logo.svg',
     mimeType: 'image/svg+xml',
     buffer: Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"/>'),
   })
-  await page.getByRole('button', { name: 'Continue', exact: true }).click()
-  await expect(page.getByText('Contact & delivery', { exact: true })).toBeVisible()
-  await page.getByRole('checkbox').check()
-  await page.getByRole('button', { name: 'Create demo request' }).click()
+  await page.getByRole('button', { name: 'Review request' }).click()
+  // Going back keeps the chosen artwork visible (the file input itself resets).
+  await page.getByRole('button', { name: 'Back to details' }).click()
+  await expect(page.getByText('On your request:')).toContainText('sample-logo.svg')
+  await page.getByRole('button', { name: 'Review request' }).click()
+  const draft = page.getByRole('article', { name: 'Quote request draft' })
+  await expect(draft).toContainText('Navy, 20 M + 20 L')
+  await expect(draft).toContainText('sample-logo.svg (sent separately)')
+  await page.getByRole('button', { name: 'Confirm request' }).click()
   await expect(
-    page.getByText('Nothing has been sent to Linton Merch.', { exact: true }),
+    page.getByRole('heading', { name: 'Your quote request is ready to send.' }),
   ).toBeVisible()
-  const summary = page.getByLabel('Request summary')
-  await expect(summary).toHaveValue(/Corporate shirt \(LM-001\) — 40 units/)
-  await expect(summary).toHaveValue(/Insulated bottle \(LM-016\) — 25 units/)
-  await expect(summary).toHaveValue(/Navy, 20 M \+ 20 L/)
-  await expect(summary).toHaveValue(/sample-logo.svg \(not uploaded/)
-  await expect(summary).toHaveValue(/Notes: Sample annual team event/)
-  await expect(summary).toHaveValue(/Branding: Embroidery/)
-  const download = page.waitForEvent('download')
-  await page.getByRole('button', { name: 'Download summary' }).click()
-  expect((await download).suggestedFilename()).toBe('linton-demo-quote.txt')
-  const stored = await page.evaluate(() => localStorage.getItem('linton-demo-basket-v1'))
-  expect(stored).not.toContain('demo@example.com')
-  await page.getByRole('button', { name: 'WhatsApp this brief' }).click()
-  // business.ts holds the confirmed number, so the dialog previews the message and offers the link.
-  await expect(page.getByRole('dialog')).toContainText('WhatsApp will open with this text ready')
-  await expect(page.getByRole('link', { name: 'Continue to WhatsApp' })).toHaveAttribute(
+  const sheet = page.getByRole('article', { name: /^Quote request LM-\d{6}-[A-Z2-9]{4}$/ })
+  await expect(sheet).toContainText('Corporate shirt')
+  await expect(sheet).toContainText('65 units')
+  await expect(sheet).toContainText('Embroidery')
+  await expect(sheet).toContainText('Annual team event')
+  await expect(page.locator('body')).not.toContainText(/\bdemo\b.*nothing|nothing is sent/i)
+  const whatsapp = page.getByRole('link', { name: /Send on WhatsApp/ })
+  await expect(whatsapp).toHaveAttribute(
     'href',
-    /^https:\/\/wa\.me\/27832259886\?text=/,
+    /^https:\/\/wa\.me\/27832259886\?text=QUOTE%20REQUEST%20LM-/,
   )
+  await expect(page.getByRole('link', { name: /Send by email/ })).toHaveAttribute(
+    'href',
+    /^mailto:linda@lintonent\.co\.za\?subject=Quote%20request%20LM-/,
+  )
+  const download = page.waitForEvent('download')
+  await page.getByRole('button', { name: /Download PDF/ }).click()
+  const file = await download
+  expect(file.suggestedFilename()).toMatch(/^Linton-Merch-quote-request-LM-\d{6}-[A-Z2-9]{4}\.pdf$/)
+  const { readFileSync } = await import('node:fs')
+  const pdf = readFileSync(await file.path())
+  expect(pdf.subarray(0, 5).toString()).toBe('%PDF-')
+  expect(pdf.length).toBeGreaterThan(20000)
+  const stored = await page.evaluate(() => localStorage.getItem('linton-demo-basket-v1'))
+  expect(stored).not.toContain('thandi@example.com')
   expect(errors).toEqual([])
 })
 

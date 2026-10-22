@@ -224,3 +224,23 @@ Owner asked for stars. The only sourced figure is "92% recommend us on Facebook"
 - Checks: typecheck OK; `pnpm test` 22/22 (new: summary with no products); `pnpm build` OK; `pnpm test:e2e` 10/10 desktop and mobile; `pnpm check:presentation` no overflow at any width. Visual: empty quote at 1440 and 390, full request flow to summary, WhatsApp link, About links, builder size label.
 - Codex read-only review: two findings, both fixed and checked in the browser. (1) Removing every product on the review step allowed a request with neither products nor a description; submit now returns to step 1. (2) Spaces alone passed the required field; the field now rejects them.
 - Not checked: WebKit / a physical phone (unchanged limit). `src/lib/mockup.test.ts` still fails `prettier --check` (long lines, before this pass).
+
+## Quote request upgrade — 22 October 2026 (Claude)
+
+- New: 3-step flow, document-style review, confirmation screen with reference, WhatsApp/email/share/download/copy, branded PDF. Demo wording removed from the quote flow and its touchpoints.
+- Checks: typecheck OK; `pnpm test` 24/24 (new: reference format, summary with reference/date/total, mailto encoding); `pnpm test:e2e` 10/10 desktop and mobile (now downloads the PDF and checks it is a real PDF); `pnpm build` OK (PDF code is its own lazy chunk, ~508 kB gzip, loaded only on the confirmation screen).
+- Visual: form, review and confirmation at 1440 and 390; PDF rendered with pdf.js — a three-product request fits on one A4 page, longer lists flow onto page 2 with a repeated header.
+- Fixed during the pass: the 4.8 MB master logo made PDF creation take ~23 s on the dev server; the PDF now uses an 800 px copy (`public/pdf/linton-logo-white.png`, 11 kB).
+- Not checked: WebKit / a physical phone (Web Share of the PDF only appears where the browser supports file sharing).
+
+## Logo builder on phones — 22 October 2026 (Claude)
+
+- Owner feedback from a phone: the pinned shirt disappeared while typing or adding a logo, the picture was too small, the sleeve area sat too far right, the area below the collar was too tall and narrow, and zoom was hard to use.
+- Sheet follows `window.visualViewport` (`src/lib/use-visual-viewport.ts`), so the keyboard can't pan the pinned picture off screen. While the keyboard is up the title bar hides, the picture fills the space above the keyboard, and the name field is scrolled to sit just under it. The automatic zoom while typing is gone. The picture is now 46svh (was 40svh), and the view tabs hide while typing.
+- The dialog no longer closes on outside taps or focus loss (the file picker); only X or Escape close it, because closing throws the work away.
+- Zoom: pinch, ctrl + wheel, − / + buttons, one-finger or mouse drag to pan when zoomed (a pinch carries straight on into a one-finger drag). When zoomed, the picture can take focus and arrow keys pan it. Zoom resets per product view.
+- Zones: left sleeve moved to cx 606 (was 652), 100 × 140 mm; below the collar is now 340 × 55 mm (was 270 × 80).
+- Checks: typecheck OK; `pnpm test` 24/24; builder e2e 2/2 (desktop and mobile). In the browser at 390 and 1440: pinch and pan via CDP touch emulation, pinch then one finger via synthetic TouchEvents, keyboard state simulated by setting `--vv-h: 420px`, zoom reset across views, no slide at 4×, keyboard pan, outside click keeps the dialog open, Escape closes it.
+- Codex read-only review: five P2 findings, all fixed and re-checked: zoom came back after changing views; offsets slid at max zoom; landscape keyboard could hide the field (picture minimum now 64px); no pan after a pinch; no keyboard pan.
+- Not checked: a physical iPhone or Android phone with the real keyboard (the simulated keyboard is an approximation).
+- Codex read-only review: five findings, all fixed and checked. (1) A long multi-line note ran off the PDF page; detail rows now continue line by line onto new pages with a "(continued)" label (checked with a 100-line note: 3 pages, nothing clipped). (2) Very long names overflowed the "Prepared by" line; it now wraps. (3) Share could lose the tap on phones if the PDF wasn't ready; the button waits ("Preparing your PDF…") and shares the ready file straight from the tap. (4) Spaces alone passed required fields (quote name, company, delivery; About name and message); they are now rejected. (5) After going back from review, the chosen artwork was invisible; the filename now shows with a Remove button (covered in e2e). Codex confirmed mailto/wa.me encoding round-trips accents, emoji, &, +, %, # and line breaks, and no contact data reaches localStorage.

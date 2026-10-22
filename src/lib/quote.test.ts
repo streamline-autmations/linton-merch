@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest'
-import { clampQuantity, emptyBrief, quoteSummary, sanitiseBasket, whatsappLink } from './quote'
+import {
+  clampQuantity,
+  emailLink,
+  emptyBrief,
+  quoteReference,
+  quoteSummary,
+  sanitiseBasket,
+  whatsappLink,
+} from './quote'
 
 describe('stored basket boundary', () => {
   it('rejects unknown products, malformed values and duplicates', () => {
@@ -24,8 +32,9 @@ describe('stored basket boundary', () => {
   })
 })
 
-describe('honest request handoff', () => {
-  it('includes every product, preferences and contact without implying delivery', () => {
+describe('request handoff', () => {
+  const meta = { reference: 'LM-261022-ABCD', date: new Date(2026, 9, 22) }
+  it('includes the reference, every product, preferences and contact', () => {
     const text = quoteSummary(
       [
         { productId: 'LM-001', quantity: 40, specification: 'Navy, 20 M + 20 L' },
@@ -33,29 +42,45 @@ describe('honest request handoff', () => {
       ],
       {
         ...emptyBrief,
-        name: 'Demo Person',
+        name: 'Thandi Mokoena',
         company: 'Example Co',
-        email: 'demo@example.com',
+        email: 'thandi@example.com',
         location: 'Cape Town',
-        artworkName: 'sample.png',
+        deadline: '2026-11-14',
+        artworkName: 'logo.svg',
       },
+      meta,
     )
-    expect(text).toContain('Corporate shirt (LM-001) — 40 units')
-    expect(text).toContain('Insulated bottle (LM-016) — 80 units')
-    expect(text).toContain('Navy, 20 M + 20 L')
-    expect(text).toContain('No enquiry has been sent')
-    expect(text).toContain('not uploaded')
-    expect(text).toContain('demo@example.com')
+    expect(text).toContain('QUOTE REQUEST LM-261022-ABCD')
+    expect(text).toContain('22 October 2026')
+    expect(text).toContain('1. Corporate shirt (LM-001) — 40 units')
+    expect(text).toContain('2. Insulated bottle (LM-016) — 80 units')
+    expect(text).toContain('Preferences: Navy, 20 M + 20 L')
+    expect(text).toContain('Total: 120 units')
+    expect(text).toContain('Needed by: 14 November 2026')
+    expect(text).toContain("logo.svg (I'll send the file separately)")
+    expect(text).toContain('thandi@example.com')
     expect(text).not.toContain('WHAT WE NEED')
+    expect(text.toLowerCase()).not.toContain('demo')
   })
   it('works with no products when they describe what they need', () => {
-    const text = quoteSummary([], {
-      ...emptyBrief,
-      name: 'Demo Person',
-      request: '  40 navy golf shirts, logo on the chest  ',
-    })
-    expect(text).not.toContain('PRODUCT SELECTION')
+    const text = quoteSummary(
+      [],
+      { ...emptyBrief, name: 'Thandi', request: '  40 navy golf shirts, logo on the chest  ' },
+      meta,
+    )
+    expect(text).not.toContain('PRODUCTS')
     expect(text).toContain('WHAT WE NEED\n40 navy golf shirts, logo on the chest')
+    expect(text).toContain('Needed by: Flexible')
+  })
+  it('makes short, unambiguous references', () => {
+    const ref = quoteReference(new Date(2026, 9, 2))
+    expect(ref).toMatch(/^LM-261002-[A-HJKMNP-Z2-9]{4}$/)
+  })
+  it('builds a filled-in email link', () => {
+    expect(emailLink('a@b.co', 'Quote request X', 'A & B\nhi')).toBe(
+      'mailto:a@b.co?subject=Quote%20request%20X&body=A%20%26%20B%0Ahi',
+    )
   })
   it('never builds a link to an empty or invalid WhatsApp recipient', () => {
     expect(whatsappLink(undefined, 'hello')).toBeNull()

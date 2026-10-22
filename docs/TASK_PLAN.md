@@ -138,3 +138,11 @@ Owner reviewed Home on a phone. Brief: `docs/PROMPT_HOMEPAGE_MOBILE_PASS.md`.
 - [x] Phones: the second photo shows on its own after a moment in view, then returns.
 - [x] Footer split into ruled bands; Facebook and Instagram icons added beside WhatsApp.
 - [x] "Put your logo on it" (and all section titles) get looser word spacing on phones.
+
+## Quote request upgrade (22 Oct 2026, Claude)
+
+- [x] Three steps: details (grouped "About you" / "Delivery & branding"), review as a document (`QuoteSheet`), then confirmation.
+- [x] Confirmation: reference number (`LM-YYMMDD-XXXX`), send on WhatsApp, send by email (mailto with subject and body), share the PDF (phones), download PDF, copy text; "What happens next"; edit or start a new request.
+- [x] Branded A4 PDF (`src/lib/quote-pdf.ts`, pdf-lib, lazy-loaded): navy masthead, from/to, product table with photos, details, next steps, page numbers. Host Grotesk (OFL) in `public/pdf/`; Satoshi kept off the PDF because its licence is unclear about generated documents.
+- [x] Demo wording removed from the quote flow, the WhatsApp dialog, the About message form, the product page note and the footer's "No enquiries are sent". The footer "Concept demo, not the live website" line stays (owner decision, 21 Oct).
+- [ ] Owner: decide whether requests should also arrive automatically (needs a form service or small backend, e.g. Netlify Forms or an email API).

@@ -42,6 +42,7 @@ import {
   type PositionSummary,
 } from '@/lib/mockup'
 import { recalledCompany, rememberCompany } from '@/lib/quote'
+import { useVisibleArea } from '@/lib/use-visual-viewport'
 import { cn } from '@/lib/utils'
 
 // "Put your logo on it": the visitor uploads a logo (or types their company name), picks where it
@@ -98,7 +99,7 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
   const [uploading, setUploading] = useState(false)
   const [uploadError, setUploadError] = useState<string | null>(null)
   const [fontsReady, setFontsReady] = useState(false)
-  // On phones the pinned picture shrinks and zooms while the keyboard is up.
+  // On phones the pinned picture fits itself above the keyboard while the visitor types.
   const [typing, setTyping] = useState(false)
   const [saving, setSaving] = useState(false)
   const [status, setStatus] = useState('')
@@ -106,6 +107,7 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
   const { items, add, update: updateItem } = useBasket()
   const ids = useId()
   const fileRef = useRef<HTMLInputElement>(null)
+  const textRef = useRef<HTMLTextAreaElement>(null)
   const logoRef = useRef(logo)
   const layoutCache = useRef(new Map<string, TextLayout>())
 
@@ -351,8 +353,27 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
     }
   }
 
+  // Phones, typing: the title bar steps aside and the picture takes what's left above the keyboard
+  // once the name field is in view. Otherwise it takes a little under half the screen.
+  const keyboardUp = narrow && typing
+  const area = useVisibleArea(keyboardUp)
   const ratio = product.width / product.height
-  const pinWidth = `min(100%, calc(${typing ? 24 : 40}svh * ${ratio.toFixed(3)}))`
+  const pinHeight = keyboardUp ? 'clamp(64px, calc(var(--vv-h, 100svh) - 125px), 46svh)' : '46svh'
+  const pinWidth = `min(100%, calc(${pinHeight} * ${ratio.toFixed(3)}))`
+
+  // Once the keyboard settles, line the name field up just under the pinned picture.
+  useEffect(() => {
+    if (!keyboardUp) return
+    const timer = window.setTimeout(() => {
+      const field = textRef.current
+      const pin = figureRef.current
+      const scroller = field?.closest<HTMLElement>('.builder-dialog')
+      if (!field || !pin || !scroller) return
+      const gap = field.getBoundingClientRect().top - pin.getBoundingClientRect().bottom - 6
+      if (Math.abs(gap) > 4) scroller.scrollBy({ top: gap })
+    }, 260)
+    return () => window.clearTimeout(timer)
+  }, [keyboardUp, area?.height])
 
   const Wrapper = embedded ? 'div' : 'section'
   return (
@@ -387,7 +408,7 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
           ref={figureRef}
           className="preview-pin relative lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-start"
         >
-          {product.views.length > 1 && (
+          {product.views.length > 1 && !keyboardUp && (
             <div className="mockup-views" role="group" aria-label="View">
               {product.views.map((v) => (
                 <button
@@ -416,7 +437,6 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
               placed={placed}
               selected={state.selected}
               seen={seen}
-              autoZoom={narrow && typing}
               onSelect={select}
               onAdd={addZone}
               onChange={setPlacement}
@@ -515,6 +535,7 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
                   Or type your company name
                 </label>
                 <textarea
+                  ref={textRef}
                   id={`${ids}-text`}
                   className="field resize-none text-base leading-6"
                   rows={Math.min(MAX_LINES, Math.max(2, wording.split('\n').length))}
@@ -796,7 +817,9 @@ function SizeField({
         }
         onChange={(e) => onScale(Number(e.target.value) / 100)}
       />
-      <p className="text-xs text-muted-foreground">Drag it on the picture to move it.</p>
+      <p className="text-xs leading-5 text-muted-foreground">
+        Drag it on the picture to move it. Pinch the picture, or use + and −, to zoom.
+      </p>
     </div>
   )
 }

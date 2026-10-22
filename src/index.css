@@ -466,23 +466,55 @@ main#main-content:focus-visible {
   color: #fff;
   pointer-events: none;
 }
+/* Zoom: − and + joined into one control in the corner. Pinch and ctrl + wheel do the same. */
 .mockup-zoom {
   position: absolute;
+  z-index: 2;
   right: 10px;
   bottom: 10px;
   display: inline-flex;
-  min-height: 40px;
-  align-items: center;
-  gap: 6px;
   border: 1px solid var(--border);
   border-radius: 4px;
   background: #fff;
-  padding: 0 12px;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  box-shadow: 0 1px 2px rgb(11 42 91 / 0.08);
 }
-.mockup-zoom:hover {
-  border-color: var(--ink);
+.mockup-zoom > button {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  color: var(--ink);
+  transition:
+    background-color 0.15s,
+    color 0.15s;
+}
+.mockup-zoom > button + button {
+  border-left: 1px solid var(--border);
+}
+.mockup-zoom > button:hover:not(:disabled) {
+  background: var(--secondary);
+}
+.mockup-zoom > button:disabled {
+  color: rgb(11 42 91 / 0.3);
+}
+.mockup-zoom > button:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: -2px;
+}
+/* Zoomed in, a drag on the photo moves it around instead of scrolling the page. */
+.mockup-viewport[data-zoomed] {
+  touch-action: none;
+  cursor: grab;
+}
+.mockup-viewport[data-gesture] {
+  cursor: grabbing;
+}
+.mockup-viewport:focus-visible {
+  outline: 2px solid var(--brand-blue);
+  outline-offset: 2px;
+}
+.mockup-viewport[data-gesture] .mockup-stage {
+  transition: none;
 }
 /* Views of the product: plain tabs above the photo. */
 .mockup-views {
@@ -1087,6 +1119,25 @@ select {
   overscroll-behavior: contain;
   padding-bottom: env(safe-area-inset-bottom);
 }
+/* Phones: the sheet tracks the visible screen (--vv-*, set while it's open). With the keyboard up
+   it fills exactly the part above the keyboard, so the pinned picture stays on screen. */
+@media (max-width: 1023.98px) {
+  .builder-dialog {
+    top: calc(var(--vv-top, 0px) + 4dvh);
+    bottom: auto;
+    height: calc(var(--vv-h, 100dvh) - 4dvh);
+  }
+  .builder-dialog[data-keyboard] {
+    --header-offset: 0px;
+    top: var(--vv-top, 0px);
+    height: var(--vv-h, 100dvh);
+    border-radius: 0;
+  }
+  /* Typing: the title bar gives its room to the picture; it's back when the keyboard closes. */
+  .builder-dialog[data-keyboard] .builder-bar {
+    display: none;
+  }
+}
 .builder-dialog[data-state='open'] {
   animation: builder-sheet-in 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1263,4 +1314,45 @@ select {
 .social-link:hover {
   background: #fff;
   color: var(--ink);
+}
+
+/* Quote request. The connectors between steps and the document's masthead seam are thread
+   (dashed teal); the confirmation ring sews itself in once, then the tick. */
+.step-thread {
+  display: block;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, currentColor 0 5px, transparent 5px 9px);
+}
+.sheet-thread {
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--brand-teal) 0 7px, transparent 7px 12px);
+}
+.quote-sheet {
+  box-shadow:
+    0 1px 0 rgb(11 42 91 / 0.04),
+    0 28px 56px -32px rgb(11 42 91 / 0.38);
+}
+.sewn-ring {
+  stroke-dasharray: 176;
+  stroke-dashoffset: 176;
+  transform: rotate(-90deg);
+  transform-origin: center;
+  animation: sew 1.1s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+}
+.sewn-tick {
+  stroke-dasharray: 36;
+  stroke-dashoffset: 36;
+  animation: sew 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) 1.15s forwards;
+}
+@keyframes sew {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sewn-ring,
+  .sewn-tick {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
 }

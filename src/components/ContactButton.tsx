@@ -51,12 +51,12 @@ export function ContactButton({
       <DialogContent className="max-h-[85dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {link ? 'Continue the conversation' : 'WhatsApp contact preview'}
+            {link ? 'Continue the conversation' : 'Your WhatsApp message'}
           </DialogTitle>
           <DialogDescription>
             {link
               ? 'Check your message below. WhatsApp will open with this text ready for you to send.'
-              : 'This demo is not connected to a WhatsApp number yet. Copy this message to try the contact flow. Nothing will be sent.'}
+              : `Copy this message and send it to ${business.tradingName} on WhatsApp at ${business.whatsappDisplay}.`}
           </DialogDescription>
         </DialogHeader>
         <textarea
@@ -83,7 +83,7 @@ export function ContactButton({
             ? 'Copy is unavailable in this browser. Select the message above and copy it manually.'
             : link
               ? 'Continuing opens WhatsApp with this full text in the link, including any contact details you entered. Nothing reaches Linton until you press Send in WhatsApp.'
-              : 'Add a confirmed South African WhatsApp number to enable the real contact link.'}
+              : null}
         </p>
       </DialogContent>
     </Dialog>

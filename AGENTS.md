@@ -21,7 +21,7 @@ This is a fast, polished sales demonstration for a potential South African clien
 - Routes: `/`, `/catalogue`, `/quote`, `/about` (About & contact) and `/product/:slug` (one page per catalogue product, added 21 Oct 2026 at the owner's request; slug derived in `products.ts`). Unknown routes and slugs show a simple recovery state.
 - 12–18 illustrative catalogue products; current seed has 16, grouped like the current Linton Enterprises site. Search, categories, details and add-to-quote.
 - Persistent product basket: IDs, quantities and product preferences only. Never persist RFQ contact details or artwork in localStorage.
-- Structured brief, contact, review, and honest local demo completion. Copy/download a summary.
+- Structured brief, contact, review, then a confirmation screen with a reference number: the visitor sends the request on WhatsApp or by email, downloads/shares a branded PDF (built in the browser) or copies the text. No demo wording in the quote flow (owner, 22 Oct 2026); the copy still never claims the request was sent or received.
 - WhatsApp preview when unconfigured; only a confirmed number enables a `wa.me` link. Never invent a recipient.
 - Static Netlify deploy. No backend, payment, login, chatbot, CMS, analytics or genuine uploads.
 

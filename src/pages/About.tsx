@@ -1,13 +1,21 @@
 import { ResponsiveImage } from '@/components/ResponsiveImage'
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
-import { Check, ChevronDown, Copy, MapPin, Phone, Mail, Clock } from 'lucide-react'
+import { Check, ChevronDown, Copy, MapPin, Phone, Mail, Clock, MessageCircle } from 'lucide-react'
+import { emailLink, whatsappLink } from '@/lib/quote'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { ContactButton } from '@/components/ContactButton'
 import { business } from '@/data/business'
 import { gsap, MOTION_OK, useGSAP } from '@/lib/motion'
+
+/** Spaces alone don't count as an answer in a required field. */
+function notBlank(event: { target: HTMLInputElement | HTMLTextAreaElement }) {
+  const { value } = event.target
+  event.target.setCustomValidity(value && !value.trim() ? 'Please fill in this field.' : '')
+  return value
+}
 
 function MessageForm() {
   const [draft, setDraft] = useState({ name: '', email: '', message: '' })
@@ -26,11 +34,12 @@ function MessageForm() {
     event.preventDefault()
     setSummary(
       [
-        'LINTON MERCH — DEMO MESSAGE (not sent)',
-        `Name: ${draft.name}`,
-        `Email: ${draft.email}`,
+        'Hello Linton Merch,',
         '',
-        draft.message,
+        draft.message.trim(),
+        '',
+        draft.name.trim(),
+        draft.email.trim(),
       ].join('\n'),
     )
     setCopied(false)
@@ -45,15 +54,15 @@ function MessageForm() {
       setCopyFailed(true)
     }
   }
+  const whatsapp = summary ? whatsappLink(business.whatsappNumber, summary) : null
   if (summary)
     return (
       <div className="rounded-md border bg-white p-6">
         <h3 ref={headingRef} tabIndex={-1} className="text-xl font-bold">
-          Demo message ready.
+          Your message is ready to send.
         </h3>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          <strong className="font-medium text-foreground">Nothing has been sent.</strong> Copy it,
-          or use the contact details.
+          Send it on WhatsApp or by email. It reaches us when you press send.
         </p>
         <label htmlFor="message-summary" className="field-label mt-5">
           Message text
@@ -65,6 +74,20 @@ function MessageForm() {
           className="field min-h-36 text-sm leading-6"
         />
         <div className="mt-4 flex flex-wrap gap-3">
+          {whatsapp && (
+            <Button asChild>
+              <a href={whatsapp} target="_blank" rel="noopener noreferrer">
+                <MessageCircle size={16} />
+                Send on WhatsApp
+              </a>
+            </Button>
+          )}
+          <Button asChild variant="outline">
+            <a href={emailLink(business.email, `Message from ${draft.name.trim()}`, summary)}>
+              <Mail size={16} />
+              Send by email
+            </a>
+          </Button>
           <Button variant="outline" onClick={copy}>
             {copied ? <Check size={16} /> : <Copy size={16} />}
             {copied ? 'Copied' : 'Copy message'}
@@ -92,7 +115,7 @@ function MessageForm() {
           required
           autoComplete="name"
           value={draft.name}
-          onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+          onChange={(e) => setDraft({ ...draft, name: notBlank(e) })}
         />
       </div>
       <div>
@@ -118,13 +141,15 @@ function MessageForm() {
           maxLength={1500}
           className="min-h-32"
           value={draft.message}
-          onChange={(e) => setDraft({ ...draft, message: e.target.value })}
+          onChange={(e) => setDraft({ ...draft, message: notBlank(e) })}
         />
       </div>
       <Button type="submit" className="h-11 px-6">
-        Create demo message
+        Continue
       </Button>
-      <p className="text-xs leading-5 text-muted-foreground">Demo: nothing is sent or stored.</p>
+      <p className="text-xs leading-5 text-muted-foreground">
+        Next, you choose WhatsApp or email to send it.
+      </p>
     </form>
   )
 }

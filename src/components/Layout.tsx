@@ -346,7 +346,6 @@ export function Layout() {
           </div>
           <div className="footer-rule flex flex-col justify-between gap-1 border-t py-5 text-xs text-white/55 sm:flex-row">
             <span>Linton Enterprises · Concept demo, not the live website</span>
-            <span>No enquiries are sent.</span>
           </div>
         </div>
       </footer>

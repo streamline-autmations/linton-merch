@@ -1,8 +1,9 @@
-import { lazy, Suspense, useState } from 'react'
+import { lazy, Suspense, useState, type CSSProperties } from 'react'
 import * as DialogPrimitive from '@radix-ui/react-dialog'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { ResponsiveImage } from '@/components/ResponsiveImage'
+import { useVisibleArea } from '@/lib/use-visual-viewport'
 
 // The builder (mock-up stage, logo reading, export) is only fetched once the visitor opens it.
 const BrandPreview = lazy(() =>
@@ -16,6 +17,11 @@ const BrandPreview = lazy(() =>
  */
 export function BrandTeaser() {
   const [open, setOpen] = useState(false)
+  // The sheet follows the visible screen, so the keyboard can't push the pinned picture away.
+  const area = useVisibleArea(open)
+  const areaStyle = area
+    ? ({ '--vv-h': `${area.height}px`, '--vv-top': `${area.top}px` } as CSSProperties)
+    : undefined
   return (
     <section
       className="on-ink overflow-hidden bg-brand-blue text-white"
@@ -46,8 +52,15 @@ export function BrandTeaser() {
             </DialogPrimitive.Trigger>
             <DialogPrimitive.Portal>
               <DialogPrimitive.Overlay className="builder-overlay fixed inset-0 z-50 bg-ink/75" />
-              <DialogPrimitive.Content className="builder-dialog fixed z-50 overflow-y-auto bg-white text-ink">
-                <div className="sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-white pl-5 pr-2 lg:pl-10 lg:pr-4">
+              {/* Closing throws the visitor's work away, so only the close button or Escape do it:
+                  a stray tap on the backdrop, or the phone's file picker taking focus, never does. */}
+              <DialogPrimitive.Content
+                className="builder-dialog fixed z-50 overflow-y-auto bg-white text-ink"
+                data-keyboard={area?.keyboard || undefined}
+                style={areaStyle}
+                onInteractOutside={(e) => e.preventDefault()}
+              >
+                <div className="builder-bar sticky top-0 z-30 flex h-16 items-center justify-between gap-4 border-b bg-white pl-5 pr-2 lg:pl-10 lg:pr-4">
                   <DialogPrimitive.Title className="text-xl font-bold tracking-tight [font-family:var(--font-display)]">
                     Put your logo on it
                   </DialogPrimitive.Title>

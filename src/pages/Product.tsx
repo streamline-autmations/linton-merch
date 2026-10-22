@@ -267,7 +267,7 @@ function ProductView({ product }: { product: Product }) {
               <AddToQuote product={product} />
             </div>
             <p className="mt-5 border-l-4 border-brand-blue bg-secondary px-4 py-3 text-xs leading-5 text-muted-foreground">
-              No prices or stock in this demo. Linton confirms both on your quote.
+              Prices and stock change often, so Linton confirms both on your quote.
             </p>
           </div>
         </div>

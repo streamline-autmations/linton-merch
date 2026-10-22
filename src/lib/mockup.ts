@@ -100,8 +100,11 @@ export const mockupProducts: MockupProduct[] = [
       { id: 'left-chest', label: 'Left chest', view: 'front', cx: 718, cy: 425, w: mm(100), h: mm(80), rotate: 0, methods: CHEST },
       { id: 'right-chest', label: 'Right chest', view: 'front', cx: 404, cy: 425, w: mm(100), h: mm(80), rotate: 0, methods: CHEST },
       { id: 'full-front', label: 'Full front', view: 'front', cx: 561, cy: 705, w: mm(280), h: mm(300), rotate: 0, methods: ['screen-printing'] },
-      { id: 'left-sleeve', label: 'Left sleeve', view: 'side', cx: 652, cy: 455, w: mm(115), h: mm(150), rotate: 0, methods: CHEST },
-      { id: 'back-yoke', label: 'Below the collar', view: 'back', cx: 561, cy: 258, w: mm(270), h: mm(80), rotate: 0, methods: CHEST },
+      // The sleeve runs from the shoulder seam (x ≈ 500) to its outer edge (x ≈ 740): centred on the
+      // outside of the arm, not its back edge.
+      { id: 'left-sleeve', label: 'Left sleeve', view: 'side', cx: 606, cy: 445, w: mm(100), h: mm(140), rotate: 0, methods: CHEST },
+      // A long, shallow band across the shoulders, just under the collar.
+      { id: 'back-yoke', label: 'Below the collar', view: 'back', cx: 561, cy: 252, w: mm(340), h: mm(55), rotate: 0, methods: CHEST },
       { id: 'full-back', label: 'Full back', view: 'back', cx: 561, cy: 625, w: mm(330), h: mm(390), rotate: 0, methods: ['screen-printing'] },
     ],
     photo: (colour, view) => `/mockups/golf-shirt/${colour}-${view}.webp`,
