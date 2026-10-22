@@ -9,6 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import { business } from '@/data/business'
 import { whatsappLink } from '@/lib/quote'
 
 export function ContactButton({
@@ -24,7 +25,7 @@ export function ContactButton({
 }) {
   const [copied, setCopied] = useState(false)
   const [copyFailed, setCopyFailed] = useState(false)
-  const link = whatsappLink(import.meta.env.VITE_WHATSAPP_NUMBER, message)
+  const link = whatsappLink(business.whatsappNumber, message)
   async function copy() {
     try {
       await navigator.clipboard.writeText(message)

@@ -74,6 +74,7 @@ export interface MockupProduct {
 // golf shirt is about 56 cm across, so roughly 0.96 mm per pixel.
 const SHIRT_MM = 0.96
 const mm = (value: number) => value / SHIRT_MM
+// Chest areas are the usual left-chest maximum, about 100 × 80 mm, so sizes read true to the trade.
 const CHEST: Method[] = ['embroidery', 'screen-printing']
 
 export const mockupProducts: MockupProduct[] = [
@@ -96,8 +97,8 @@ export const mockupProducts: MockupProduct[] = [
     ],
     zones: [
       // Left and right are the wearer's: the left chest is on the right of the front photo.
-      { id: 'left-chest', label: 'Left chest', view: 'front', cx: 718, cy: 425, w: mm(160), h: mm(115), rotate: 0, methods: CHEST },
-      { id: 'right-chest', label: 'Right chest', view: 'front', cx: 404, cy: 425, w: mm(160), h: mm(115), rotate: 0, methods: CHEST },
+      { id: 'left-chest', label: 'Left chest', view: 'front', cx: 718, cy: 425, w: mm(100), h: mm(80), rotate: 0, methods: CHEST },
+      { id: 'right-chest', label: 'Right chest', view: 'front', cx: 404, cy: 425, w: mm(100), h: mm(80), rotate: 0, methods: CHEST },
       { id: 'full-front', label: 'Full front', view: 'front', cx: 561, cy: 705, w: mm(280), h: mm(300), rotate: 0, methods: ['screen-printing'] },
       { id: 'left-sleeve', label: 'Left sleeve', view: 'side', cx: 652, cy: 455, w: mm(115), h: mm(150), rotate: 0, methods: CHEST },
       { id: 'back-yoke', label: 'Below the collar', view: 'back', cx: 561, cy: 258, w: mm(270), h: mm(80), rotate: 0, methods: CHEST },

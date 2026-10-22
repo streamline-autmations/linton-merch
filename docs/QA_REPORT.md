@@ -214,3 +214,13 @@ Owner asked for stars. The only sourced figure is "92% recommend us on Facebook"
 - Touch preview checked in Chromium emulating a Pixel 7 (`hover: none`): cards swap at about 1.5 s in view, return by 5 s, swap again when scrolled back in; reduced motion gives no swaps.
 - Visual: teaser heading at 390px, footer at 390 and 1440px, gift rail with the white set, catalogue swap state.
 - Not checked: a physical phone and WebKit.
+
+## Pre-send fixes — 22 October 2026 (Claude)
+
+- Quote page no longer dead-ends with an empty basket: a required "What do you need?" field (`brief.request`) lets visitors describe the job without choosing products. The summary adds WHAT WE NEED and drops PRODUCT SELECTION when empty.
+- WhatsApp now uses 083 225 9886 from `business.ts` (not the env variable). Facebook and Instagram links updated, LinkedIn added (footer, About).
+- About: removed the "Adapted from lintonent.co.za. To be confirmed." note.
+- Logo builder: golf shirt chest areas reduced from 160 × 115 mm to 100 × 80 mm; a typed name now starts at about 80 mm wide instead of 128 mm.
+- Checks: typecheck OK; `pnpm test` 22/22 (new: summary with no products); `pnpm build` OK; `pnpm test:e2e` 10/10 desktop and mobile; `pnpm check:presentation` no overflow at any width. Visual: empty quote at 1440 and 390, full request flow to summary, WhatsApp link, About links, builder size label.
+- Codex read-only review: two findings, both fixed and checked in the browser. (1) Removing every product on the review step allowed a request with neither products nor a description; submit now returns to step 1. (2) Spaces alone passed the required field; the field now rejects them.
+- Not checked: WebKit / a physical phone (unchanged limit). `src/lib/mockup.test.ts` still fails `prettier --check` (long lines, before this pass).

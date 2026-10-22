@@ -235,9 +235,6 @@ export function About() {
               </li>
             ))}
           </ol>
-          <p className="mt-8 text-xs text-muted-foreground">
-            Adapted from lintonent.co.za. To be confirmed.
-          </p>
         </div>
       </section>
 
@@ -311,8 +308,8 @@ export function About() {
               className="text-foreground underline underline-offset-4"
             >
               Facebook
-            </a>{' '}
-            and{' '}
+            </a>
+            ,{' '}
             <a
               href={business.social.instagram}
               target="_blank"
@@ -320,6 +317,15 @@ export function About() {
               className="text-foreground underline underline-offset-4"
             >
               Instagram
+            </a>{' '}
+            and{' '}
+            <a
+              href={business.social.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="text-foreground underline underline-offset-4"
+            >
+              LinkedIn
             </a>
             .
           </p>

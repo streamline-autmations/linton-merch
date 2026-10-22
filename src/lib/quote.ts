@@ -16,6 +16,8 @@ export interface Brief {
   branding: string
   notes: string
   artworkName: string
+  /** What they need in their own words. Asked for only when no products were chosen. */
+  request: string
 }
 export const emptyBrief: Brief = {
   name: '',
@@ -27,6 +29,7 @@ export const emptyBrief: Brief = {
   branding: 'Please advise',
   notes: '',
   artworkName: '',
+  request: '',
 }
 // The "Put your name on it" preview hands the visitor's company name to the quote brief.
 const companyKey = 'linton-demo-company'
@@ -76,12 +79,17 @@ export function quoteSummary(items: QuoteItem[], brief: Brief): string {
     'LINTON MERCH — DEMO REQUEST',
     'Concept only. No enquiry has been sent. Products, sizes, colours and branding are illustrative and subject to confirmation.',
     '',
-    'PRODUCT SELECTION',
-    ...items.map(
-      (item) =>
-        `${productById.get(item.productId)?.name ?? item.productId} (${item.productId}) — ${item.quantity} units${item.specification ? `\nPreferences: ${item.specification}` : ''}`,
-    ),
-    '',
+    ...(items.length
+      ? [
+          'PRODUCT SELECTION',
+          ...items.map(
+            (item) =>
+              `${productById.get(item.productId)?.name ?? item.productId} (${item.productId}) — ${item.quantity} units${item.specification ? `\nPreferences: ${item.specification}` : ''}`,
+          ),
+          '',
+        ]
+      : []),
+    ...(brief.request.trim() ? ['WHAT WE NEED', brief.request.trim(), ''] : []),
     'PROJECT BRIEF',
     `Branding: ${brief.branding}`,
     `Delivery area: ${brief.location || 'Not provided'}`,

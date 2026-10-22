@@ -46,6 +46,7 @@ export function Quote() {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const firstStep = useRef(true)
   const units = items.reduce((sum, item) => sum + item.quantity, 0)
+  const hasItems = items.length > 0
   function change(key: keyof Brief, value: string) {
     setBrief((current) => ({ ...current, [key]: value }))
   }
@@ -55,7 +56,11 @@ export function Quote() {
   }, [step, completedSummary])
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!items.length) return
+    // Products or a description, never neither (e.g. every product removed on the review step).
+    if (!hasItems && !brief.request.trim()) {
+      setStep(0)
+      return
+    }
     if (step < 1) setStep(step + 1)
     else {
       setCompletedSummary(quoteSummary(items, brief))
@@ -130,33 +135,22 @@ export function Quote() {
       </section>
     )
 
-  if (!items.length)
-    return (
-      <section className="container-wide py-16 lg:py-22">
-        <p className="eyebrow mb-4 text-muted-foreground">Request a quote</p>
-        <h1 className="page-title">Your quote is empty.</h1>
-        <p className="mt-4 text-base text-muted-foreground">
-          Your selection is empty. Add products first.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          <Button asChild className="h-12 px-6">
-            <Link to="/catalogue">Explore catalogue</Link>
-          </Button>
-          <ContactButton variant="outline" className="h-12 px-6" label="Or WhatsApp us" />
-        </div>
-      </section>
-    )
-
   return (
     <div className="container-wide pb-20 pt-12 lg:pt-16">
       <p className="eyebrow mb-4 text-muted-foreground">Request a quote</p>
       <h1 className="page-title">Tell us what you need.</h1>
-      <a
-        href="#selection"
-        className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 lg:hidden"
-      >
-        {items.length} {items.length === 1 ? 'product' : 'products'} · {units} units
-      </a>
+      {hasItems ? (
+        <a
+          href="#selection"
+          className="mt-4 inline-flex min-h-11 items-center gap-2 text-sm underline underline-offset-4 lg:hidden"
+        >
+          {items.length} {items.length === 1 ? 'product' : 'products'} · {units} units
+        </a>
+      ) : (
+        <p className="mt-4 max-w-xl text-base leading-7 text-muted-foreground">
+          Describe it in your own words. No need to pick products first.
+        </p>
+      )}
       <div className="mb-8 lg:mb-10" />
       <div className="grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_390px] lg:gap-14">
         <div>
@@ -182,13 +176,35 @@ export function Quote() {
           </ol>
           <form onSubmit={submit}>
             <h2 ref={headingRef} tabIndex={-1} className="mb-7 text-2xl font-medium tracking-tight">
-              {step === 0 ? 'Your details' : 'Check and create'}
+              {step === 1 ? 'Check and create' : hasItems ? 'Your details' : 'Your request'}
             </h2>
             {step === 0 && (
               <div className="space-y-5">
                 <p className="text-sm text-muted-foreground">
                   Demo: use made-up details. Nothing is sent.
                 </p>
+                {!hasItems && (
+                  <div>
+                    <label className="field-label" htmlFor="request">
+                      What do you need? <span aria-hidden="true">*</span>
+                    </label>
+                    <Textarea
+                      id="request"
+                      required
+                      maxLength={2000}
+                      className="min-h-32 bg-white"
+                      placeholder="e.g. 40 navy golf shirts with our logo on the chest, for a golf day in March"
+                      value={brief.request}
+                      onChange={(e) => {
+                        // Spaces alone don't count as a description.
+                        e.target.setCustomValidity(
+                          e.target.value && !e.target.value.trim() ? 'Tell us what you need.' : '',
+                        )
+                        change('request', e.target.value)
+                      }}
+                    />
+                  </div>
+                )}
                 <div className="grid gap-5 sm:grid-cols-2">
                   <div>
                     <label className="field-label" htmlFor="name">
@@ -354,6 +370,12 @@ export function Quote() {
                     </button>
                   </div>
                   <dl className="grid grid-cols-[100px_1fr] gap-x-5 gap-y-4 text-sm">
+                    {brief.request.trim() && (
+                      <>
+                        <dt className="text-muted-foreground">You need</dt>
+                        <dd className="whitespace-pre-wrap break-words">{brief.request.trim()}</dd>
+                      </>
+                    )}
                     <dt className="text-muted-foreground">Branding</dt>
                     <dd>{brief.branding}</dd>
                     <dt className="text-muted-foreground">Target date</dt>
@@ -426,26 +448,44 @@ export function Quote() {
         >
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-medium tracking-tight">Your selection</h2>
-            <span className="rounded-sm bg-secondary px-2 py-1 text-xs">
-              {items.length} products
-            </span>
+            {hasItems && (
+              <span className="rounded-sm bg-secondary px-2 py-1 text-xs">
+                {items.length} products
+              </span>
+            )}
           </div>
-          <BasketItems preferences />
-          <div className="border-t pt-5">
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-muted-foreground">Total units</span>
-              <span>{units}</span>
+          {hasItems ? (
+            <BasketItems preferences />
+          ) : (
+            <div className="py-5">
+              <p className="text-sm leading-6 text-muted-foreground">
+                No products chosen yet. That’s fine: Linton will suggest options.
+              </p>
+              <Link
+                to="/catalogue"
+                className="mt-3 inline-flex min-h-11 items-center border-b text-sm"
+              >
+                Browse the catalogue
+              </Link>
             </div>
-            <p className="mt-3 text-xs leading-5 text-muted-foreground">
-              Minimums and availability confirmed by Linton.
-            </p>
-            <Link
-              to="/catalogue"
-              className="mt-3 inline-flex min-h-11 items-center border-b text-sm"
-            >
-              Add more products
-            </Link>
-          </div>
+          )}
+          {hasItems && (
+            <div className="border-t pt-5">
+              <div className="flex items-center justify-between text-sm">
+                <span className="text-muted-foreground">Total units</span>
+                <span>{units}</span>
+              </div>
+              <p className="mt-3 text-xs leading-5 text-muted-foreground">
+                Minimums and availability confirmed by Linton.
+              </p>
+              <Link
+                to="/catalogue"
+                className="mt-3 inline-flex min-h-11 items-center border-b text-sm"
+              >
+                Add more products
+              </Link>
+            </div>
+          )}
         </aside>
       </div>
     </div>

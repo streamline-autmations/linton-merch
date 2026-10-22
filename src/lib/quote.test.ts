@@ -46,6 +46,16 @@ describe('honest request handoff', () => {
     expect(text).toContain('No enquiry has been sent')
     expect(text).toContain('not uploaded')
     expect(text).toContain('demo@example.com')
+    expect(text).not.toContain('WHAT WE NEED')
+  })
+  it('works with no products when they describe what they need', () => {
+    const text = quoteSummary([], {
+      ...emptyBrief,
+      name: 'Demo Person',
+      request: '  40 navy golf shirts, logo on the chest  ',
+    })
+    expect(text).not.toContain('PRODUCT SELECTION')
+    expect(text).toContain('WHAT WE NEED\n40 navy golf shirts, logo on the chest')
   })
   it('never builds a link to an empty or invalid WhatsApp recipient', () => {
     expect(whatsappLink(undefined, 'hello')).toBeNull()

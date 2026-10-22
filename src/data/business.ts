@@ -11,8 +11,8 @@ export interface Testimonial {
 }
 
 // Business facts. Source: the public Linton Enterprises website (lintonent.co.za), read on
-// 9 October 2026, plus the WhatsApp number supplied by the project owner. Confirm with the
-// client before any public release. Do not add claims that are not in this file.
+// 9 October 2026. WhatsApp, Facebook, Instagram and LinkedIn confirmed by the project owner on
+// 22 October 2026. Confirm with the client before any public release. Do not add claims that are not in this file.
 export const business = {
   tradingName: 'Linton Merch',
   legalName: 'Linton Enterprises',
@@ -21,7 +21,9 @@ export const business = {
   addressLines: ['Unit 7 Trichardts Fontein', '82 Rooibok Road', 'Highbury, Meyerton, 1961'],
   phoneDisplay: '083 225 9886',
   phoneHref: 'tel:+27832259886',
-  whatsappDisplay: '082 550 5251',
+  whatsappDisplay: '083 225 9886',
+  // International format for wa.me links. Same number as the phone line.
+  whatsappNumber: '27832259886',
   email: 'linda@lintonent.co.za',
   hours: [
     { days: 'Monday – Thursday', time: '08:30 – 16:30' },
@@ -143,7 +145,8 @@ export const business = {
     },
   ] satisfies Testimonial[] as readonly Testimonial[],
   social: {
-    facebook: 'https://www.facebook.com/pages/Linton-Enterprises/388180024533955',
-    instagram: 'https://www.instagram.com/lintonenterprisessa/',
+    facebook: 'https://www.facebook.com/lintonenterprisessa',
+    instagram: 'https://www.instagram.com/lintonmerch/',
+    linkedin: 'https://www.linkedin.com/company/lintonent',
   },
 } as const

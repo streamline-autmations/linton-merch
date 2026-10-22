@@ -68,11 +68,11 @@ test('catalogue, persistent multi-product basket and complete demo RFQ', async (
   const stored = await page.evaluate(() => localStorage.getItem('linton-demo-basket-v1'))
   expect(stored).not.toContain('demo@example.com')
   await page.getByRole('button', { name: 'WhatsApp this brief' }).click()
-  // .env supplies the confirmed number, so the dialog previews the message and offers the link.
+  // business.ts holds the confirmed number, so the dialog previews the message and offers the link.
   await expect(page.getByRole('dialog')).toContainText('WhatsApp will open with this text ready')
   await expect(page.getByRole('link', { name: 'Continue to WhatsApp' })).toHaveAttribute(
     'href',
-    /^https:\/\/wa\.me\/27825505251\?text=/,
+    /^https:\/\/wa\.me\/27832259886\?text=/,
   )
   expect(errors).toEqual([])
 })
@@ -80,8 +80,9 @@ test('catalogue, persistent multi-product basket and complete demo RFQ', async (
 test('navigation, narrow layouts and an empty or corrupt basket recover', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('linton-demo-basket-v1', '{bad JSON'))
   await page.goto('/quote')
-  await expect(page.getByText('Your selection is empty.')).toBeVisible()
-  await page.getByRole('link', { name: 'Explore catalogue', exact: true }).click()
+  // An empty quote still works: they can describe what they need without choosing products.
+  await expect(page.getByLabel('What do you need?')).toBeVisible()
+  await page.getByRole('link', { name: 'Browse the catalogue', exact: true }).click()
   await page.getByRole('button', { name: 'Add Corporate shirt to quote', exact: true }).click()
   await expect(page.getByRole('button', { name: 'Remove Corporate shirt' })).toBeVisible()
   await page.getByRole('button', { name: 'Remove Corporate shirt' }).click()

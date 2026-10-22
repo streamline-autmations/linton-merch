@@ -18,7 +18,7 @@ import {
 const byLabel = (label: string) => mockupProducts.find((p) => p.label === label)!
 const shirt = byLabel('Golf shirt')
 const bottle = byLabel('Bottle')
-const chest = shirt.zones[0] // left chest, 160 × 115 mm
+const chest = shirt.zones[0] // left chest, 100 × 80 mm
 const bottleSide = bottle.zones[0] // along the bottle, rotated -90°
 
 describe('mock-up placement', () => {
@@ -48,7 +48,7 @@ describe('mock-up placement', () => {
   })
 
   it('reports shirt sizes in millimetres, matching the zone limits', () => {
-    expect(sizeMm(shirt, chest, { ...defaultPlacement(chest), scale: 1 }, 4)).toEqual({ w: 160, h: 40 })
+    expect(sizeMm(shirt, chest, { ...defaultPlacement(chest), scale: 1 }, 4)).toEqual({ w: 100, h: 25 })
     expect(sizeMm(bottle, bottleSide, defaultPlacement(bottleSide), 4)).toBeNull()
   })
 
