@@ -346,6 +346,17 @@ export function Layout() {
           </div>
           <div className="footer-rule flex flex-col justify-between gap-1 border-t py-5 text-xs text-white/55 sm:flex-row">
             <span>Linton Enterprises · Concept demo, not the live website</span>
+            <span>
+              Designed by{' '}
+              <a
+                href="https://streamline-automations.co.za/"
+                target="_blank"
+                rel="noopener"
+                className="text-white/80 underline decoration-white/30 underline-offset-4 hover:text-white hover:decoration-white"
+              >
+                Streamline Automations
+              </a>
+            </span>
           </div>
         </div>
       </footer>
