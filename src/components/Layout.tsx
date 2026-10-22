@@ -162,7 +162,7 @@ export function Layout() {
                 >
                   <ShoppingBag size={16} />
                   <span className="hidden sm:inline">Your quote</span>
-                  <span className="flex h-5 min-w-5 items-center justify-center rounded-sm bg-signal px-1 text-[11px] font-bold text-ink">
+                  <span className="flex h-5 min-w-5 items-center justify-center rounded-sm bg-white px-1 text-[11px] font-bold text-ink">
                     {items.length}
                   </span>
                 </Button>
@@ -330,7 +330,7 @@ export function Layout() {
             className="flex min-h-14 w-full items-center justify-between text-sm font-medium"
           >
             <span>
-              <span className="mr-2 inline-flex h-5 min-w-5 items-center justify-center rounded-sm bg-signal px-1 text-[11px] font-bold text-ink">
+              <span className="mr-2 inline-flex h-5 min-w-5 items-center justify-center rounded-sm bg-white px-1 text-[11px] font-bold text-ink">
                 {items.length}
               </span>
               {items.length === 1 ? 'product' : 'products'} in your quote

@@ -4,20 +4,17 @@ The visual thesis (v2, 9 Oct 2026): the client's white-on-ink logo sets a dark i
 
 ## Canonical tokens
 
-`src/index.css` is the source of truth; `design-tokens.json` is a snapshot to refresh.
+**Colour, type and logo rules live in [BRAND_GUIDELINES.md](BRAND_GUIDELINES.md)** (palette reduced 21 Oct 2026). `src/index.css` holds the values and `src/brand.test.ts` fails on any colour outside the palette.
 
-| Role          | Value     | Use                                                                       |
-| ------------- | --------- | ------------------------------------------------------------------------- |
-| Ink           | `#0E161D` | Header, footer, hero, primary buttons, text                               |
-| Ink soft      | `#1B2833` | Demo notice bar                                                           |
-| Paper         | `#F1F3F2` | Main background                                                           |
-| Secondary     | `#E2E7E6` | Quiet sections, hover rows                                                |
-| Muted text    | `#4F5D65` | Supporting copy                                                           |
-| Border        | `#CBD3D4` | Dividers and fields                                                       |
-| Signal        | `#2EC4B6` | Linton teal (from the logo, brightened for ink). Quote count, primary hero CTA, focus on dark. Rationed |
-| Brand blue    | `#004298` | Logo blue. Reserved for brand moments |
-| Brand teal    | `#029B97` | Logo teal (exact) |
-| Product plate | `#C3CDCC` | Product artwork wells                                                     |
+| Role | Name | Value | Token |
+| --- | --- | --- | --- |
+| Main | Navy | `#0B2A5B` | `ink` |
+| Main | White | `#FFFFFF` | `background` |
+| Accent | Linton Blue | `#004298` | `brand-blue`, `primary` |
+| Secondary accent (thread only) | Linton Teal | `#029B97` | `brand-teal` |
+| Neutral | Cloud / Line / Slate | `#F3F5F8` / `#D3DAE3` / `#4A5873` | `cloud` `secondary` `muted` / `border` / `muted-foreground` |
+
+Retired 21 Oct 2026: signal aqua `#2EC4B6`, near-black ink `#0E161D`, ink soft `#1B2833`, paper `#F1F3F2`, grey-green `#E2E7E6`. Older sections below that mention them are history.
 
 Typography: Host Grotesk Variable (display, uppercase only on hero/poster lines) and Satoshi (body, UI; Fontshare Free Font License, files in `src/fonts/`). Radii are small (2-8px); no pill shapes.
 

@@ -153,7 +153,7 @@ function QuoteCard({ testimonial }: { testimonial: Testimonial }) {
     return () => ro.disconnect()
   }, [open])
   return (
-    <li className="relative flex flex-col rounded-md bg-background p-5">
+    <li className="relative flex flex-col rounded-md bg-cloud p-5">
       <blockquote
         id={id}
         ref={text}

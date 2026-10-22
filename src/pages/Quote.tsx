@@ -75,7 +75,7 @@ export function Quote() {
   if (completedSummary)
     return (
       <section className="container-wide max-w-4xl py-16 lg:py-22">
-        <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-sm bg-signal">
+        <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-sm bg-brand-blue text-white">
           <CheckCircle2 size={26} />
         </span>
         <p className="eyebrow mb-4 text-muted-foreground">Demo complete</p>

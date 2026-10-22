@@ -266,7 +266,7 @@ function ProductView({ product }: { product: Product }) {
             <div className="mt-7 hidden lg:block">
               <AddToQuote product={product} />
             </div>
-            <p className="mt-5 border-l-4 border-signal bg-secondary px-4 py-3 text-xs leading-5 text-muted-foreground">
+            <p className="mt-5 border-l-4 border-brand-blue bg-secondary px-4 py-3 text-xs leading-5 text-muted-foreground">
               No prices or stock in this demo. Linton confirms both on your quote.
             </p>
           </div>
@@ -288,7 +288,7 @@ function ProductView({ product }: { product: Product }) {
       )}
 
       {/* Phones: quantity and add stay in reach at the bottom of the screen. */}
-      <div className="sticky-add fixed inset-x-0 bottom-0 z-30 border-t bg-background px-5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_-12px_rgb(14_22_29/0.25)] lg:hidden">
+      <div className="sticky-add fixed inset-x-0 bottom-0 z-30 border-t bg-background px-5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-8px_24px_-12px_rgb(11_42_91/0.25)] lg:hidden">
         <AddToQuote product={product} compact />
       </div>
     </>

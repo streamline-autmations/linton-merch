@@ -371,7 +371,7 @@ export function BrandPreview({ embedded = false }: { embedded?: boolean } = {}) 
         {!embedded && (
           <div className="lg:self-end">
             <p className="eyebrow mb-5 flex items-center gap-3 text-muted-foreground">
-              <span className="stitch w-8 text-signal" /> Try it
+              <span className="stitch w-8 text-brand-teal" /> Try it
             </p>
             <h2 id="brand-preview-title" className="section-title max-w-md">
               Put your logo on it.

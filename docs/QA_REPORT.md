@@ -200,3 +200,10 @@ Read-only `codex exec -s read-only` review of the uncommitted diff (a first `cod
 ### Open: star ratings
 
 Owner asked for stars. The only sourced figure is "92% recommend us on Facebook" (`business.facebookRating`), shown as a large figure with a stitched meter. `Testimonial.stars` (optional, 1–5) was added to `business.ts` but is **not rendered**; AGENTS.md forbids invented ratings. To show stars, the owner needs to supply each reviewer's actual rating (e.g. from their Facebook review).
+
+## Brand palette pass — 21 October 2026 (Claude)
+
+- Checked: `pnpm typecheck` OK; `pnpm test` 21/21 (adds 4 brand palette tests; a planted `#2ec4b6`, `rgb(14 22 29)` and `bg-signal`/`text-sky-400` were each caught, then removed); `pnpm check:presentation` 0 axe violations on every route, no overflow incl. 200% text; `pnpm test:e2e` 10/10 desktop and mobile.
+- Visual: Home, Catalogue, Product, About, Quote and the logo builder inspected at 390 and 1440 px.
+- Contrast: navy on white 14.0, white on Linton Blue 9.4, slate on white 7.2, slate on cloud 6.6. Blue on navy is 1.5, so blue is never placed on navy.
+- Not checked: WebKit / a physical phone (unchanged limit).

@@ -82,14 +82,14 @@ const methods: { name: string; best: string; glyph: ReactNode }[] = [
   },
 ]
 
-/** "Ways to brand": a teal band, one drawn mark per method with what it suits best. */
+/** "Ways to brand": a quiet cloud band, one drawn mark per method with what it suits best. */
 export function BrandingMethods() {
   return (
-    <section className="bg-brand-teal text-ink" aria-labelledby="methods-title">
+    <section className="bg-cloud" aria-labelledby="methods-title">
       <div className="container-wide grid gap-8 py-14 lg:grid-cols-[0.75fr_1.25fr] lg:gap-20 lg:py-24">
         <div>
-          <span className="stitch mb-6 w-16 text-ink" />
-          <p className="eyebrow mb-4">Ways to brand</p>
+          <span className="stitch mb-6 w-16 text-brand-teal" />
+          <p className="eyebrow mb-4 text-muted-foreground">Ways to brand</p>
           <h2 id="methods-title" className="section-title max-w-sm">
             The right mark for the material.
           </h2>

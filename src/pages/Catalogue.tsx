@@ -96,7 +96,7 @@ export function Catalogue() {
     <div className="container-wide pb-20 pt-8 lg:pt-16">
       <div className="mb-6 lg:mb-10">
         <h1 className="page-title">Catalogue</h1>
-        <p className="mt-3 border-l-4 border-signal pl-3 text-sm leading-6 text-muted-foreground">
+        <p className="mt-3 border-l-4 border-brand-blue pl-3 text-sm leading-6 text-muted-foreground">
           A starting selection. Ask for anything you don’t see.
         </p>
       </div>

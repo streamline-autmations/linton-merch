@@ -11,8 +11,9 @@ This is a fast, polished sales demonstration for a potential South African clien
 1. `CLAUDE.md`
 2. `docs/MASTER_BUILD_PROMPT.md`
 3. `docs/TASK_PLAN.md`
-4. `docs/DESIGN_SYSTEM.md`
-5. `docs/CONTENT_AND_ASSETS.md`
+4. `docs/BRAND_GUIDELINES.md` (colour, type and logo rules; stick to them)
+5. `docs/DESIGN_SYSTEM.md`
+6. `docs/CONTENT_AND_ASSETS.md`
 
 ## Scope
 

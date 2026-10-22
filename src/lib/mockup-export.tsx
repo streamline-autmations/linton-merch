@@ -10,8 +10,8 @@ import { downloadName, type GarmentColour, type MockupProduct } from '@/lib/mock
 const PANEL = 1400
 const GAP = 24
 const STRIP = 170
-const PAPER = '#f1f3f2'
-const INK = '#0e161d'
+const PAPER = '#f3f5f8' // cloud
+const INK = '#0b2a5b' // navy
 
 export interface ExportInput {
   product: MockupProduct

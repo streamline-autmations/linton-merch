@@ -122,3 +122,11 @@ Owner reviewed Home on a phone. Brief: `docs/PROMPT_HOMEPAGE_MOBILE_PASS.md`.
 - [x] Trust → `TrustBand.tsx`: "Service is our actual business." (manifesto folded in), 92% Facebook figure as a stitched meter, founders photo, milestones, one pull-quote, four compact cards with "Read more" when longer than two lines. "One request" steps merged into the ink closing band with contact.
 - [ ] **Stars (open):** `Testimonial.stars` exists but is unrendered. Needs a sourced per-review rating (e.g. from the reviewers' Facebook reviews) before it can be shown.
 - [ ] WebKit/iOS check of the builder dialog (sticky pin inside a scrolling dialog, drawer stacking) — not possible in this WSL host.
+
+## Brand guidelines and palette reduction (21 Oct 2026, Claude)
+
+- [x] `docs/BRAND_GUIDELINES.md`: colour, type and logo rules (owner: "too many colours").
+- [x] Palette cut to navy `#0B2A5B` + white (main), Linton Blue `#004298` (accent, actions only), Linton Teal `#029B97` (thread only), plus cloud/line/slate neutrals. Retired the aqua signal, near-black ink, paper and grey-green.
+- [x] Buttons on navy and on the blue band are white; main buttons elsewhere are Linton Blue. Ways to brand moved from a teal band to cloud.
+- [x] `src/brand.test.ts` fails on any hex, rgb tint or Tailwind palette class outside the guide.
+- [ ] Owner to confirm the navy and the blue band before the next pass on the remaining issues.

@@ -56,7 +56,7 @@ export function Home() {
         <div className="container-wide grid items-center gap-x-16 gap-y-8 pb-12 pt-7 sm:pt-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:pb-20 lg:pt-12">
           <div>
             <p className="hero-fade mb-5 flex items-center gap-3 text-sm text-white/70">
-              <span className="stitch w-8 text-signal" />
+              <span className="stitch w-8 text-brand-teal" />
               {business.town}, since {business.founded}
             </p>
             <h1 className="hero-title">
@@ -74,19 +74,19 @@ export function Home() {
               Tell us what your team needs. We source it, brand it and deliver it.
             </p>
             <div className="hero-fade mt-7 flex flex-wrap items-center gap-x-7 gap-y-2 lg:mt-9">
-              <Button asChild size="lg" className="h-12 bg-signal px-6 text-ink hover:bg-signal/90">
+              <Button asChild size="lg" className="h-12 bg-white px-6 text-ink hover:bg-cloud">
                 <Link to="/quote">Request a quote</Link>
               </Button>
               <Link
                 to="/catalogue"
-                className="inline-flex min-h-11 items-center text-sm font-medium text-white underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-signal"
+                className="inline-flex min-h-11 items-center text-sm font-medium text-white underline decoration-white/40 underline-offset-[6px] transition-colors hover:decoration-white"
               >
                 Browse the catalogue
               </Link>
             </div>
           </div>
           <figure className="relative mb-6 lg:mb-0">
-            <div className="hero-frame aspect-[5/4] overflow-hidden rounded-md bg-ink-soft sm:aspect-[16/9] lg:aspect-[1/1.08]">
+            <div className="hero-frame aspect-[5/4] overflow-hidden rounded-md bg-white/10 sm:aspect-[16/9] lg:aspect-[1/1.08]">
               <ResponsiveImage
                 src={heroPhoto.src}
                 sizes="(min-width: 1376px) 540px, (min-width: 1024px) 40vw, calc(100vw - 40px)"
@@ -194,7 +194,7 @@ export function Home() {
                       <ArrowUpRight
                         size={18}
                         aria-hidden="true"
-                        className="mb-0.5 shrink-0 text-signal transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                        className="mb-0.5 shrink-0 text-white transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                       />
                     </span>
                     <span className="mt-1 block text-xs text-white/85">{count} items</span>
@@ -214,14 +214,14 @@ export function Home() {
           items={giftSets.slice(0, 12)}
           heading={
             <>
-              <span className="stitch mb-6 w-16 text-signal" />
+              <span className="stitch mb-6 w-16 text-brand-teal" />
               <h2 className="section-title">Gift sets, boxed and branded.</h2>
             </>
           }
           action={
             <Link
               to="/catalogue?category=Gift+sets"
-              className="inline-flex min-h-11 items-center text-sm font-medium underline decoration-white/40 underline-offset-4 hover:decoration-signal"
+              className="inline-flex min-h-11 items-center text-sm font-medium underline decoration-white/40 underline-offset-4 hover:decoration-white"
             >
               All {giftSets.length} gift sets
             </Link>
@@ -259,7 +259,7 @@ export function Home() {
       <section className="on-ink bg-ink text-white" aria-labelledby="request-title">
         <div className="container-wide grid gap-12 py-14 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)] lg:gap-20 lg:py-24">
           <div>
-            <span className="stitch mb-6 w-16 text-signal" />
+            <span className="stitch mb-6 w-16 text-brand-teal" />
             <h2 id="request-title" className="section-title mb-8 max-w-md lg:mb-12">
               One request. Everything in it.
             </h2>
@@ -269,7 +269,7 @@ export function Home() {
                   key={step.n}
                   className="request-step grid grid-cols-[3.25rem_1fr] items-baseline border-t py-4 sm:block sm:pt-5"
                 >
-                  <span className="text-2xl font-bold tracking-tight text-signal [font-family:var(--font-display)] sm:text-4xl">
+                  <span className="text-2xl font-bold tracking-tight text-white/60 [font-family:var(--font-display)] sm:text-4xl">
                     {step.n}
                   </span>
                   <span>
@@ -282,7 +282,7 @@ export function Home() {
             <Button
               asChild
               size="lg"
-              className="mt-8 h-12 bg-signal px-6 text-ink hover:bg-signal/90 lg:mt-10"
+              className="mt-8 h-12 bg-white px-6 text-ink hover:bg-cloud lg:mt-10"
             >
               <Link to="/catalogue">Start your selection</Link>
             </Button>

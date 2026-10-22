@@ -210,7 +210,7 @@ export function About() {
               ))}
             </div>
           </details>
-          <blockquote className="mt-10 border-l-4 border-signal pl-5">
+          <blockquote className="mt-10 border-l-4 border-brand-blue pl-5">
             <p className="eyebrow mb-3 text-muted-foreground">Our mission</p>
             <p className="text-2xl font-bold leading-snug tracking-tight [font-family:var(--font-display)]">
               {business.mission}
