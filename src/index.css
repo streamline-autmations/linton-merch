@@ -150,12 +150,22 @@ main#main-content:focus-visible {
   line-height: 0.98;
   text-transform: uppercase;
 }
+/* Phones get looser tracking and wider word gaps: at 2rem the tight desktop setting runs words
+   together. Large screens keep the tighter display tracking. */
 .section-title {
   font-family: var(--font-display);
   font-size: clamp(2rem, 3.6vw, 3.4rem);
   font-weight: 700;
-  letter-spacing: -0.04em;
-  line-height: 1.04;
+  letter-spacing: -0.025em;
+  word-spacing: 0.08em;
+  line-height: 1.08;
+}
+@media (min-width: 1024px) {
+  .section-title {
+    letter-spacing: -0.04em;
+    word-spacing: 0.04em;
+    line-height: 1.04;
+  }
 }
 .page-title {
   font-family: var(--font-display);
@@ -1219,4 +1229,38 @@ select {
 .request-step,
 .request-talk {
   border-color: rgb(255 255 255 / 0.18);
+}
+
+/* Touch screens: the card's second photo shows on its own for a moment (see ProductCard). */
+.product-card[data-show-alt] .product-alternate {
+  opacity: 1;
+  transition-duration: 0.6s;
+}
+
+/* Footer: white rules split the navy into bands (set here: the global border colour wins over
+   Tailwind's border utilities). On phones the cells stack with a rule between each. */
+.footer-rule,
+.footer-cell {
+  border-color: rgb(255 255 255 / 0.28);
+}
+.footer-cell + .footer-cell {
+  border-top-width: 1px;
+}
+@media (min-width: 640px) {
+  .footer-cell + .footer-cell {
+    border-top-width: 0;
+    border-left-width: 1px;
+    padding-left: 2rem;
+  }
+}
+.social-link {
+  border: 1px solid rgb(255 255 255 / 0.4);
+  color: #fff;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.social-link:hover {
+  background: #fff;
+  color: var(--ink);
 }

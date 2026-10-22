@@ -22,7 +22,7 @@ export function BrandTeaser() {
       aria-labelledby="brand-teaser-title"
     >
       <div className="container-wide grid grid-cols-[minmax(0,1fr)_7.5rem] items-center gap-x-5 gap-y-6 py-12 sm:gap-y-0 sm:grid-cols-[minmax(0,1fr)_14rem] lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-x-20 lg:py-16">
-        <div className="col-start-1 row-start-1 self-end">
+        <div className="col-start-1 row-start-1 self-center sm:self-end">
           <h2 id="brand-teaser-title" className="section-title max-w-md">
             Put your logo on it.
           </h2>
@@ -32,7 +32,7 @@ export function BrandTeaser() {
           </p>
         </div>
         <div className="col-span-2 row-start-2 self-start sm:col-span-1 sm:mt-6 lg:mt-8">
-          <p className="max-w-sm text-base leading-7 text-white/85 sm:hidden">
+          <p className="max-w-sm text-base leading-6 text-white/85 sm:hidden">
             See it on a golf shirt, bottle or tote, then download the picture.
           </p>
           <DialogPrimitive.Root open={open} onOpenChange={setOpen}>

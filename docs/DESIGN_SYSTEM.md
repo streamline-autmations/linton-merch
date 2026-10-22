@@ -113,3 +113,9 @@ Section rhythm on Home (light / dark / saturated, no `bg-secondary` bands):
 - Rails: arrows from 768px only; `RailProgress` (dashed track, solid thumb; signal on dark) under each row.
 - Known quirk: the global `* { border-color }` rule is unlayered, so Tailwind `border-*/opacity` colour utilities lose to it. Set rule colours in CSS (see `.methods-grid`, `.request-step`) when they matter.
 - `Ink soft` is no longer used for the demo bar (removed); it remains the hero photo placeholder colour.
+
+## Footer, touch previews, heading spacing (22 Oct 2026)
+
+- **Footer:** three navy bands split by white rules (`.footer-rule`, `.footer-cell`, white at 28 %): logo and line with social icons (Facebook, Instagram via `SocialLinks`) and WhatsApp; Explore / Visit and hours / Call or email (stacked with rules on phones, three columns from 640px); the demo notice.
+- **Touch previews:** on `hover: none` screens a card with a second photo shows it 1.5 s after settling 70 % in view, for 3 s, then returns. Once per entry into view, so nothing loops (under the 5 s auto-motion limit). Off under reduced motion. `useTouchPreview` in `ProductCard.tsx`.
+- **Section titles:** below 1024px tracking -0.025em and word spacing +0.08em (desktop keeps -0.04em) so words don't run together at 2rem.

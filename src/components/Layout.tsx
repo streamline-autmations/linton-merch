@@ -13,6 +13,7 @@ import {
 } from '@/components/ui/sheet'
 import { BasketItems } from '@/components/BasketItems'
 import { ContactButton } from '@/components/ContactButton'
+import { SocialLinks } from '@/components/SocialLinks'
 import { useBasket } from '@/context/BasketContext'
 import { business } from '@/data/business'
 import { SmoothScroll } from '@/components/SmoothScroll'
@@ -273,53 +274,80 @@ export function Layout() {
       <footer
         className={`on-ink bg-ink text-white ${showBar ? 'pb-16 lg:pb-0' : onProduct ? 'pb-20 lg:pb-0' : ''}`}
       >
-        <div className="container-wide grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr]">
-          <div>
-            <Logo className="h-14 w-auto" />
-            <p className="mt-5 max-w-64 text-sm leading-relaxed text-white/65">
-              {business.tagline}. Based in {business.town}, South Africa.
-            </p>
-          </div>
-          <div>
-            <p className="eyebrow mb-4 text-white/50">Explore</p>
-            <div className="flex flex-col items-start text-sm">
-              {navItems.map((item) => (
-                <Link
-                  key={item.to}
-                  to={item.to}
-                  className="inline-flex min-h-11 items-center text-white/85 hover:text-white"
-                >
-                  {item.label}
-                </Link>
-              ))}
+        {/* Three bands split by white rules: who we are, where to go, the small print. */}
+        <div className="container-wide">
+          <div className="flex flex-wrap items-end justify-between gap-x-10 gap-y-6 py-10 lg:py-14">
+            <div>
+              <Logo className="h-12 w-auto sm:h-14" />
+              <p className="mt-4 max-w-72 text-sm leading-6 text-white/70">
+                {business.tagline}. Based in {business.town}, South Africa, since {business.founded}
+                .
+              </p>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
+              <SocialLinks />
+              <ContactButton
+                variant="outline"
+                className="border-white/40 bg-transparent text-white hover:bg-white hover:text-ink"
+              />
             </div>
           </div>
-          <div>
-            <p className="eyebrow mb-4 text-white/50">Visit &amp; call</p>
-            <address className="space-y-3 text-sm not-italic leading-6 text-white/85">
-              <p>{business.addressLines.join(', ')}</p>
-              <p>
-                <a href={business.phoneHref} className="hover:text-white">
+          <div className="footer-rule grid border-t sm:grid-cols-3">
+            <nav aria-label="Footer" className="footer-cell py-7 sm:py-10">
+              <p className="eyebrow mb-3 text-white/55">Explore</p>
+              <ul className="grid grid-cols-2 gap-x-6 text-sm sm:grid-cols-1">
+                {navItems.map((item) => (
+                  <li key={item.to}>
+                    <Link
+                      to={item.to}
+                      className="inline-flex min-h-11 items-center text-white/85 hover:text-white"
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+            <div className="footer-cell py-7 sm:py-10">
+              <p className="eyebrow mb-3 text-white/55">Visit</p>
+              <address className="text-sm not-italic leading-6 text-white/85">
+                {business.addressLines.map((line) => (
+                  <span key={line} className="block">
+                    {line}
+                  </span>
+                ))}
+              </address>
+              <dl className="mt-4 grid grid-cols-[auto_1fr] gap-x-4 text-sm leading-6">
+                {business.hours.map((h) => (
+                  <div key={h.days} className="contents">
+                    <dt className="text-white/60">{h.days}</dt>
+                    <dd className="text-white/85">{h.time}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+            <div className="footer-cell py-7 sm:py-10">
+              <p className="eyebrow mb-3 text-white/55">Call or email</p>
+              <p className="flex flex-col items-start text-sm">
+                <a
+                  href={business.phoneHref}
+                  className="inline-flex min-h-11 items-center text-white/85 hover:text-white"
+                >
                   {business.phoneDisplay}
                 </a>
-                <br />
-                <a href={`mailto:${business.email}`} className="hover:text-white">
+                <a
+                  href={`mailto:${business.email}`}
+                  className="inline-flex min-h-11 items-center text-white/85 hover:text-white"
+                >
                   {business.email}
                 </a>
               </p>
-            </address>
+            </div>
           </div>
-          <div>
-            <p className="eyebrow mb-4 text-white/50">Let’s talk</p>
-            <ContactButton
-              variant="outline"
-              className="border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white"
-            />
+          <div className="footer-rule flex flex-col justify-between gap-1 border-t py-5 text-xs text-white/55 sm:flex-row">
+            <span>Linton Enterprises · Concept demo, not the live website</span>
+            <span>No enquiries are sent.</span>
           </div>
-        </div>
-        <div className="container-wide flex flex-col justify-between gap-2 border-t border-white/15 py-6 text-xs text-white/50 sm:flex-row">
-          <span>Linton Enterprises · Concept demo, not the live website</span>
-          <span>No enquiries are sent.</span>
         </div>
       </footer>
       {showBar && (

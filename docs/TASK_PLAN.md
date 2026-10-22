@@ -130,3 +130,11 @@ Owner reviewed Home on a phone. Brief: `docs/PROMPT_HOMEPAGE_MOBILE_PASS.md`.
 - [x] Buttons on navy and on the blue band are white; main buttons elsewhere are Linton Blue. Ways to brand moved from a teal band to cloud.
 - [x] `src/brand.test.ts` fails on any hex, rgb tint or Tailwind palette class outside the guide.
 - [ ] Owner to confirm the navy and the blue band before the next pass on the remaining issues.
+
+## Photos, footer and spacing (22 Oct 2026, Claude)
+
+- [x] Notebook, pen & bottle set uses the white-background photos.
+- [x] 20 more products get a second (hover) photo from the supplier; 35 still have none (no suitable same-colour photo, or single-photo gift sets).
+- [x] Phones: the second photo shows on its own after a moment in view, then returns.
+- [x] Footer split into ruled bands; Facebook and Instagram icons added beside WhatsApp.
+- [x] "Put your logo on it" (and all section titles) get looser word spacing on phones.

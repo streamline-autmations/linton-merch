@@ -20,12 +20,26 @@
     "webp": "/media/products-alt-1101-r-lifestyle03-160.webp 160w, /media/products-alt-1101-r-lifestyle03-320.webp 320w, /media/products-alt-1101-r-lifestyle03-640.webp 640w, /media/products-alt-1101-r-lifestyle03-762.webp 762w",
     "avif": "/media/products-alt-1101-r-lifestyle03-160.avif 160w, /media/products-alt-1101-r-lifestyle03-320.avif 320w, /media/products-alt-1101-r-lifestyle03-640.avif 640w, /media/products-alt-1101-r-lifestyle03-762.avif 762w"
   },
+  "/products/alt-11012-n-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-11012-n-ghbk-800.webp",
+    "webp": "/media/products-alt-11012-n-ghbk-160.webp 160w, /media/products-alt-11012-n-ghbk-320.webp 320w, /media/products-alt-11012-n-ghbk-640.webp 640w, /media/products-alt-11012-n-ghbk-800.webp 800w",
+    "avif": "/media/products-alt-11012-n-ghbk-160.avif 160w, /media/products-alt-11012-n-ghbk-320.avif 320w, /media/products-alt-11012-n-ghbk-640.avif 640w, /media/products-alt-11012-n-ghbk-800.avif 800w"
+  },
   "/products/alt-11012-n.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-alt-11012-n-800.webp",
     "webp": "/media/products-alt-11012-n-160.webp 160w, /media/products-alt-11012-n-320.webp 320w, /media/products-alt-11012-n-640.webp 640w, /media/products-alt-11012-n-800.webp 800w",
     "avif": "/media/products-alt-11012-n-160.avif 160w, /media/products-alt-11012-n-320.avif 320w, /media/products-alt-11012-n-640.avif 640w, /media/products-alt-11012-n-800.avif 800w"
+  },
+  "/products/alt-1202-y-mobk8.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-1202-y-mobk8-800.webp",
+    "webp": "/media/products-alt-1202-y-mobk8-160.webp 160w, /media/products-alt-1202-y-mobk8-320.webp 320w, /media/products-alt-1202-y-mobk8-640.webp 640w, /media/products-alt-1202-y-mobk8-800.webp 800w",
+    "avif": "/media/products-alt-1202-y-mobk8-160.avif 160w, /media/products-alt-1202-y-mobk8-320.avif 320w, /media/products-alt-1202-y-mobk8-640.avif 640w, /media/products-alt-1202-y-mobk8-800.avif 800w"
   },
   "/products/alt-1202-y.webp": {
     "width": 800,
@@ -55,12 +69,26 @@
     "webp": "/media/products-alt-1402-y-160.webp 160w, /media/products-alt-1402-y-320.webp 320w, /media/products-alt-1402-y-640.webp 640w, /media/products-alt-1402-y-800.webp 800w",
     "avif": "/media/products-alt-1402-y-160.avif 160w, /media/products-alt-1402-y-320.avif 320w, /media/products-alt-1402-y-640.avif 640w, /media/products-alt-1402-y-800.avif 800w"
   },
+  "/products/alt-1904-bl-mofr10.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-1904-bl-mofr10-800.webp",
+    "webp": "/media/products-alt-1904-bl-mofr10-160.webp 160w, /media/products-alt-1904-bl-mofr10-320.webp 320w, /media/products-alt-1904-bl-mofr10-640.webp 640w, /media/products-alt-1904-bl-mofr10-800.webp 800w",
+    "avif": "/media/products-alt-1904-bl-mofr10-160.avif 160w, /media/products-alt-1904-bl-mofr10-320.avif 320w, /media/products-alt-1904-bl-mofr10-640.avif 640w, /media/products-alt-1904-bl-mofr10-800.avif 800w"
+  },
   "/products/alt-1904-bl.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-alt-1904-bl-800.webp",
     "webp": "/media/products-alt-1904-bl-160.webp 160w, /media/products-alt-1904-bl-320.webp 320w, /media/products-alt-1904-bl-640.webp 640w, /media/products-alt-1904-bl-800.webp 800w",
     "avif": "/media/products-alt-1904-bl-160.avif 160w, /media/products-alt-1904-bl-320.avif 320w, /media/products-alt-1904-bl-640.avif 640w, /media/products-alt-1904-bl-800.avif 800w"
+  },
+  "/products/alt-anm-n-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-anm-n-ghbk-800.webp",
+    "webp": "/media/products-alt-anm-n-ghbk-160.webp 160w, /media/products-alt-anm-n-ghbk-320.webp 320w, /media/products-alt-anm-n-ghbk-640.webp 640w, /media/products-alt-anm-n-ghbk-800.webp 800w",
+    "avif": "/media/products-alt-anm-n-ghbk-160.avif 160w, /media/products-alt-anm-n-ghbk-320.avif 320w, /media/products-alt-anm-n-ghbk-640.avif 640w, /media/products-alt-anm-n-ghbk-800.avif 800w"
   },
   "/products/alt-anm-n.webp": {
     "width": 800,
@@ -82,6 +110,13 @@
     "src": "/media/products-alt-avl-bl-800.webp",
     "webp": "/media/products-alt-avl-bl-160.webp 160w, /media/products-alt-avl-bl-320.webp 320w, /media/products-alt-avl-bl-640.webp 640w, /media/products-alt-avl-bl-800.webp 800w",
     "avif": "/media/products-alt-avl-bl-160.avif 160w, /media/products-alt-avl-bl-320.avif 320w, /media/products-alt-avl-bl-640.avif 640w, /media/products-alt-avl-bl-800.avif 800w"
+  },
+  "/products/alt-bbk-r-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-bbk-r-ghbk-800.webp",
+    "webp": "/media/products-alt-bbk-r-ghbk-160.webp 160w, /media/products-alt-bbk-r-ghbk-320.webp 320w, /media/products-alt-bbk-r-ghbk-640.webp 640w, /media/products-alt-bbk-r-ghbk-800.webp 800w",
+    "avif": "/media/products-alt-bbk-r-ghbk-160.avif 160w, /media/products-alt-bbk-r-ghbk-320.avif 320w, /media/products-alt-bbk-r-ghbk-640.avif 640w, /media/products-alt-bbk-r-ghbk-800.avif 800w"
   },
   "/products/alt-bbk-r.webp": {
     "width": 800,
@@ -146,12 +181,26 @@
     "webp": "/media/products-alt-mfj-bu-160.webp 160w, /media/products-alt-mfj-bu-320.webp 320w, /media/products-alt-mfj-bu-640.webp 640w, /media/products-alt-mfj-bu-800.webp 800w",
     "avif": "/media/products-alt-mfj-bu-160.avif 160w, /media/products-alt-mfj-bu-320.avif 320w, /media/products-alt-mfj-bu-640.avif 640w, /media/products-alt-mfj-bu-800.avif 800w"
   },
+  "/products/alt-pam-bl-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-pam-bl-ghbk-800.webp",
+    "webp": "/media/products-alt-pam-bl-ghbk-160.webp 160w, /media/products-alt-pam-bl-ghbk-320.webp 320w, /media/products-alt-pam-bl-ghbk-640.webp 640w, /media/products-alt-pam-bl-ghbk-800.webp 800w",
+    "avif": "/media/products-alt-pam-bl-ghbk-160.avif 160w, /media/products-alt-pam-bl-ghbk-320.avif 320w, /media/products-alt-pam-bl-ghbk-640.avif 640w, /media/products-alt-pam-bl-ghbk-800.avif 800w"
+  },
   "/products/alt-pam-bl.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-alt-pam-bl-800.webp",
     "webp": "/media/products-alt-pam-bl-160.webp 160w, /media/products-alt-pam-bl-320.webp 320w, /media/products-alt-pam-bl-640.webp 640w, /media/products-alt-pam-bl-800.webp 800w",
     "avif": "/media/products-alt-pam-bl-160.avif 160w, /media/products-alt-pam-bl-320.avif 320w, /media/products-alt-pam-bl-640.avif 640w, /media/products-alt-pam-bl-800.avif 800w"
+  },
+  "/products/alt-wil-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-alt-wil-02-no-logo-800.webp",
+    "webp": "/media/products-alt-wil-02-no-logo-160.webp 160w, /media/products-alt-wil-02-no-logo-320.webp 320w, /media/products-alt-wil-02-no-logo-640.webp 640w, /media/products-alt-wil-02-no-logo-800.webp 800w",
+    "avif": "/media/products-alt-wil-02-no-logo-160.avif 160w, /media/products-alt-wil-02-no-logo-320.avif 320w, /media/products-alt-wil-02-no-logo-640.avif 640w, /media/products-alt-wil-02-no-logo-800.avif 800w"
   },
   "/products/alt-wil-no-logo.webp": {
     "width": 800,
@@ -195,12 +244,26 @@
     "webp": "/media/products-bas-4757-y-160.webp 160w, /media/products-bas-4757-y-320.webp 320w, /media/products-bas-4757-y-640.webp 640w, /media/products-bas-4757-y-800.webp 800w",
     "avif": "/media/products-bas-4757-y-160.avif 160w, /media/products-bas-4757-y-320.avif 320w, /media/products-bas-4757-y-640.avif 640w, /media/products-bas-4757-y-800.avif 800w"
   },
+  "/products/bas-7756-w-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bas-7756-w-ghbk-800.webp",
+    "webp": "/media/products-bas-7756-w-ghbk-160.webp 160w, /media/products-bas-7756-w-ghbk-320.webp 320w, /media/products-bas-7756-w-ghbk-640.webp 640w, /media/products-bas-7756-w-ghbk-800.webp 800w",
+    "avif": "/media/products-bas-7756-w-ghbk-160.avif 160w, /media/products-bas-7756-w-ghbk-320.avif 320w, /media/products-bas-7756-w-ghbk-640.avif 640w, /media/products-bas-7756-w-ghbk-800.avif 800w"
+  },
   "/products/bas-7756-w.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-bas-7756-w-800.webp",
     "webp": "/media/products-bas-7756-w-160.webp 160w, /media/products-bas-7756-w-320.webp 320w, /media/products-bas-7756-w-640.webp 640w, /media/products-bas-7756-w-800.webp 800w",
     "avif": "/media/products-bas-7756-w-160.avif 160w, /media/products-bas-7756-w-320.avif 320w, /media/products-bas-7756-w-640.avif 640w, /media/products-bas-7756-w-800.avif 800w"
+  },
+  "/products/bas-7759-lb-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bas-7759-lb-ghbk-800.webp",
+    "webp": "/media/products-bas-7759-lb-ghbk-160.webp 160w, /media/products-bas-7759-lb-ghbk-320.webp 320w, /media/products-bas-7759-lb-ghbk-640.webp 640w, /media/products-bas-7759-lb-ghbk-800.webp 800w",
+    "avif": "/media/products-bas-7759-lb-ghbk-160.avif 160w, /media/products-bas-7759-lb-ghbk-320.avif 320w, /media/products-bas-7759-lb-ghbk-640.avif 640w, /media/products-bas-7759-lb-ghbk-800.avif 800w"
   },
   "/products/bas-7759-lb.webp": {
     "width": 800,
@@ -209,12 +272,26 @@
     "webp": "/media/products-bas-7759-lb-160.webp 160w, /media/products-bas-7759-lb-320.webp 320w, /media/products-bas-7759-lb-640.webp 640w, /media/products-bas-7759-lb-800.webp 800w",
     "avif": "/media/products-bas-7759-lb-160.avif 160w, /media/products-bas-7759-lb-320.avif 320w, /media/products-bas-7759-lb-640.avif 640w, /media/products-bas-7759-lb-800.avif 800w"
   },
+  "/products/bas-8000-gy-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bas-8000-gy-ghbk-800.webp",
+    "webp": "/media/products-bas-8000-gy-ghbk-160.webp 160w, /media/products-bas-8000-gy-ghbk-320.webp 320w, /media/products-bas-8000-gy-ghbk-640.webp 640w, /media/products-bas-8000-gy-ghbk-800.webp 800w",
+    "avif": "/media/products-bas-8000-gy-ghbk-160.avif 160w, /media/products-bas-8000-gy-ghbk-320.avif 320w, /media/products-bas-8000-gy-ghbk-640.avif 640w, /media/products-bas-8000-gy-ghbk-800.avif 800w"
+  },
   "/products/bas-8000-gy.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-bas-8000-gy-800.webp",
     "webp": "/media/products-bas-8000-gy-160.webp 160w, /media/products-bas-8000-gy-320.webp 320w, /media/products-bas-8000-gy-640.webp 640w, /media/products-bas-8000-gy-800.webp 800w",
     "avif": "/media/products-bas-8000-gy-160.avif 160w, /media/products-bas-8000-gy-320.avif 320w, /media/products-bas-8000-gy-640.avif 640w, /media/products-bas-8000-gy-800.avif 800w"
+  },
+  "/products/bd-ut-26-a-n-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bd-ut-26-a-n-ghbk-800.webp",
+    "webp": "/media/products-bd-ut-26-a-n-ghbk-160.webp 160w, /media/products-bd-ut-26-a-n-ghbk-320.webp 320w, /media/products-bd-ut-26-a-n-ghbk-640.webp 640w, /media/products-bd-ut-26-a-n-ghbk-800.webp 800w",
+    "avif": "/media/products-bd-ut-26-a-n-ghbk-160.avif 160w, /media/products-bd-ut-26-a-n-ghbk-320.avif 320w, /media/products-bd-ut-26-a-n-ghbk-640.avif 640w, /media/products-bd-ut-26-a-n-ghbk-800.avif 800w"
   },
   "/products/bd-ut-26-a-n.webp": {
     "width": 800,
@@ -230,12 +307,26 @@
     "webp": "/media/products-bg-al-451-b-01-no-logo-160.webp 160w, /media/products-bg-al-451-b-01-no-logo-320.webp 320w, /media/products-bg-al-451-b-01-no-logo-640.webp 640w, /media/products-bg-al-451-b-01-no-logo-800.webp 800w",
     "avif": "/media/products-bg-al-451-b-01-no-logo-160.avif 160w, /media/products-bg-al-451-b-01-no-logo-320.avif 320w, /media/products-bg-al-451-b-01-no-logo-640.avif 640w, /media/products-bg-al-451-b-01-no-logo-800.avif 800w"
   },
+  "/products/bg-al-451-b-bl-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bg-al-451-b-bl-02-no-logo-800.webp",
+    "webp": "/media/products-bg-al-451-b-bl-02-no-logo-160.webp 160w, /media/products-bg-al-451-b-bl-02-no-logo-320.webp 320w, /media/products-bg-al-451-b-bl-02-no-logo-640.webp 640w, /media/products-bg-al-451-b-bl-02-no-logo-800.webp 800w",
+    "avif": "/media/products-bg-al-451-b-bl-02-no-logo-160.avif 160w, /media/products-bg-al-451-b-bl-02-no-logo-320.avif 320w, /media/products-bg-al-451-b-bl-02-no-logo-640.avif 640w, /media/products-bg-al-451-b-bl-02-no-logo-800.avif 800w"
+  },
   "/products/bg-al-550-b-01-no-logo.webp": {
     "width": 1024,
     "height": 1024,
     "src": "/media/products-bg-al-550-b-01-no-logo-1024.webp",
     "webp": "/media/products-bg-al-550-b-01-no-logo-160.webp 160w, /media/products-bg-al-550-b-01-no-logo-320.webp 320w, /media/products-bg-al-550-b-01-no-logo-640.webp 640w, /media/products-bg-al-550-b-01-no-logo-960.webp 960w, /media/products-bg-al-550-b-01-no-logo-1024.webp 1024w",
     "avif": "/media/products-bg-al-550-b-01-no-logo-160.avif 160w, /media/products-bg-al-550-b-01-no-logo-320.avif 320w, /media/products-bg-al-550-b-01-no-logo-640.avif 640w, /media/products-bg-al-550-b-01-no-logo-960.avif 960w, /media/products-bg-al-550-b-01-no-logo-1024.avif 1024w"
+  },
+  "/products/bg-al-550-b-gy-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bg-al-550-b-gy-02-no-logo-800.webp",
+    "webp": "/media/products-bg-al-550-b-gy-02-no-logo-160.webp 160w, /media/products-bg-al-550-b-gy-02-no-logo-320.webp 320w, /media/products-bg-al-550-b-gy-02-no-logo-640.webp 640w, /media/products-bg-al-550-b-gy-02-no-logo-800.webp 800w",
+    "avif": "/media/products-bg-al-550-b-gy-02-no-logo-160.avif 160w, /media/products-bg-al-550-b-gy-02-no-logo-320.avif 320w, /media/products-bg-al-550-b-gy-02-no-logo-640.avif 640w, /media/products-bg-al-550-b-gy-02-no-logo-800.avif 800w"
   },
   "/products/bg-al-550-b-no-logo.webp": {
     "width": 800,
@@ -251,12 +342,33 @@
     "webp": "/media/products-bg-sc-361-b-application-01-no-logo-160.webp 160w, /media/products-bg-sc-361-b-application-01-no-logo-320.webp 320w, /media/products-bg-sc-361-b-application-01-no-logo-640.webp 640w, /media/products-bg-sc-361-b-application-01-no-logo-960.webp 960w, /media/products-bg-sc-361-b-application-01-no-logo-1010.webp 1010w",
     "avif": "/media/products-bg-sc-361-b-application-01-no-logo-160.avif 160w, /media/products-bg-sc-361-b-application-01-no-logo-320.avif 320w, /media/products-bg-sc-361-b-application-01-no-logo-640.avif 640w, /media/products-bg-sc-361-b-application-01-no-logo-960.avif 960w, /media/products-bg-sc-361-b-application-01-no-logo-1010.avif 1010w"
   },
+  "/products/bg-sc-361-b-gy-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-bg-sc-361-b-gy-02-no-logo-800.webp",
+    "webp": "/media/products-bg-sc-361-b-gy-02-no-logo-160.webp 160w, /media/products-bg-sc-361-b-gy-02-no-logo-320.webp 320w, /media/products-bg-sc-361-b-gy-02-no-logo-640.webp 640w, /media/products-bg-sc-361-b-gy-02-no-logo-800.webp 800w",
+    "avif": "/media/products-bg-sc-361-b-gy-02-no-logo-160.avif 160w, /media/products-bg-sc-361-b-gy-02-no-logo-320.avif 320w, /media/products-bg-sc-361-b-gy-02-no-logo-640.avif 640w, /media/products-bg-sc-361-b-gy-02-no-logo-800.avif 800w"
+  },
+  "/products/cap-1008-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-cap-1008-02-no-logo-800.webp",
+    "webp": "/media/products-cap-1008-02-no-logo-160.webp 160w, /media/products-cap-1008-02-no-logo-320.webp 320w, /media/products-cap-1008-02-no-logo-640.webp 640w, /media/products-cap-1008-02-no-logo-800.webp 800w",
+    "avif": "/media/products-cap-1008-02-no-logo-160.avif 160w, /media/products-cap-1008-02-no-logo-320.avif 320w, /media/products-cap-1008-02-no-logo-640.avif 640w, /media/products-cap-1008-02-no-logo-800.avif 800w"
+  },
   "/products/cap-1008-n.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-cap-1008-n-800.webp",
     "webp": "/media/products-cap-1008-n-160.webp 160w, /media/products-cap-1008-n-320.webp 320w, /media/products-cap-1008-n-640.webp 640w, /media/products-cap-1008-n-800.webp 800w",
     "avif": "/media/products-cap-1008-n-160.avif 160w, /media/products-cap-1008-n-320.avif 320w, /media/products-cap-1008-n-640.avif 640w, /media/products-cap-1008-n-800.avif 800w"
+  },
+  "/products/cap-1030-02-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-cap-1030-02-no-logo-800.webp",
+    "webp": "/media/products-cap-1030-02-no-logo-160.webp 160w, /media/products-cap-1030-02-no-logo-320.webp 320w, /media/products-cap-1030-02-no-logo-640.webp 640w, /media/products-cap-1030-02-no-logo-800.webp 800w",
+    "avif": "/media/products-cap-1030-02-no-logo-160.avif 160w, /media/products-cap-1030-02-no-logo-320.avif 320w, /media/products-cap-1030-02-no-logo-640.avif 640w, /media/products-cap-1030-02-no-logo-800.avif 800w"
   },
   "/products/cap-1030-bl-no-logo.webp": {
     "width": 800,
@@ -377,6 +489,13 @@
     "webp": "/media/products-idea-1142-bl-no-logo-160.webp 160w, /media/products-idea-1142-bl-no-logo-320.webp 320w, /media/products-idea-1142-bl-no-logo-640.webp 640w, /media/products-idea-1142-bl-no-logo-800.webp 800w",
     "avif": "/media/products-idea-1142-bl-no-logo-160.avif 160w, /media/products-idea-1142-bl-no-logo-320.avif 320w, /media/products-idea-1142-bl-no-logo-640.avif 640w, /media/products-idea-1142-bl-no-logo-800.avif 800w"
   },
+  "/products/jc-av-118-a-n-ghbk.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-jc-av-118-a-n-ghbk-800.webp",
+    "webp": "/media/products-jc-av-118-a-n-ghbk-160.webp 160w, /media/products-jc-av-118-a-n-ghbk-320.webp 320w, /media/products-jc-av-118-a-n-ghbk-640.webp 640w, /media/products-jc-av-118-a-n-ghbk-800.webp 800w",
+    "avif": "/media/products-jc-av-118-a-n-ghbk-160.avif 160w, /media/products-jc-av-118-a-n-ghbk-320.avif 320w, /media/products-jc-av-118-a-n-ghbk-640.avif 640w, /media/products-jc-av-118-a-n-ghbk-800.avif 800w"
+  },
   "/products/jc-av-118-a-n.webp": {
     "width": 800,
     "height": 800,
@@ -404,6 +523,13 @@
     "src": "/media/products-nb-9335-bl-01-no-logo-1024.webp",
     "webp": "/media/products-nb-9335-bl-01-no-logo-160.webp 160w, /media/products-nb-9335-bl-01-no-logo-320.webp 320w, /media/products-nb-9335-bl-01-no-logo-640.webp 640w, /media/products-nb-9335-bl-01-no-logo-960.webp 960w, /media/products-nb-9335-bl-01-no-logo-1024.webp 1024w",
     "avif": "/media/products-nb-9335-bl-01-no-logo-160.avif 160w, /media/products-nb-9335-bl-01-no-logo-320.avif 320w, /media/products-nb-9335-bl-01-no-logo-640.avif 640w, /media/products-nb-9335-bl-01-no-logo-960.avif 960w, /media/products-nb-9335-bl-01-no-logo-1024.avif 1024w"
+  },
+  "/products/nb-9335-bl-open.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-nb-9335-bl-open-800.webp",
+    "webp": "/media/products-nb-9335-bl-open-160.webp 160w, /media/products-nb-9335-bl-open-320.webp 320w, /media/products-nb-9335-bl-open-640.webp 640w, /media/products-nb-9335-bl-open-800.webp 800w",
+    "avif": "/media/products-nb-9335-bl-open-160.avif 160w, /media/products-nb-9335-bl-open-320.avif 320w, /media/products-nb-9335-bl-open-640.avif 640w, /media/products-nb-9335-bl-open-800.avif 800w"
   },
   "/products/ruler-2-bu-no-logo.webp": {
     "width": 800,
@@ -517,12 +643,26 @@
     "webp": "/media/products-um-ub-27-b-lifestyle-ai-no-logo-160.webp 160w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-320.webp 320w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-640.webp 640w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-960.webp 960w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-1024.webp 1024w",
     "avif": "/media/products-um-ub-27-b-lifestyle-ai-no-logo-160.avif 160w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-320.avif 320w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-640.avif 640w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-960.avif 960w, /media/products-um-ub-27-b-lifestyle-ai-no-logo-1024.avif 1024w"
   },
+  "/products/usb-7406-nt-03-no-logo.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-usb-7406-nt-03-no-logo-800.webp",
+    "webp": "/media/products-usb-7406-nt-03-no-logo-160.webp 160w, /media/products-usb-7406-nt-03-no-logo-320.webp 320w, /media/products-usb-7406-nt-03-no-logo-640.webp 640w, /media/products-usb-7406-nt-03-no-logo-800.webp 800w",
+    "avif": "/media/products-usb-7406-nt-03-no-logo-160.avif 160w, /media/products-usb-7406-nt-03-no-logo-320.avif 320w, /media/products-usb-7406-nt-03-no-logo-640.avif 640w, /media/products-usb-7406-nt-03-no-logo-800.avif 800w"
+  },
   "/products/usb-7406-nt-no-logo.webp": {
     "width": 800,
     "height": 800,
     "src": "/media/products-usb-7406-nt-no-logo-800.webp",
     "webp": "/media/products-usb-7406-nt-no-logo-160.webp 160w, /media/products-usb-7406-nt-no-logo-320.webp 320w, /media/products-usb-7406-nt-no-logo-640.webp 640w, /media/products-usb-7406-nt-no-logo-800.webp 800w",
     "avif": "/media/products-usb-7406-nt-no-logo-160.avif 160w, /media/products-usb-7406-nt-no-logo-320.avif 320w, /media/products-usb-7406-nt-no-logo-640.avif 640w, /media/products-usb-7406-nt-no-logo-800.avif 800w"
+  },
+  "/products/usb-7465-box-01-box-open.webp": {
+    "width": 800,
+    "height": 800,
+    "src": "/media/products-usb-7465-box-01-box-open-800.webp",
+    "webp": "/media/products-usb-7465-box-01-box-open-160.webp 160w, /media/products-usb-7465-box-01-box-open-320.webp 320w, /media/products-usb-7465-box-01-box-open-640.webp 640w, /media/products-usb-7465-box-01-box-open-800.webp 800w",
+    "avif": "/media/products-usb-7465-box-01-box-open-160.avif 160w, /media/products-usb-7465-box-01-box-open-320.avif 320w, /media/products-usb-7465-box-01-box-open-640.avif 640w, /media/products-usb-7465-box-01-box-open-800.avif 800w"
   },
   "/products/usb-7465-no-logo.webp": {
     "width": 800,

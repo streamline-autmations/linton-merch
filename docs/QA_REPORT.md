@@ -207,3 +207,10 @@ Owner asked for stars. The only sourced figure is "92% recommend us on Facebook"
 - Visual: Home, Catalogue, Product, About, Quote and the logo builder inspected at 390 and 1440 px.
 - Contrast: navy on white 14.0, white on Linton Blue 9.4, slate on white 7.2, slate on cloud 6.6. Blue on navy is 1.5, so blue is never placed on navy.
 - Not checked: WebKit / a physical phone (unchanged limit).
+
+## Photos, footer and spacing — 22 October 2026 (Claude)
+
+- Checked: typecheck OK; `pnpm test` 21/21; `pnpm check:presentation` 0 axe violations on every route, no overflow; `pnpm test:e2e` 10/10 desktop and mobile.
+- Touch preview checked in Chromium emulating a Pixel 7 (`hover: none`): cards swap at about 1.5 s in view, return by 5 s, swap again when scrolled back in; reduced motion gives no swaps.
+- Visual: teaser heading at 390px, footer at 390 and 1440px, gift rail with the white set, catalogue swap state.
+- Not checked: a physical phone and WebKit.
