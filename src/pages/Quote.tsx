@@ -503,6 +503,8 @@ export function Quote() {
   const [step, setStep] = useState(0)
   const [brief, setBrief] = useState<Brief>(() => ({ ...emptyBrief, company: recalledCompany() }))
   const [meta, setMeta] = useState<QuoteMeta | null>(null)
+  // The products as confirmed. Later basket edits don't change a confirmed request.
+  const [confirmedItems, setConfirmedItems] = useState<QuoteItem[]>([])
   const headingRef = useRef<HTMLHeadingElement>(null)
   const firstStep = useRef(true)
   const units = totalUnits(items)
@@ -529,6 +531,7 @@ export function Quote() {
     else {
       // One reference per request; editing and confirming again keeps it.
       setMeta((current) => current ?? { reference: quoteReference(), date: new Date() })
+      setConfirmedItems(items)
       setStep(2)
     }
   }
@@ -536,6 +539,7 @@ export function Quote() {
     clear()
     setBrief({ ...emptyBrief, company: '' })
     setMeta(null)
+    setConfirmedItems([])
     firstStep.current = true
     setStep(0)
     scrollToTop()
@@ -544,7 +548,7 @@ export function Quote() {
   if (step === 2 && meta)
     return (
       <Confirmation
-        items={items}
+        items={confirmedItems}
         brief={brief}
         meta={meta}
         onEdit={() => setStep(0)}
