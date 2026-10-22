@@ -25,7 +25,7 @@ const defaultDescription =
 export function setPageMeta({
   title,
   description = defaultDescription,
-  image = '/og-linton.jpg',
+  image = '/og-linton-logo.jpg',
 }: {
   title: string
   description?: string
@@ -45,7 +45,7 @@ export function setPageMeta({
   meta('property', 'og:description', description)
   meta('property', 'og:image', new URL(image, window.location.origin).href)
   meta('property', 'og:url', url)
-  meta('property', 'og:image:alt', title + ' — Linton Merch concept demo')
+  meta('property', 'og:image:alt', 'Linton Enterprises logo')
   tag('link[rel="canonical"]', () => {
     const l = document.createElement('link')
     l.setAttribute('rel', 'canonical')

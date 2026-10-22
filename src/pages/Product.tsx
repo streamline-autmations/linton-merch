@@ -20,7 +20,7 @@ function photosOf(product: Product) {
 
 // The main supplier shot sits on white, so it gets breathing room; lifestyle and gift photos fill.
 const isPlate = (product: Product, src: string) =>
-  src === product.image && !src.startsWith('/gifts/')
+  (src === product.image && !src.startsWith('/gifts/')) || /-gh(bk|si|fr)/.test(src)
 
 /** Swipe on phones, thumbnails on wider screens, tap a photo to see it large. */
 function Gallery({ product }: { product: Product }) {
