@@ -60,3 +60,7 @@ With `pnpm dev` running at port 5173, `pnpm check:presentation` checks responsiv
 | WhatsApp recipient     | `.env` or the host's build variable (Vercel/Netlify) |
 
 [Client assets and unanswered facts](docs/CONTENT_AND_ASSETS.md) explain what to supply. [Netlify instructions](docs/NETLIFY_DEPLOY.md) cover manual and Git-based deployment. [Task plan](docs/TASK_PLAN.md) records the next Claude slices. The live company website was not modified.
+
+---
+
+Designed & built by [Streamline Automations](https://streamline-automations.co.za/).
